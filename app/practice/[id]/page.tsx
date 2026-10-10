@@ -6,6 +6,7 @@ import { ExerciseMenu } from "@/components/ExerciseMenu";
 import { DumpsterFade } from "@/components/DumpsterFade";
 import { Disclaimer } from "@/components/Disclaimer";
 import { MuscleTargets } from "@/components/MuscleTargets";
+import { PastSets } from "@/components/LiveWorkout";
 import { PracticeMedia } from "@/components/PracticeMedia";
 import { WayMarks } from "@/components/WayMarks";
 import { getAlias } from "@/data/dumpster";
@@ -211,6 +212,7 @@ export default async function PracticePage({ params }: Props) {
         ) : null}
 
         <DetailActions practice={practice} />
+        <PastSets practiceId={practice.id} />
 
         {related.length > 0 ? (
           <section className="mt-6">

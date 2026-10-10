@@ -52,6 +52,28 @@ export type PostureAlignmentTag =
   | "hip mobility"
   | "thoracic extension";
 
+export type Load =
+  | "bodyweight"
+  | "dumbbell"
+  | "barbell"
+  | "kettlebell"
+  | "machine"
+  | "cable"
+  | "band"
+  | "medicine_ball";
+
+export type ExerciseType =
+  | "strength"
+  | "mobility"
+  | "stretch"
+  | "hang"
+  | "breathing"
+  | "meditation";
+
+export type Position = "standing" | "seated" | "lying" | "kneeling" | "hanging";
+
+export type DoseUnit = "reps" | "seconds" | "breaths" | "minutes";
+
 export type ExerciseEnvironment =
   | "pull-up bar"
   | "bench"
@@ -81,6 +103,18 @@ export interface Training {
   media: string;
 }
 
+/** Fields added where the catalog was empty. Existing JSON values are not copied here. */
+export interface ExerciseProfile {
+  equipment?: Load[];
+  environment?: ExerciseEnvironment[];
+  movementPattern?: MovementPattern;
+  laterality?: Laterality;
+  forceType?: ForceType;
+  exerciseType: ExerciseType;
+  position: Position;
+  dose: DoseUnit;
+}
+
 export type Level = "beginner" | "intermediate" | "advanced";
 
 export interface Practice {
@@ -103,6 +137,7 @@ export interface Practice {
   tags: string[];
   durationHint?: string;
   training?: Training;
+  profile?: ExerciseProfile;
 }
 
 export interface MediaPhoto {

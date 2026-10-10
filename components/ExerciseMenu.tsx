@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import type { Way } from "@/lib/types";
 
 const GROUPS: { way: Way; label: string }[] = [
-  { way: "inner", label: "Inner" },
   { way: "soft-body", label: "Soft body" },
   { way: "strength", label: "Strength" },
 ];

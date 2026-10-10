@@ -1,53 +1,9 @@
 "use client";
 
-import {
-  defaultViewFor,
-  shapesForView,
-  BACK_SILHOUETTE,
-  FRONT_SILHOUETTE,
-  type BodyView,
-} from "@/data/body-paths";
+import { useState } from "react";
+import { defaultViewFor, shapesForView, type BodyView } from "@/data/body-paths";
 import { musclesInCatalog } from "@/lib/muscle-index";
 import { getMuscle, type MuscleId } from "@/lib/muscles";
-
-const BODY = "#d5e3f0";
-const LINE = "#7ea4c4";
-const HOT = "#e15d55";
-
-function fillFor(selected: boolean, live: boolean): string {
-  if (!live) {
-    return "#e7eef5";
-  }
-  if (selected) {
-    return HOT;
-  }
-  return BODY;
-}
-
-const FRONT_LINES = [
-  "M100 104 L100 214",
-  "M82 112 Q100 126 118 112",
-  "M94 136 L106 136",
-  "M94 154 L106 154",
-  "M94 172 L106 172",
-  "M94 190 L106 190",
-  "M78 250 L92 360",
-  "M122 250 L108 360",
-  "M48 150 Q40 176 22 214",
-  "M152 150 Q160 176 178 214",
-];
-
-const BACK_LINES = [
-  "M100 100 L100 210",
-  "M78 108 L100 136 L122 108",
-  "M86 150 L114 150",
-  "M84 172 L116 172",
-  "M100 198 L100 236",
-  "M78 250 L92 360",
-  "M122 250 L108 360",
-  "M48 150 Q40 176 22 214",
-  "M152 150 Q160 176 178 214",
-];
 
 export function BodyFigure({
   view,
@@ -73,85 +29,86 @@ export function BodyFigure({
   className?: string;
 }) {
   const shapes = shapesForView(view);
-  const focus = hovered ?? selected;
+  const [focused, setFocused] = useState<MuscleId | null>(null);
+  const focus = hovered ?? focused ?? selected;
   const label = focus ? getMuscle(focus) : null;
 
   return (
-    <div>
-    <svg
-      viewBox="0 0 200 480"
-      className={className}
-      role="img"
-      aria-label={`${view === "front" ? "Anterior" : "Posterior"} muscular figure. Select a muscle to see exercises.`}
-    >
-      <path
-        d={view === "front" ? FRONT_SILHOUETTE : BACK_SILHOUETTE}
-        fill={BODY}
-        stroke={LINE}
-        strokeWidth="1.4"
-      />
-      <ellipse
-        cx="100"
-        cy="46"
-        rx="16"
-        ry="20"
-        fill={BODY}
-        stroke={LINE}
-        strokeWidth="1.4"
+    <div className={className}>
+    <div className="relative mx-auto aspect-[342/670] w-full max-w-[11rem] overflow-hidden">
+      <img
+        src={`/muscle-map/body-${view}.png`}
+        alt=""
+        className="absolute max-w-none"
+        style={{ width: "374.27%", height: "107.46%", left: "-136.84%", top: "-1.79%" }}
       />
       {shapes.map((shape) => {
-        const isLive = live.has(shape.id);
-        const isOn = selected === shape.id || hovered === shape.id;
+        const src = getMuscle(shape.id)?.overlay?.[view];
+        if (!src) {
+          return null;
+        }
+        const lit = selected === shape.id || hovered === shape.id || focused === shape.id;
         return (
-          <g
-            key={`${view}-${shape.id}`}
-            role={isLive && interactive ? "button" : "presentation"}
-            tabIndex={isLive && interactive ? 0 : undefined}
-            aria-label={isLive ? getMuscle(shape.id)?.label : undefined}
-            aria-pressed={selected === shape.id}
-            className={isLive && interactive ? "cursor-pointer outline-none" : undefined}
-            onClick={() => {
-              if (isLive && interactive) {
-                onSelect(shape.id);
-              }
+          <img
+            key={`${view}-glow-${shape.id}`}
+            src={src}
+            alt=""
+            className="pointer-events-none absolute max-w-none transition-opacity duration-150"
+            style={{
+              width: "374.27%",
+              height: "107.46%",
+              left: "-136.84%",
+              top: "-1.79%",
+              opacity: lit ? 0.85 : 0,
+              filter: lit ? "drop-shadow(0 0 6px rgba(225, 93, 85, 0.85))" : undefined,
             }}
-            onKeyDown={(event) => {
-              if (!isLive || !interactive) {
-                return;
-              }
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                onSelect(shape.id);
-              }
-            }}
-            onMouseEnter={() => onHover(shape.id)}
-            onMouseLeave={() => onHover(null)}
-          >
-            {shape.paths.map((d) => (
-              <path
-                key={d}
-                d={d}
-                fill={fillFor(isOn, isLive)}
-                stroke={isOn ? "#b42318" : LINE}
-                strokeOpacity={isOn ? 0.9 : 0.55}
-                strokeWidth={isOn ? 1.4 : 0.8}
-              />
-            ))}
-          </g>
+          />
         );
       })}
-      {(view === "front" ? FRONT_LINES : BACK_LINES).map((d) => (
-        <path
-          key={d}
-          d={d}
-          fill="none"
-          stroke={LINE}
-          strokeWidth="1.1"
-          strokeLinecap="round"
-          pointerEvents="none"
-        />
-      ))}
-    </svg>
+      <svg
+        viewBox="0 0 1280 720"
+        className="absolute max-w-none"
+        style={{ width: "374.27%", height: "107.46%", left: "-136.84%", top: "-1.79%" }}
+        role="img"
+        aria-label={`${view === "front" ? "Front" : "Back"} of the body. Select a muscle to see exercises.`}
+      >
+        {shapes.map((shape) => {
+          const isLive = live.has(shape.id);
+          return (
+            <g
+              key={`${view}-${shape.id}`}
+              role={isLive && interactive ? "button" : "presentation"}
+              tabIndex={isLive && interactive ? 0 : undefined}
+              aria-label={isLive ? getMuscle(shape.id)?.label : undefined}
+              aria-pressed={selected === shape.id}
+              className={isLive && interactive ? "cursor-pointer outline-none" : undefined}
+              onClick={() => {
+                if (isLive && interactive) {
+                  onSelect(shape.id);
+                }
+              }}
+              onKeyDown={(event) => {
+                if (!isLive || !interactive) {
+                  return;
+                }
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  onSelect(shape.id);
+                }
+              }}
+              onMouseEnter={() => onHover(shape.id)}
+              onMouseLeave={() => onHover(null)}
+              onFocus={() => setFocused(shape.id)}
+              onBlur={() => setFocused((current) => (current === shape.id ? null : current))}
+            >
+              {shape.paths.map((d) => (
+                <path key={d} d={d} fill="transparent" />
+              ))}
+            </g>
+          );
+        })}
+      </svg>
+    </div>
       {showCaption ? (
         <p className="mt-1 min-h-5 text-center text-xs text-ink/70">
           {label ? `${label.label} · ${counts[label.id] ?? 0} exercises` : "Tap a muscle"}

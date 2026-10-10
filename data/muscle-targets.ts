@@ -1,78 +1,6 @@
 import type { MuscleTargeting } from "@/lib/muscles";
 
 export const muscleTargets: Record<string, MuscleTargeting> = {
-  "box-breathing": {
-    primary: ["diaphragm"],
-    secondary: ["abs"],
-    tertiary: ["neck"],
-    notes: "Nervous system first. The neck stays unused if the breath is low.",
-  },
-  "four-seven-eight": {
-    primary: ["diaphragm"],
-    secondary: ["abs"],
-    tertiary: ["neck"],
-    notes: "Longer exhale. Jaw and throat stay soft.",
-  },
-  "belly-breathing": {
-    primary: ["diaphragm"],
-    secondary: ["abs"],
-    tertiary: ["chest"],
-    notes: "The chest is a passenger. The belly rises because the diaphragm drops.",
-  },
-  "physiological-sigh": {
-    primary: ["diaphragm"],
-    secondary: ["abs"],
-    tertiary: ["chest"],
-    notes: "A brief reset. Two inhales, one long out.",
-  },
-  "counting-the-breath": {
-    primary: ["diaphragm"],
-    secondary: ["abs"],
-    tertiary: ["neck"],
-    notes: "Attention is the point. Posture is only enough to stay awake.",
-  },
-  "short-sit": {
-    primary: ["abs"],
-    secondary: ["lower-back"],
-    tertiary: ["neck"],
-    notes: "Quiet postural muscles. Nothing to strengthen on purpose.",
-  },
-  "body-scan": {
-    primary: ["diaphragm"],
-    secondary: ["abs"],
-    tertiary: ["neck"],
-    notes: "Awareness through the whole body. No load.",
-  },
-  "ocean-breath": {
-    primary: ["diaphragm"],
-    secondary: ["abs"],
-    tertiary: ["neck"],
-    notes: "A soft sound in the throat. Do not grip the neck.",
-  },
-  "breathing-bridge": {
-    primary: ["glutes"],
-    secondary: ["hamstrings", "diaphragm"],
-    tertiary: ["lower-back"],
-    notes: "A small lift. The breath has more room; this is not a max hip thrust.",
-  },
-  "standing-arrival-breath": {
-    primary: ["diaphragm"],
-    secondary: ["abs"],
-    tertiary: ["calves"],
-    notes: "Weight in both feet. The calves only stand you up.",
-  },
-  "exhale-emphasis": {
-    primary: ["diaphragm"],
-    secondary: ["abs"],
-    tertiary: ["obliques"],
-    notes: "After sport. Longer out-breath than in.",
-  },
-  "hands-on-heart": {
-    primary: ["diaphragm"],
-    secondary: ["chest"],
-    tertiary: ["abs"],
-    notes: "Presence. The hands are a reminder, not a stretch.",
-  },
   "chin-tuck": {
     primary: ["neck"],
     secondary: ["upper-back"],
@@ -474,6 +402,66 @@ export const muscleTargets: Record<string, MuscleTargeting> = {
     secondary: ["shoulders"],
     tertiary: ["traps"],
     notes: "Rear delts and the mid-back. Ounces, not pounds.",
+  },
+  "scapular-push-up": {
+    primary: ["shoulders"],
+    secondary: ["chest"],
+    tertiary: [],
+    notes: "Serratus is not in the muscle list. Shoulders is the closest match.",
+  },
+  "half-kneeling-single-arm-dumbbell-press": {
+    primary: ["shoulders"],
+    secondary: ["triceps"],
+    tertiary: ["abs"],
+    notes: "Front delts and triceps. The kneeling stance asks the trunk to stay tall.",
+  },
+  "ring-dip": {
+    primary: ["chest"],
+    secondary: ["triceps"],
+    tertiary: ["shoulders"],
+    notes: "Same push muscles as a dip, with less stable hands.",
+  },
+  "face-pull": {
+    primary: ["shoulders"],
+    secondary: ["upper-back"],
+    tertiary: ["traps"],
+    notes: "Rear delts and the mid-back. External rotators sit with the shoulders.",
+  },
+  "single-leg-romanian-deadlift": {
+    primary: ["hamstrings"],
+    secondary: ["glutes"],
+    tertiary: ["lower-back"],
+    notes: "One-leg hinge. The standing side does the work.",
+  },
+  "spanish-squat": {
+    primary: ["quads"],
+    secondary: [],
+    tertiary: [],
+    notes: "A band-assisted squat hold for the quads.",
+  },
+  "waiters-carry": {
+    primary: ["shoulders"],
+    secondary: ["abs"],
+    tertiary: ["traps"],
+    notes: "The overhead shoulder holds the kettlebell. The trunk keeps the ribs down.",
+  },
+  "bottoms-up-kettlebell-carry": {
+    primary: ["forearms"],
+    secondary: ["shoulders"],
+    tertiary: ["biceps"],
+    notes: "Grip and the shoulder that keeps the bell upright.",
+  },
+  "cable-woodchop": {
+    primary: ["obliques"],
+    secondary: ["abs"],
+    tertiary: ["lats"],
+    notes: "A diagonal turn. Glutes help, but the turn is the trunk.",
+  },
+  "medicine-ball-rotational-throw": {
+    primary: ["obliques"],
+    secondary: ["glutes"],
+    tertiary: ["shoulders"],
+    notes: "A fast turn. The hips start it and the trunk follows.",
   },
   "nordic-hamstring": {
     primary: ["hamstrings"],

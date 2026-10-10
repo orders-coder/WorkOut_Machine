@@ -1,4 +1,3 @@
-import { innerPractices } from "./inner";
 import { softBodyPractices } from "./soft-body";
 import { strengthPractices } from "./strength";
 import { strengthStaples } from "./strength-staples";
@@ -7,10 +6,16 @@ import {
   exerciseRecords,
   practiceFromRecord,
 } from "./exercise-db";
+import { exerciseProfiles } from "./exercise-profile";
 import type { Practice } from "@/lib/types";
 import { waysOf } from "@/lib/ways";
 
-const written = [...innerPractices, ...softBodyPractices, ...strengthPractices, ...strengthStaples];
+function withProfile(practice: Practice): Practice {
+  const profile = exerciseProfiles[practice.id];
+  return profile ? { ...practice, profile } : practice;
+}
+
+const written = [...softBodyPractices, ...strengthPractices, ...strengthStaples];
 const writtenById = new Map(written.map((practice) => [practice.id, practice]));
 
 /** One list. Database rows replace any older write-up with the same id. */
@@ -20,7 +25,7 @@ export const practices: Practice[] = [
     const id = practiceFromRecord(record).id;
     return practiceFromRecord(record, writtenById.get(id));
   }),
-];
+].map(withProfile);
 
 export function getPracticeById(id: string): Practice | undefined {
   return practices.find((practice) => practice.id === id);

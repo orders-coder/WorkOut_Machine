@@ -20,9 +20,9 @@ export function PracticeMedia({ practice }: { practice: Practice }) {
 
   return (
     <div>
-      <div className={`relative aspect-[4/3] ${WAY_WASH[practice.way]}`}>
+      <div className={`flex justify-center px-3 py-3 ${WAY_WASH[practice.way]}`}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={hero} alt={practice.imageAlt} className="h-full w-full object-cover" />
+        <img src={hero} alt={practice.imageAlt} className="h-36 w-auto max-w-full object-contain" />
       </div>
 
       {photos.length > 0 ? (

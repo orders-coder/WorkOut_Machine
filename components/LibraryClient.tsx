@@ -10,7 +10,6 @@ import { PracticeCard } from "./PracticeCard";
 
 const WAYS: { id: WayFilter; label: string }[] = [
   { id: "all", label: "All" },
-  { id: "inner", label: "Inner" },
   { id: "soft-body", label: "Soft" },
   { id: "strength", label: "Strength" },
 ];
