@@ -2,10 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { MUSCLES, type MuscleId } from "@/lib/muscles";
-import { DAY_TYPES, dayTypeById, type DayTypeId } from "@/lib/routine-types";
+import { DAY_TYPES, dayTypeById, type DayType, type DayTypeId } from "@/lib/routine-types";
 import { readyToFinish, suggestNext, type SuggestCandidate } from "@/lib/suggest-next";
-import type { ExerciseType, ForceType, Level, MovementPattern } from "@/lib/types";
+import type { ExerciseType, ForceType, MovementPattern } from "@/lib/types";
+import type { WorkoutExercise } from "@/lib/workout-catalog";
 import {
   activeSession,
   historyFor,
@@ -20,22 +22,8 @@ import {
   type WeightUnit,
   type WorkoutSession,
 } from "@/lib/workout-session";
+import { BodyFigure } from "./BodyMap";
 import { RoutineList } from "./RoutineList";
-
-export interface WorkoutExercise {
-  id: string;
-  name: string;
-  image: string;
-  level: Level;
-  bodyweight: boolean;
-  exerciseType?: ExerciseType;
-  pattern?: MovementPattern;
-  force?: ForceType;
-  dose?: "reps" | "seconds" | "breaths" | "minutes";
-  repRange?: string;
-  muscles: MuscleId[];
-  compound: boolean;
-}
 
 function playDone() {
   if (typeof navigator !== "undefined" && navigator.vibrate) {
@@ -62,14 +50,20 @@ function formatClock(totalSeconds: number): string {
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
 
-export function LiveWorkout({ catalog }: { catalog: WorkoutExercise[] }) {
+export function LiveWorkout({
+  catalog,
+  mode,
+}: {
+  catalog: WorkoutExercise[];
+  mode: "build" | "live";
+}) {
   const [session, setSession] = useState<WorkoutSession | null>(null);
   const [ready, setReady] = useState(false);
   const [day, setDay] = useState<DayTypeId>("standard");
   const [mains, setMains] = useState<MuscleId[]>([]);
-  const [addon, setAddon] = useState<MuscleId | undefined>();
   const [bodyweightOnly, setBodyweightOnly] = useState(false);
   const [picked, setPicked] = useState<string[]>([]);
+  const [slot, setSlot] = useState<{ kind: "insert" | "swap"; at: number } | null>(null);
   const [unit, setUnit] = useState<WeightUnit>("kg");
   const [now, setNow] = useState(() => Date.now());
   const [weight, setWeight] = useState("");
@@ -78,6 +72,7 @@ export function LiveWorkout({ catalog }: { catalog: WorkoutExercise[] }) {
   const [breaths, setBreaths] = useState(0);
   const [query, setQuery] = useState("");
   const [history, setHistory] = useState<WorkoutSession[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const existing = activeSession();
@@ -124,12 +119,11 @@ export function LiveWorkout({ catalog }: { catalog: WorkoutExercise[] }) {
     if (info.harder && item.level === "beginner" && item.exerciseType === "strength") {
       return false;
     }
-    const focus = addon ? [...mains, addon] : mains;
+    const focus = mains;
     return item.muscles.some((muscle) => focus.includes(muscle));
   });
 
   function toggleMain(id: MuscleId) {
-    setAddon((current) => (current === id ? undefined : current));
     setMains((current) => {
       if (current.includes(id)) {
         return current.filter((item) => item !== id);
@@ -140,6 +134,21 @@ export function LiveWorkout({ catalog }: { catalog: WorkoutExercise[] }) {
       return [...current, id];
     });
     setPicked([]);
+    setSlot(null);
+  }
+
+  function movePick(index: number, direction: -1 | 1) {
+    setPicked((current) => {
+      const next = [...current];
+      const target = index + direction;
+      if (target < 0 || target >= next.length) {
+        return current;
+      }
+      const [item] = next.splice(index, 1);
+      next.splice(target, 0, item);
+      return next;
+    });
+    setSlot(null);
   }
 
   function start() {
@@ -150,7 +159,6 @@ export function LiveWorkout({ catalog }: { catalog: WorkoutExercise[] }) {
       id: crypto.randomUUID(),
       dayType: day,
       mains,
-      addon,
       bodyweightOnly,
       startedAt: new Date().toISOString(),
       exercises: picked.map((practiceId) => ({ practiceId, sets: [] })),
@@ -159,6 +167,7 @@ export function LiveWorkout({ catalog }: { catalog: WorkoutExercise[] }) {
     };
     persist(next);
     fillFromLast(picked[0]);
+    router.push("/live");
   }
 
   function fillFromLast(practiceId: string) {
@@ -254,12 +263,30 @@ export function LiveWorkout({ catalog }: { catalog: WorkoutExercise[] }) {
     return null;
   }
 
-  if (!session) {
+  if (mode === "live" && !session) {
+    return (
+      <div className="px-3 pb-6 pt-8">
+        <h1 className="font-display text-[2.35rem] leading-none tracking-tight text-ink">Live</h1>
+        <p className="mt-2 text-sm text-ink/70">Nothing is running. Build a routine first, then come here to log the sets.</p>
+        <Link href="/routines" className="mt-4 flex min-h-14 items-center justify-center rounded-full bg-[#0071e3] text-white">
+          Build a routine
+        </Link>
+      </div>
+    );
+  }
+
+  if (mode === "build" || !session) {
     return (
       <div className="px-3 pb-6 pt-1">
         <p className="text-[0.65rem] tracking-[0.18em] uppercase text-ink/45">Work Out Machine</p>
-        <h1 className="mt-1 font-display text-[2.35rem] leading-none tracking-tight text-ink">Workout</h1>
-        <p className="mt-1.5 text-sm text-ink/70">Pick a day, a couple of muscles, and the first exercise. The rest gets suggested as you go.</p>
+        <h1 className="mt-1 font-display text-[2.35rem] leading-none tracking-tight text-ink">Routines</h1>
+        <p className="mt-1.5 text-sm text-ink/70">Build the session here. Weights and reps get logged on Live.</p>
+        <PlanBar segments={planSegments(picked, byId, dayInfo)} day={dayInfo} />
+        {session ? (
+          <Link href="/live" className="mt-3 flex min-h-12 items-center justify-center rounded-full bg-ink text-sm text-white">
+            Continue the workout on Live
+          </Link>
+        ) : null}
 
         <div className="mt-4 flex flex-wrap gap-2">
           {DAY_TYPES.map((item) => (
@@ -269,6 +296,7 @@ export function LiveWorkout({ catalog }: { catalog: WorkoutExercise[] }) {
               onClick={() => {
                 setDay(item.id);
                 setPicked([]);
+                setSlot(null);
               }}
               className={`min-h-11 rounded-full px-3 text-sm ${day === item.id ? "bg-[#0071e3] text-white" : "bg-card text-ink ring-1 ring-ink/10"}`}
             >
@@ -278,36 +306,12 @@ export function LiveWorkout({ catalog }: { catalog: WorkoutExercise[] }) {
           ))}
         </div>
 
-        <p className="mt-4 text-xs uppercase tracking-[0.14em] text-ink/45">Main muscles, up to two</p>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {MUSCLES.map((muscle) => (
-            <button
-              key={muscle.id}
-              type="button"
-              onClick={() => toggleMain(muscle.id)}
-              className={`min-h-11 rounded-full px-3 text-sm ${mains.includes(muscle.id) ? "bg-ink text-white" : "bg-card text-ink ring-1 ring-ink/10"}`}
-            >
-              {muscle.label}
-            </button>
-          ))}
-        </div>
-        <p className="mt-4 text-xs uppercase tracking-[0.14em] text-ink/45">Add-on, optional</p>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {MUSCLES.filter((muscle) => !mains.includes(muscle.id)).map((muscle) => (
-            <button
-              key={muscle.id}
-              type="button"
-              onClick={() => {
-                setAddon((current) => (current === muscle.id ? undefined : muscle.id));
-                setPicked([]);
-              }}
-              className={`min-h-11 rounded-full px-3 text-sm ${addon === muscle.id ? "bg-[#0071e3] text-white" : "bg-card text-ink ring-1 ring-ink/10"}`}
-            >
-              {muscle.label}
-            </button>
-          ))}
-        </div>
-
+        <MusclePick
+          label="Main muscles, up to two"
+          selected={mains}
+          onSelect={toggleMain}
+          note={mains.map((id) => MUSCLES.find((muscle) => muscle.id === id)?.label).filter(Boolean).join(" · ") || "Tap up to two"}
+        />
         <label className="mt-4 flex min-h-11 items-center gap-2 text-sm">
           <input
             type="checkbox"
@@ -315,41 +319,102 @@ export function LiveWorkout({ catalog }: { catalog: WorkoutExercise[] }) {
             onChange={(event) => {
               setBodyweightOnly(event.target.checked);
               setPicked([]);
+              setSlot(null);
             }}
           />
           No equipment
         </label>
 
         {mains.length > 0 ? (
-          <div className="mt-4 space-y-2">
-            <p className="text-xs uppercase tracking-[0.14em] text-ink/45">First exercises, pick 1 or 2</p>
-            {pool.slice(0, 8).map((item) => {
+          <div className="mt-4">
+            <p className="text-xs uppercase tracking-[0.14em] text-ink/45">
+              {slot?.kind === "insert"
+                ? "Tap an exercise to drop it in"
+                : slot?.kind === "swap"
+                  ? "Tap an exercise to swap it in"
+                  : "Add exercises"}
+            </p>
+            <div className="mt-2 grid grid-cols-3 gap-2">
+            {rankedStart(pool, mains, dayTypeById(day).mobilityOnly).map((item) => {
               const on = picked.includes(item.id);
               return (
                 <button
                   key={item.id}
                   type="button"
-                  onClick={() =>
+                  onClick={() => {
                     setPicked((current) => {
-                      if (current.includes(item.id)) {
-                        return current.filter((id) => id !== item.id);
+                      if (slot?.kind === "swap") {
+                        const next = [...current];
+                        next[slot.at] = item.id;
+                        return next;
                       }
-                      if (current.length >= 2) {
-                        return [current[1], item.id];
+                      if (slot?.kind === "insert") {
+                        const next = [...current];
+                        next.splice(slot.at, 0, item.id);
+                        return next;
                       }
                       return [...current, item.id];
-                    })
-                  }
-                  className={`flex min-h-14 w-full items-center gap-3 rounded-2xl px-3 text-left ${on ? "bg-ink text-white" : "bg-card ring-1 ring-ink/10"}`}
+                    });
+                    setSlot(null);
+                  }}
+                  className={`flex min-h-28 flex-col items-center justify-start gap-1 rounded-2xl px-2 py-2 text-center ${on ? "bg-ink text-white" : "bg-card ring-1 ring-ink/10"}`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={item.image} alt="" className="h-12 w-12 rounded-xl object-contain bg-white" />
-                  <span className="text-base">{item.name}</span>
+                  <img src={item.image} alt="" className="h-16 w-full rounded-xl object-contain bg-white" />
+                  <span className="text-xs leading-tight">{item.name}</span>
                 </button>
               );
             })}
+            </div>
             {pool.length === 0 ? <p className="text-sm text-ink/60">Nothing matches those muscles and that filter.</p> : null}
           </div>
+        ) : null}
+
+        {picked.length > 0 ? (
+          <section className="mt-6">
+            <p className="text-xs uppercase tracking-[0.14em] text-ink/45">Today’s map</p>
+            <ol className="mt-3">
+              {picked.map((id, index) => {
+                const item = byId.get(id);
+                return (
+                  <li key={`${id}-${index}`}>
+                    <button
+                      type="button"
+                      onClick={() => setSlot({ kind: "insert", at: index })}
+                      className={`mb-1 flex min-h-10 w-full items-center justify-center rounded-full text-xs ${
+                        slot?.kind === "insert" && slot.at === index ? "bg-[#0071e3] text-white" : "text-[#0071e3]"
+                      }`}
+                    >
+                      Insert here
+                    </button>
+                    <div className={`rounded-2xl px-3 py-2 ring-1 ${slot?.kind === "swap" && slot.at === index ? "bg-ink text-white ring-ink" : "bg-card ring-ink/10"}`}>
+                      <div className="flex items-center gap-3">
+                        <span className="w-5 text-sm text-ink/40">{index + 1}</span>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={item?.image} alt="" className="h-12 w-12 rounded-lg object-contain bg-white" />
+                        <p className="flex-1 text-sm leading-tight">{item?.name}</p>
+                      </div>
+                      <div className="mt-2 grid grid-cols-4 gap-1">
+                        <button type="button" className="min-h-10 rounded-full bg-wash text-xs" onClick={() => movePick(index, -1)} disabled={index === 0}>Up</button>
+                        <button type="button" className="min-h-10 rounded-full bg-wash text-xs" onClick={() => movePick(index, 1)} disabled={index === picked.length - 1}>Down</button>
+                        <button type="button" className="min-h-10 rounded-full bg-wash text-xs" onClick={() => setSlot({ kind: "swap", at: index })}>Swap</button>
+                        <button type="button" className="min-h-10 rounded-full bg-wash text-xs" onClick={() => setPicked((current) => current.filter((_, itemIndex) => itemIndex !== index))}>Remove</button>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+            <button
+              type="button"
+              onClick={() => setSlot({ kind: "insert", at: picked.length })}
+              className={`mt-1 flex min-h-10 w-full items-center justify-center rounded-full text-xs ${
+                slot?.kind === "insert" && slot.at === picked.length ? "bg-[#0071e3] text-white" : "text-[#0071e3]"
+              }`}
+            >
+              Add at the end
+            </button>
+          </section>
         ) : null}
 
         <button
@@ -358,7 +423,7 @@ export function LiveWorkout({ catalog }: { catalog: WorkoutExercise[] }) {
           onClick={start}
           className="mt-4 min-h-14 w-full rounded-full bg-[#0071e3] text-base text-white disabled:opacity-40"
         >
-          Start
+          Start on Live
         </button>
 
         {history.length > 0 ? (
@@ -418,9 +483,12 @@ export function LiveWorkout({ catalog }: { catalog: WorkoutExercise[] }) {
         <button
           type="button"
           className="mt-6 min-h-14 w-full rounded-full bg-[#0071e3] text-white"
-          onClick={() => setSession(null)}
+          onClick={() => {
+            setSession(null);
+            router.push("/routines");
+          }}
         >
-          Back to workouts
+          Back to routines
         </button>
       </div>
     );
@@ -609,6 +677,75 @@ export function LiveWorkout({ catalog }: { catalog: WorkoutExercise[] }) {
   );
 }
 
+function rankedStart(items: WorkoutExercise[], focus: MuscleId[], mobilityOnly: boolean): WorkoutExercise[] {
+  return [...items].sort(
+    (a, b) => intensity(b, focus, mobilityOnly) - intensity(a, focus, mobilityOnly) || a.name.localeCompare(b.name),
+  );
+}
+
+function intensity(item: WorkoutExercise, focus: MuscleId[], mobilityOnly: boolean): number {
+  const primary = item.muscles[0];
+  let score = primary && focus.includes(primary) ? 24 : 6;
+  if (item.level === "advanced") {
+    score += 30;
+  } else if (item.level === "intermediate") {
+    score += 16;
+  }
+  if (item.compound) {
+    score += 18;
+  }
+  if (item.exerciseType === "strength") {
+    score += 14;
+  }
+  if (item.exerciseType === "stretch" || item.exerciseType === "mobility") {
+    score += mobilityOnly ? 30 : -40;
+  }
+  return score;
+}
+
+function MusclePick({
+  label,
+  selected,
+  onSelect,
+  note,
+}: {
+  label: string;
+  selected: MuscleId[];
+  onSelect: (id: MuscleId) => void;
+  note: string;
+}) {
+  const [hovered, setHovered] = useState<MuscleId | null>(null);
+  const live = new Set(MUSCLES.map((muscle) => muscle.id));
+  return (
+    <div className="mt-4">
+      <p className="text-xs uppercase tracking-[0.14em] text-ink/45">{label}</p>
+      <div className="mt-2 rounded-2xl bg-card px-3 py-3 ring-1 ring-ink/8">
+        <div className="grid grid-cols-2 gap-2">
+          {(["front", "back"] as const).map((view) => (
+            <div key={view}>
+              <BodyFigure
+                view={view}
+                selected={selected}
+                hovered={hovered}
+                counts={{}}
+                live={live}
+                onSelect={onSelect}
+                onHover={setHovered}
+                showCaption={false}
+                className="mx-auto h-auto w-full"
+              />
+              <p className="text-center text-[0.65rem] tracking-[0.14em] uppercase text-ink/45">
+                {view === "front" ? "Front" : "Back"}
+              </p>
+            </div>
+          ))}
+        </div>
+        <p className="px-2 pt-1 text-center text-[0.7rem] text-ink/55">{note}</p>
+      </div>
+    </div>
+  );
+}
+
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-2xl bg-card px-3 py-3 ring-1 ring-ink/10">
@@ -644,6 +781,101 @@ function HoldField({ value, onChange }: { value: string; onChange: (value: strin
     <button type="button" onClick={() => setRunning((value) => !value)} className="min-h-14 w-full rounded-2xl bg-card text-lg ring-1 ring-ink/10">
       {running ? `Hold ${formatClock(left)}` : `Start hold ${value || 30}s`}
     </button>
+  );
+}
+
+const MUSCLE_COLOR: Record<string, string> = {
+  neck: "#7aa2c4",
+  traps: "#5b7c99",
+  shoulders: "#e09f3e",
+  chest: "#e15d55",
+  lats: "#3d8b7a",
+  "upper-back": "#2f6f62",
+  biceps: "#6c8cff",
+  triceps: "#3d5ad4",
+  forearms: "#8e7cc3",
+  abs: "#d4a017",
+  obliques: "#c47b2b",
+  diaphragm: "#9aa0a6",
+  "lower-back": "#6b8f71",
+  glutes: "#c45c8a",
+  "hip-flexors": "#d48aa8",
+  "hip-rotators": "#a14d73",
+  quads: "#4aa3df",
+  hamstrings: "#2b6cb0",
+  calves: "#7dcea0",
+};
+
+function exerciseBlock(item: WorkoutExercise, day: DayType): number {
+  const sets = day.setsPerMain;
+  const work = item.dose === "seconds" || item.dose === "minutes" ? 40 : item.dose === "breaths" ? 60 : 35;
+  const rest = item.exerciseType === "stretch" || item.exerciseType === "mobility" || item.exerciseType === "breathing" ? Math.min(15, day.restSeconds) : day.restSeconds;
+  return sets * work + Math.max(0, sets - 1) * rest;
+}
+
+function planSegments(
+  ids: string[],
+  byId: Map<string, WorkoutExercise>,
+  day: DayType,
+): { seconds: number; muscle: string; label: string }[] {
+  return ids.flatMap((id, index) => {
+    const item = byId.get(id);
+    if (!item) {
+      return [];
+    }
+    const rest = item.exerciseType === "stretch" || item.exerciseType === "mobility" || item.exerciseType === "breathing" ? 15 : day.restSeconds;
+    const gap = index < ids.length - 1 ? rest : 0;
+    const muscle = item.muscles[0] ?? "other";
+    return [{ seconds: exerciseBlock(item, day) + gap, muscle, label: MUSCLES.find((entry) => entry.id === muscle)?.label ?? "Other" }];
+  });
+}
+
+function PlanBar({
+  segments,
+  day,
+}: {
+  segments: { seconds: number; muscle: string; label: string }[];
+  day: DayType;
+}) {
+  const seconds = segments.reduce((sum, segment) => sum + segment.seconds, 0);
+  const minutes = seconds === 0 ? 0 : Math.max(1, Math.round(seconds / 60));
+  const scale = day.targetMinutes * 60;
+  const seen = new Map<string, string>();
+  for (const segment of segments) {
+    if (!seen.has(segment.muscle)) {
+      seen.set(segment.muscle, segment.label);
+    }
+  }
+  return (
+    <div className="sticky top-0 z-20 -mx-3 mt-3 border-b border-black/10 bg-[#f5f5f7]/95 px-3 py-2 backdrop-blur">
+      <div className="flex items-baseline justify-between text-sm">
+        <p className="font-medium">{day.label} · {minutes} min</p>
+        <p className="text-ink/50">of {day.targetMinutes} min</p>
+      </div>
+      <div className="mt-1.5 flex h-3 overflow-hidden rounded-full bg-black/10">
+        {segments.map((segment, index) => (
+          <div
+            key={`${segment.muscle}-${index}`}
+            title={segment.label}
+            className="h-full shrink-0"
+            style={{
+              width: `${(segment.seconds / scale) * 100}%`,
+              background: MUSCLE_COLOR[segment.muscle] ?? "#6e6e73",
+            }}
+          />
+        ))}
+      </div>
+      {seen.size > 0 ? (
+        <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1">
+          {[...seen.entries()].map(([muscle, label]) => (
+            <span key={muscle} className="flex items-center gap-1 text-[0.65rem] text-ink/70">
+              <span className="inline-block h-2 w-2 rounded-full" style={{ background: MUSCLE_COLOR[muscle] ?? "#6e6e73" }} />
+              {label}
+            </span>
+          ))}
+        </div>
+      ) : null}
+    </div>
   );
 }
 

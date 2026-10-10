@@ -18,7 +18,7 @@ export function BodyFigure({
   className = "mx-auto h-auto w-full max-w-[11rem]",
 }: {
   view: BodyView;
-  selected: MuscleId | null;
+  selected: MuscleId | MuscleId[] | null;
   hovered: MuscleId | null;
   counts: Partial<Record<MuscleId, number>>;
   live: Set<MuscleId>;
@@ -28,6 +28,7 @@ export function BodyFigure({
   showCaption?: boolean;
   className?: string;
 }) {
+  const chosen = Array.isArray(selected) ? selected : selected ? [selected] : [];
   const shapes = shapesForView(view);
   const [focused, setFocused] = useState<MuscleId | null>(null);
   const focus = hovered ?? focused ?? selected;
@@ -47,7 +48,7 @@ export function BodyFigure({
         if (!src) {
           return null;
         }
-        const lit = selected === shape.id || hovered === shape.id || focused === shape.id;
+        const lit = chosen.includes(shape.id) || hovered === shape.id || focused === shape.id;
         return (
           <img
             key={`${view}-glow-${shape.id}`}
@@ -80,7 +81,7 @@ export function BodyFigure({
               role={isLive && interactive ? "button" : "presentation"}
               tabIndex={isLive && interactive ? 0 : undefined}
               aria-label={isLive ? getMuscle(shape.id)?.label : undefined}
-              aria-pressed={selected === shape.id}
+              aria-pressed={chosen.includes(shape.id)}
               className={isLive && interactive ? "cursor-pointer outline-none" : undefined}
               onClick={() => {
                 if (isLive && interactive) {
