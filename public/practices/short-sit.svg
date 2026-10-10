@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <rect width="800" height="1000" fill="#f3eee6"/>
+  <circle cx="400" cy="420" r="200" fill="#e4ddd2" opacity="0.9"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    
+    <circle cx="400" cy="358" r="30" fill="none" stroke="#4a5a62" stroke-width="1.55"/>
+    <path d="M 400 392 C 348 438, 362 500, 362 540 L 438 540 C 452 438, 400 422, 400 392" fill="none" stroke="#4a5a62" stroke-width="1.55" stroke-linejoin="round"/>
+    <path d="M 348 418 Q 342 470 378 468" fill="none" stroke="#4a5a62" stroke-width="1.55" stroke-linecap="round"/>
+    <path d="M 452 418 Q 458 470 422 468" fill="none" stroke="#4a5a62" stroke-width="1.55" stroke-linecap="round"/>
+    <path d="M 362 540 Q 330 600 358 615" fill="none" stroke="#4a5a62" stroke-width="1.55" stroke-linecap="round"/>
+    <path d="M 438 540 Q 470 600 442 615" fill="none" stroke="#4a5a62" stroke-width="1.55" stroke-linecap="round"/>
+    <circle cx="358" cy="615" r="4" fill="#4a5a62" opacity="0.35"/>
+    <circle cx="442" cy="615" r="4" fill="#4a5a62" opacity="0.35"/>
+  
+  </g>
+</svg>

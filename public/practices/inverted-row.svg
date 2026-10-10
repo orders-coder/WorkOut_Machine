@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <rect width="800" height="1000" fill="#f1e7de"/>
+  <path d="M 180 250 H 420" stroke="#3a2c28" stroke-width="5" stroke-linecap="round"/><circle cx="420" cy="450" r="260" fill="#e4d0c4" opacity="0.9"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    
+    <circle cx="220" cy="430" r="24" fill="none" stroke="#3a2c28" stroke-width="2.25"/>
+    <path d="M 260 435 C 310 420, 520 410, 520 450 L 530 490 C 315 490, 260 465, 260 435" fill="none" stroke="#3a2c28" stroke-width="2.25" stroke-linejoin="round"/>
+    <path d="M 310 400 Q 300 330 290 270" fill="none" stroke="#3a2c28" stroke-width="2.25" stroke-linecap="round"/>
+    <path d="M 315 470 Q 305 350 300 270" fill="none" stroke="#3a2c28" stroke-width="2.25" stroke-linecap="round"/>
+    <path d="M 520 450 Q 600 500 680 540" fill="none" stroke="#3a2c28" stroke-width="2.25" stroke-linecap="round"/>
+    <path d="M 530 490 Q 610 530 690 560" fill="none" stroke="#3a2c28" stroke-width="2.25" stroke-linecap="round"/>
+    <circle cx="680" cy="540" r="4" fill="#3a2c28" opacity="0.35"/>
+    <circle cx="690" cy="560" r="4" fill="#3a2c28" opacity="0.35"/>
+  
+  </g>
+</svg>

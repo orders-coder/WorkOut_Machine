@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/workout-app/exercise.schema.json",
+  "title": "Exercise",
+  "description": "One exercise entry for Francisco's workout app (draft).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name", "primary_muscles", "secondary_muscles", "movement_pattern", "equipment",
+    "environment", "difficulty", "force_type", "laterality", "default_rep_range",
+    "default_rest_seconds", "posture_alignment_tags", "corrective_or_performance",
+    "progression_path", "dominant_contraction", "tempo_suggestion", "contraindications",
+    "notes", "media"
+  ],
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "stringList": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/nonEmptyString" },
+      "uniqueItems": true
+    }
+  },
+  "properties": {
+    "name": { "$ref": "#/$defs/nonEmptyString" },
+    "primary_muscles": {
+      "description": "Main movers only.",
+      "$ref": "#/$defs/stringList",
+      "minItems": 1
+    },
+    "secondary_muscles": {
+      "description": "True synergists only (may be empty).",
+      "$ref": "#/$defs/stringList"
+    },
+    "movement_pattern": {
+      "enum": ["push", "pull", "hinge", "squat", "carry", "rotation"]
+    },
+    "equipment": {
+      "description": "Loading implements. 'bodyweight' means no equipment and should not be combined with others.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": ["bodyweight", "dumbbell", "barbell", "kettlebell", "machine", "cable", "band", "medicine_ball"]
+      }
+    },
+    "environment": {
+      "description": "Fixtures/surfaces needed (not equipment). Empty list if none.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": ["pull-up bar", "bench", "wall", "floor", "box/step", "dip bars", "rings"]
+      }
+    },
+    "difficulty": { "enum": ["beginner", "intermediate", "advanced"] },
+    "force_type": { "enum": ["push", "pull", "static"] },
+    "laterality": { "enum": ["unilateral", "bilateral"] },
+    "default_rep_range": {
+      "description": "Reps like '8-15' or '5', or a hold/carry time like '30s' or '30-45s'.",
+      "type": "string",
+      "pattern": "^[1-9][0-9]*(-[1-9][0-9]*)?s?$"
+    },
+    "default_rest_seconds": { "type": "integer", "minimum": 0 },
+    "posture_alignment_tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": ["core stability", "spinal alignment", "scapular control", "hip mobility", "thoracic extension"]
+      }
+    },
+    "corrective_or_performance": { "enum": ["corrective", "performance"] },
+    "progression_path": {
+      "description": "Easiest to hardest; must include the exercise itself.",
+      "$ref": "#/$defs/stringList",
+      "minItems": 4,
+      "maxItems": 6
+    },
+    "dominant_contraction": { "enum": ["concentric", "eccentric", "isometric"] },
+    "tempo_suggestion": { "$ref": "#/$defs/nonEmptyString" },
+    "contraindications": { "$ref": "#/$defs/stringList" },
+    "notes": { "$ref": "#/$defs/stringList" },
+    "media": {
+      "description": "Media URL, or the placeholder 'TBD' while drafting.",
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "equipment": { "contains": { "const": "bodyweight" } } },
+        "required": ["equipment"]
+      },
+      "then": { "properties": { "equipment": { "maxItems": 1 } } }
+    }
+  ]
+}

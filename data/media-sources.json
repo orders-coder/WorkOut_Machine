@@ -1,0 +1,89 @@
+{
+  "back-squat": {
+    "wiki": "Squat (exercise)",
+    "files": [
+      "File:Deep squat position.jpg",
+      "File:Goblet squat.jpg",
+      "File:Bodyweight squat.jpg"
+    ]
+  },
+  "goblet-squat": {
+    "wiki": "Squat (exercise)",
+    "files": ["File:Goblet squat.jpg", "File:Deep squat position.jpg"]
+  },
+  "front-squat": { "wiki": "Squat (exercise)", "files": ["File:Front squat.jpg"] },
+  "conventional-deadlift": {
+    "wiki": "Deadlift",
+    "files": ["File:Deadlift.jpg", "File:Romanian deadlift.jpg"]
+  },
+  "db-rdl": { "wiki": "Deadlift", "files": ["File:Romanian deadlift.jpg"] },
+  "bench-press": {
+    "wiki": "Bench press",
+    "files": ["File:Bench press.jpg", "File:Dumbbell bench press.jpg"]
+  },
+  "overhead-press": {
+    "wiki": "Overhead press",
+    "files": ["File:Military press.jpg", "File:Overhead press.jpg"]
+  },
+  "push-up": {
+    "wiki": "Push-up",
+    "files": ["File:Push-up.jpg", "File:Man doing a push-up.jpg", "File:Pushup.jpg"]
+  },
+  "pull-up-or-negative": {
+    "wiki": "Pull-up (exercise)",
+    "files": ["File:Pull-up.jpg", "File:Wide grip pull-up.jpg"]
+  },
+  "chin-up": { "wiki": "Chin-up", "files": ["File:Chin-up.jpg"] },
+  "dip": { "wiki": "Dip (exercise)", "files": ["File:Triceps dip.jpg", "File:Dip exercise.jpg"] },
+  "plank": { "wiki": "Plank (exercise)", "files": ["File:Plank (exercise).jpg", "File:Front plank.jpg"] },
+  "side-plank": { "wiki": "Plank (exercise)", "files": ["File:Side plank.jpg"] },
+  "walking-lunge": { "wiki": "Lunge (exercise)", "files": ["File:Walking lunge.jpg", "File:Lunge.jpg"] },
+  "reverse-lunge": { "wiki": "Lunge (exercise)", "files": ["File:Lunge.jpg", "File:Reverse lunge.jpg"] },
+  "split-squat": { "wiki": "Lunge (exercise)", "files": ["File:Split squat.jpg"] },
+  "calf-raise": { "wiki": "Calf raise", "files": ["File:Calf raise.jpg"] },
+  "biceps-curl": { "wiki": "Biceps curl", "files": ["File:Biceps curl.jpg", "File:Dumbbell curl.jpg"] },
+  "lateral-raise": { "wiki": "Lateral raise", "files": ["File:Lateral raise.jpg"] },
+  "kettlebell-swing": { "wiki": "Kettlebell swing", "files": ["File:Kettlebell swing.jpg"] },
+  "farmer-carry": { "wiki": "Farmer's walk", "files": ["File:Farmer's walk.jpg"] },
+  "turkish-get-up": { "wiki": "Turkish get-up", "files": ["File:Turkish get-up.jpg"] },
+  "hip-thrust": { "wiki": "Hip thrust", "files": ["File:Hip thrust.jpg"] },
+  "glute-bridge": { "wiki": "Bridge (exercise)", "files": ["File:Glute bridge.jpg", "File:Shoulder bridge.jpg"] },
+  "downward-dog": {
+    "wiki": "Downward Dog Pose",
+    "files": ["File:Adho Mukha Svanasana Yoga-Asana Nina-Mel.jpg"]
+  },
+  "childs-pose": {
+    "wiki": "Child's Pose",
+    "files": ["File:Balasana Yoga-Asana Nina-Mel.jpg"]
+  },
+  "cat-cow": {
+    "wiki": "Cat pose",
+    "files": ["File:Bitilasana Marjaryasana Yoga-Asana Nina-Mel.jpg", "File:Marjaryasana.jpg"]
+  },
+  "standing-forward-fold": {
+    "wiki": "Uttanasana",
+    "files": ["File:Uttanasana Yoga-Asana Nina-Mel.jpg"]
+  },
+  "seated-spinal-twist": {
+    "wiki": "Ardha Matsyendrasana",
+    "files": ["File:Ardha Matsyendrasana Yoga-Asana Nina-Mel.jpg"]
+  },
+  "figure-four": { "wiki": "Figure-four stretch", "files": [] },
+  "bird-dog": { "wiki": "Bird dog (exercise)", "files": ["File:Bird dog exercise.jpg"] },
+  "dead-hang": { "wiki": "Pull-up (exercise)", "files": ["File:Dead hang.jpg"] },
+  "inverted-row": { "wiki": "Inverted row", "files": ["File:Inverted row.jpg"] },
+  "barbell-row": { "wiki": "Bent-over row", "files": ["File:Bent-over row.jpg", "File:Barbell row.jpg"] },
+  "dumbbell-row": { "wiki": "Bent-over row", "files": ["File:One-arm dumbbell row.jpg"] },
+  "box-jump": { "wiki": "Plyometrics", "files": ["File:Box jump.jpg"] },
+  "jump-squat": { "wiki": "Squat (exercise)", "files": ["File:Jump squat.jpg"] },
+  "lat-pulldown": { "wiki": "Pulldown exercise", "files": ["File:Lat pulldown.jpg"] },
+  "good-morning": { "wiki": "Good-morning (exercise)", "files": ["File:Good morning exercise.jpg"] },
+  "step-up": { "wiki": "Step-up (exercise)", "files": ["File:Step-up exercise.jpg"] },
+  "hanging-knee-raise": { "wiki": "Leg raise", "files": ["File:Hanging knee raise.jpg"] },
+  "chin-tuck": { "wiki": "Cervical retraction", "files": [] },
+  "wall-angels": { "wiki": "Shoulder", "files": [] },
+  "belly-breathing": { "wiki": "Diaphragmatic breathing", "files": [] },
+  "box-breathing": { "wiki": "Box breathing", "files": [] },
+  "short-sit": { "wiki": "Meditation", "files": [] },
+  "body-scan": { "wiki": "Body scan meditation", "files": [] }
+}

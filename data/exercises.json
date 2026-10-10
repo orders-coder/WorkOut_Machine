@@ -1,0 +1,1144 @@
+[
+  {
+    "name": "Push-up",
+    "primary_muscles": [
+      "chest (pectoralis major)"
+    ],
+    "secondary_muscles": [
+      "front delts",
+      "triceps"
+    ],
+    "movement_pattern": "push",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "8-15",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [
+      "core stability",
+      "scapular control",
+      "spinal alignment"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "knee push-up",
+      "incline push-up",
+      "standard push-up",
+      "decline push-up",
+      "archer push-up",
+      "one-arm push-up"
+    ],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2 sec down, 1 sec up",
+    "contraindications": [
+      "wrist pain",
+      "shoulder impingement (acute)"
+    ],
+    "notes": [
+      "keep elbows tucked ~45 degrees",
+      "body in straight line from head to heels",
+      "don't let hips sag"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Scapular Push-up",
+    "primary_muscles": [
+      "serratus anterior"
+    ],
+    "secondary_muscles": [
+      "pectoralis minor"
+    ],
+    "movement_pattern": "push",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "10-15",
+    "default_rest_seconds": 45,
+    "posture_alignment_tags": [
+      "scapular control",
+      "core stability"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [
+      "Wall Scapular Push-up",
+      "Incline Scapular Push-up",
+      "Scapular Push-up",
+      "Push-up Plus"
+    ],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "1 sec protract, 1 sec pause, 2 sec retract",
+    "contraindications": [
+      "wrist pain",
+      "acute shoulder pain"
+    ],
+    "notes": [
+      "elbows stay locked; only the shoulder blades move",
+      "push the floor away to spread the shoulder blades apart",
+      "let the chest sink between the shoulder blades without the lower back sagging"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Half-Kneeling Single-Arm Dumbbell Press",
+    "primary_muscles": [
+      "front delts (anterior deltoid)",
+      "triceps brachii"
+    ],
+    "secondary_muscles": [
+      "lateral deltoid",
+      "upper trapezius",
+      "serratus anterior"
+    ],
+    "movement_pattern": "push",
+    "equipment": [
+      "dumbbell"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "intermediate",
+    "force_type": "push",
+    "laterality": "unilateral",
+    "default_rep_range": "8-12",
+    "default_rest_seconds": 75,
+    "posture_alignment_tags": [
+      "core stability",
+      "spinal alignment",
+      "scapular control"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "Half-Kneeling Landmine Press",
+      "Seated Dumbbell Shoulder Press",
+      "Half-Kneeling Single-Arm Dumbbell Press",
+      "Standing Single-Arm Dumbbell Press",
+      "Single-Arm Kettlebell Bottoms-Up Press"
+    ],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "1 sec up, 2-3 sec down",
+    "contraindications": [
+      "shoulder impingement (acute)",
+      "rotator cuff tear or recent shoulder surgery",
+      "limited overhead shoulder mobility (lower back arches to compensate)"
+    ],
+    "notes": [
+      "reps are per side",
+      "squeeze the glute of the down knee to keep the ribs stacked over the pelvis",
+      "press slightly in front of the head, finishing with the biceps near the ear",
+      "don't lean away from the working arm"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Ring Dip",
+    "primary_muscles": [
+      "chest (pectoralis major, sternal head)",
+      "triceps brachii"
+    ],
+    "secondary_muscles": [
+      "front delts (anterior deltoid)"
+    ],
+    "movement_pattern": "push",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "rings"
+    ],
+    "difficulty": "advanced",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "5-10",
+    "default_rest_seconds": 120,
+    "posture_alignment_tags": [
+      "scapular control",
+      "core stability"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "Parallel Bar Support Hold",
+      "Band-Assisted Parallel Bar Dip",
+      "Parallel Bar Dip",
+      "Ring Support Hold",
+      "Ring Dip",
+      "Weighted Ring Dip"
+    ],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "3 sec down, 1 sec up",
+    "contraindications": [
+      "shoulder impingement or anterior shoulder instability",
+      "AC joint pain",
+      "elbow tendinopathy",
+      "recent shoulder dislocation or labral injury"
+    ],
+    "notes": [
+      "master a steady ring support hold (rings turned out at the top) before attempting reps",
+      "lower only until the shoulder is just below the elbow; stop short if the front of the shoulder hurts",
+      "keep the rings close to the body and the shoulders pulled down, not shrugged"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Face Pull",
+    "primary_muscles": [
+      "rear delts (posterior deltoid)",
+      "infraspinatus and teres minor (external rotators)",
+      "middle trapezius and rhomboids"
+    ],
+    "secondary_muscles": [
+      "lower trapezius",
+      "biceps brachii"
+    ],
+    "movement_pattern": "pull",
+    "equipment": [
+      "cable",
+      "band"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "12-20",
+    "default_rest_seconds": 45,
+    "posture_alignment_tags": [
+      "scapular control",
+      "thoracic extension"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [
+      "Band Pull-Apart",
+      "Band Face Pull",
+      "Face Pull",
+      "Face Pull with External Rotation Hold"
+    ],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "1 sec pull, 2 sec hold, 2 sec return",
+    "contraindications": [
+      "acute rotator cuff injury",
+      "shoulder pain when externally rotating"
+    ],
+    "notes": [
+      "set the anchor at upper-chest to eye height and use a rope or band",
+      "pull toward the face, splitting the rope and finishing with knuckles pointing back (external rotation)",
+      "keep ribs down; don't lean back to move more weight"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Single-Arm Dumbbell Row",
+    "primary_muscles": [
+      "lats (latissimus dorsi)",
+      "middle trapezius and rhomboids"
+    ],
+    "secondary_muscles": [
+      "rear delts (posterior deltoid)",
+      "biceps brachii",
+      "brachialis",
+      "teres major"
+    ],
+    "movement_pattern": "pull",
+    "equipment": [
+      "dumbbell"
+    ],
+    "environment": [
+      "bench"
+    ],
+    "difficulty": "beginner",
+    "force_type": "pull",
+    "laterality": "unilateral",
+    "default_rep_range": "8-12",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [
+      "spinal alignment",
+      "scapular control",
+      "core stability"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "Seated Band Row",
+      "Chest-Supported Dumbbell Row",
+      "Single-Arm Dumbbell Row",
+      "Staggered-Stance Single-Arm Dumbbell Row",
+      "Single-Arm Dumbbell Row with 3-sec Pause"
+    ],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "1 sec up, 1 sec pause, 2 sec down",
+    "contraindications": [
+      "acute low back pain",
+      "acute shoulder or elbow pain"
+    ],
+    "notes": [
+      "reps are per side",
+      "brace with a flat back; hand and knee on the bench",
+      "drive the elbow toward the hip, not straight up to the ear",
+      "avoid twisting the torso to finish the rep"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Barbell Bent-Over Row",
+    "primary_muscles": [
+      "lats (latissimus dorsi)",
+      "middle trapezius and rhomboids"
+    ],
+    "secondary_muscles": [
+      "rear delts (posterior deltoid)",
+      "biceps brachii",
+      "brachialis",
+      "teres major"
+    ],
+    "movement_pattern": "pull",
+    "equipment": [
+      "barbell"
+    ],
+    "environment": [],
+    "difficulty": "intermediate",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "6-10",
+    "default_rest_seconds": 120,
+    "posture_alignment_tags": [
+      "spinal alignment",
+      "core stability",
+      "scapular control"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "Inverted Row",
+      "Chest-Supported Dumbbell Row",
+      "Barbell Bent-Over Row",
+      "Pendlay Row"
+    ],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "1 sec up, 1 sec pause, 2 sec down",
+    "contraindications": [
+      "low back pain or disc herniation (sustained bent-over position)",
+      "poor hip-hinge control",
+      "acute shoulder or elbow pain"
+    ],
+    "notes": [
+      "hinge to roughly 30-45 degrees above parallel with a neutral spine",
+      "pull the bar to the lower ribs/upper abdomen",
+      "torso angle stays fixed; no heaving with the hips"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Pull-up",
+    "primary_muscles": [
+      "lats (latissimus dorsi)"
+    ],
+    "secondary_muscles": [
+      "teres major",
+      "biceps brachii",
+      "brachialis",
+      "lower trapezius",
+      "rhomboids"
+    ],
+    "movement_pattern": "pull",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "pull-up bar"
+    ],
+    "difficulty": "intermediate",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "5-10",
+    "default_rest_seconds": 120,
+    "posture_alignment_tags": [
+      "scapular control",
+      "core stability"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "Dead Hang",
+      "Scapular Pull-up",
+      "Band-Assisted Pull-up",
+      "Negative Pull-up",
+      "Pull-up",
+      "Weighted Pull-up"
+    ],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "1-2 sec up, 2-3 sec down",
+    "contraindications": [
+      "shoulder impingement or instability",
+      "elbow tendinopathy (medial or lateral)",
+      "recent shoulder surgery"
+    ],
+    "notes": [
+      "start each rep from a full hang with shoulders engaged (pulled slightly down)",
+      "chin clears the bar without craning the neck",
+      "avoid kipping; keep legs quiet and ribs down"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Glute Bridge",
+    "primary_muscles": [
+      "glutes (gluteus maximus)"
+    ],
+    "secondary_muscles": [
+      "hamstrings",
+      "adductor magnus"
+    ],
+    "movement_pattern": "hinge",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "12-20",
+    "default_rest_seconds": 45,
+    "posture_alignment_tags": [
+      "hip mobility",
+      "core stability",
+      "spinal alignment"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [
+      "Glute Bridge",
+      "Glute Bridge March",
+      "Shoulder-Elevated Hip Thrust",
+      "Single-Leg Glute Bridge",
+      "Barbell Hip Thrust"
+    ],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "1 sec up, 2 sec hold, 2 sec down",
+    "contraindications": [
+      "acute low back pain that worsens with extension",
+      "hamstring cramping (move heels closer)"
+    ],
+    "notes": [
+      "drive through the heels; feet about hip-width, shins near vertical at the top",
+      "finish with hips extended by the glutes, not by arching the lower back",
+      "keep ribs down and pelvis slightly tucked at the top"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Kettlebell Swing",
+    "primary_muscles": [
+      "glutes (gluteus maximus)",
+      "hamstrings"
+    ],
+    "secondary_muscles": [
+      "adductor magnus"
+    ],
+    "movement_pattern": "hinge",
+    "equipment": [
+      "kettlebell"
+    ],
+    "environment": [],
+    "difficulty": "intermediate",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "10-20",
+    "default_rest_seconds": 75,
+    "posture_alignment_tags": [
+      "core stability",
+      "spinal alignment",
+      "hip mobility"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "Dowel Hip Hinge",
+      "Kettlebell Deadlift",
+      "Kettlebell Swing",
+      "Single-Arm Kettlebell Swing",
+      "Double Kettlebell Swing"
+    ],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "explosive hip snap; let the bell float, then hinge as it falls",
+    "contraindications": [
+      "acute low back pain or disc herniation",
+      "unable to hip-hinge with a neutral spine",
+      "shoulder instability (bell pulls on the arms)",
+      "pregnancy (consult provider)"
+    ],
+    "notes": [
+      "it's a hinge, not a squat: hips go back, shins stay near vertical",
+      "power comes from the hips; arms just guide the bell to chest height",
+      "finish standing tall with glutes squeezed; don't lean back"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Single-Leg Romanian Deadlift",
+    "primary_muscles": [
+      "hamstrings",
+      "glutes (gluteus maximus)"
+    ],
+    "secondary_muscles": [
+      "adductor magnus"
+    ],
+    "movement_pattern": "hinge",
+    "equipment": [
+      "dumbbell"
+    ],
+    "environment": [],
+    "difficulty": "intermediate",
+    "force_type": "pull",
+    "laterality": "unilateral",
+    "default_rep_range": "8-12",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [
+      "hip mobility",
+      "core stability",
+      "spinal alignment"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "Dumbbell Romanian Deadlift",
+      "Kickstand Romanian Deadlift",
+      "Bodyweight Single-Leg Romanian Deadlift",
+      "Single-Leg Romanian Deadlift",
+      "Barbell Single-Leg Romanian Deadlift"
+    ],
+    "dominant_contraction": "eccentric",
+    "tempo_suggestion": "3 sec down, 1 sec up",
+    "contraindications": [
+      "acute hamstring strain",
+      "acute low back pain",
+      "significant balance impairment (use support)",
+      "ankle sprain on the stance leg"
+    ],
+    "notes": [
+      "reps are per side; hold the dumbbell in the hand opposite the stance leg",
+      "keep hips square to the floor; don't let the raised hip open up",
+      "soft stance knee; lower until a hamstring stretch, spine stays neutral"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Barbell Deadlift",
+    "primary_muscles": [
+      "glutes (gluteus maximus)",
+      "hamstrings",
+      "erector spinae"
+    ],
+    "secondary_muscles": [
+      "adductor magnus",
+      "quadriceps"
+    ],
+    "movement_pattern": "hinge",
+    "equipment": [
+      "barbell"
+    ],
+    "environment": [],
+    "difficulty": "intermediate",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "3-6",
+    "default_rest_seconds": 180,
+    "posture_alignment_tags": [
+      "spinal alignment",
+      "core stability"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "Kettlebell Deadlift",
+      "Trap Bar Deadlift",
+      "Barbell Rack Pull",
+      "Barbell Deadlift",
+      "Deficit Deadlift"
+    ],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "1-2 sec up, controlled 2 sec down, reset each rep",
+    "contraindications": [
+      "acute low back pain or disc herniation",
+      "uncontrolled hypertension (heavy bracing)",
+      "unable to hip-hinge with a neutral spine",
+      "recent hernia or abdominal surgery"
+    ],
+    "notes": [
+      "bar over mid-foot, shins close, lats tight before the bar leaves the floor",
+      "push the floor away and keep the bar dragging up the legs",
+      "lock out with glutes, not by leaning back"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Spanish Squat",
+    "primary_muscles": [
+      "quadriceps"
+    ],
+    "secondary_muscles": [
+      "glutes (gluteus maximus)"
+    ],
+    "movement_pattern": "squat",
+    "equipment": [
+      "band"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "static",
+    "laterality": "bilateral",
+    "default_rep_range": "30-45s",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [
+      "spinal alignment",
+      "core stability"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [
+      "Wall Sit",
+      "Spanish Squat",
+      "Tempo Spanish Squat",
+      "Bodyweight Box Squat",
+      "Goblet Squat"
+    ],
+    "dominant_contraction": "isometric",
+    "tempo_suggestion": "hold 30-45 sec at the working depth",
+    "contraindications": [
+      "acute knee injury with swelling",
+      "knee pain that increases during the hold (reduce depth)"
+    ],
+    "notes": [
+      "loop a heavy band behind both knees and anchor it to a sturdy post at knee height",
+      "sit back into the band so shins stay vertical and the knees don't drift forward",
+      "commonly used to load the quads/patellar tendon with less knee pain"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Goblet Squat",
+    "primary_muscles": [
+      "quadriceps",
+      "glutes (gluteus maximus)"
+    ],
+    "secondary_muscles": [
+      "adductor magnus"
+    ],
+    "movement_pattern": "squat",
+    "equipment": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "8-15",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [
+      "core stability",
+      "spinal alignment",
+      "hip mobility",
+      "thoracic extension"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "Bodyweight Box Squat",
+      "Bodyweight Squat",
+      "Goblet Squat",
+      "Double Kettlebell Front Squat",
+      "Barbell Front Squat"
+    ],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "3 sec down, 1 sec pause, 1 sec up",
+    "contraindications": [
+      "acute knee pain",
+      "acute hip pain or hip impingement at depth (reduce depth)"
+    ],
+    "notes": [
+      "hold the weight at the chest with elbows pointing down",
+      "knees track over the toes; sit between the heels",
+      "keep the chest tall and heels down"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Bulgarian Split Squat",
+    "primary_muscles": [
+      "quadriceps",
+      "glutes (gluteus maximus)"
+    ],
+    "secondary_muscles": [
+      "adductor magnus",
+      "hamstrings"
+    ],
+    "movement_pattern": "squat",
+    "equipment": [
+      "dumbbell"
+    ],
+    "environment": [
+      "bench"
+    ],
+    "difficulty": "intermediate",
+    "force_type": "push",
+    "laterality": "unilateral",
+    "default_rep_range": "8-12",
+    "default_rest_seconds": 75,
+    "posture_alignment_tags": [
+      "core stability",
+      "hip mobility",
+      "spinal alignment"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "Split Squat",
+      "Reverse Lunge",
+      "Bulgarian Split Squat",
+      "Skater Squat",
+      "Pistol Squat"
+    ],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "3 sec down, 1 sec up",
+    "contraindications": [
+      "acute knee pain",
+      "hip flexor strain on the rear leg",
+      "significant balance impairment (hold support)"
+    ],
+    "notes": [
+      "reps are per side; rear foot laces-down on the bench",
+      "front foot far enough forward that the heel stays down",
+      "slight forward torso lean shifts work to the glutes; upright shifts it to the quads"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Barbell Back Squat",
+    "primary_muscles": [
+      "quadriceps",
+      "glutes (gluteus maximus)"
+    ],
+    "secondary_muscles": [
+      "adductor magnus"
+    ],
+    "movement_pattern": "squat",
+    "equipment": [
+      "barbell"
+    ],
+    "environment": [],
+    "difficulty": "intermediate",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "5-8",
+    "default_rest_seconds": 150,
+    "posture_alignment_tags": [
+      "spinal alignment",
+      "core stability",
+      "hip mobility"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "Bodyweight Squat",
+      "Goblet Squat",
+      "Barbell Box Squat",
+      "Barbell Back Squat",
+      "Pause Back Squat"
+    ],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3 sec down, 1 sec up",
+    "contraindications": [
+      "acute low back pain or disc herniation",
+      "acute knee pain",
+      "limited shoulder mobility to hold the bar",
+      "uncontrolled hypertension (heavy bracing)"
+    ],
+    "notes": [
+      "use a squat rack with safety pins set just below the bottom position",
+      "brace before descending and keep the bar over mid-foot",
+      "knees track over the toes; depth only as far as a neutral spine allows"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Farmer's Carry",
+    "primary_muscles": [
+      "forearm flexors (grip)",
+      "upper trapezius"
+    ],
+    "secondary_muscles": [
+      "obliques",
+      "quadratus lumborum",
+      "gluteus medius"
+    ],
+    "movement_pattern": "carry",
+    "equipment": [
+      "dumbbell",
+      "kettlebell"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "static",
+    "laterality": "bilateral",
+    "default_rep_range": "30-60s",
+    "default_rest_seconds": 75,
+    "posture_alignment_tags": [
+      "core stability",
+      "spinal alignment",
+      "scapular control"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "Farmer's Hold",
+      "Farmer's Carry",
+      "Suitcase Carry",
+      "Kettlebell Front Rack Carry",
+      "Bottoms-Up Kettlebell Carry"
+    ],
+    "dominant_contraction": "isometric",
+    "tempo_suggestion": "steady, short, controlled steps",
+    "contraindications": [
+      "acute low back pain",
+      "grip-limiting hand or wrist injury"
+    ],
+    "notes": [
+      "stand tall, shoulders down and back, weights at the sides",
+      "walk heel-to-toe without the weights swinging",
+      "set the weights down with a hinge, not a rounded back"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Suitcase Carry",
+    "primary_muscles": [
+      "obliques",
+      "quadratus lumborum",
+      "forearm flexors (grip)"
+    ],
+    "secondary_muscles": [
+      "gluteus medius",
+      "upper trapezius"
+    ],
+    "movement_pattern": "carry",
+    "equipment": [
+      "kettlebell",
+      "dumbbell"
+    ],
+    "environment": [],
+    "difficulty": "intermediate",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "30-45s",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [
+      "core stability",
+      "spinal alignment"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "Suitcase Hold",
+      "Farmer's Carry",
+      "Suitcase Carry",
+      "Offset Rack-and-Suitcase Carry"
+    ],
+    "dominant_contraction": "isometric",
+    "tempo_suggestion": "steady walk; time is per side",
+    "contraindications": [
+      "acute low back pain",
+      "grip-limiting hand or wrist injury"
+    ],
+    "notes": [
+      "time is per side",
+      "don't lean toward or away from the weight; shoulders stay level",
+      "the side opposite the weight is doing the most work"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Waiter's Carry",
+    "primary_muscles": [
+      "shoulder (deltoids)",
+      "rotator cuff"
+    ],
+    "secondary_muscles": [
+      "serratus anterior",
+      "upper and lower trapezius",
+      "triceps brachii"
+    ],
+    "movement_pattern": "carry",
+    "equipment": [
+      "kettlebell"
+    ],
+    "environment": [],
+    "difficulty": "intermediate",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "30-45s",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [
+      "scapular control",
+      "core stability",
+      "thoracic extension",
+      "spinal alignment"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [
+      "Half-Kneeling Kettlebell Overhead Hold",
+      "Standing Kettlebell Overhead Hold",
+      "Waiter's Carry",
+      "Bottoms-Up Waiter's Carry"
+    ],
+    "dominant_contraction": "isometric",
+    "tempo_suggestion": "slow walk; time is per side",
+    "contraindications": [
+      "shoulder impingement or instability",
+      "limited overhead shoulder mobility (lower back arches to compensate)",
+      "rotator cuff tear"
+    ],
+    "notes": [
+      "time is per side",
+      "lock the elbow with biceps by the ear, wrist straight",
+      "ribs down; don't arch the lower back to get the weight overhead",
+      "start light: this is a stability drill"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Bottoms-Up Kettlebell Carry",
+    "primary_muscles": [
+      "forearm flexors (grip)",
+      "rotator cuff"
+    ],
+    "secondary_muscles": [
+      "deltoids",
+      "biceps brachii"
+    ],
+    "movement_pattern": "carry",
+    "equipment": [
+      "kettlebell"
+    ],
+    "environment": [],
+    "difficulty": "advanced",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "20-40s",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [
+      "scapular control",
+      "core stability",
+      "spinal alignment"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "Kettlebell Front Rack Carry",
+      "Bottoms-Up Kettlebell Hold",
+      "Bottoms-Up Kettlebell Carry",
+      "Bottoms-Up Waiter's Carry"
+    ],
+    "dominant_contraction": "isometric",
+    "tempo_suggestion": "slow walk; time is per side",
+    "contraindications": [
+      "wrist or elbow pain",
+      "acute shoulder injury",
+      "grip-limiting hand injury"
+    ],
+    "notes": [
+      "time is per side",
+      "crush the handle; bell upside down, forearm vertical, elbow under the wrist",
+      "use a light bell and clear space: the bell can tip"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Pallof Press",
+    "primary_muscles": [
+      "obliques",
+      "transverse abdominis"
+    ],
+    "secondary_muscles": [
+      "rectus abdominis",
+      "gluteus medius"
+    ],
+    "movement_pattern": "rotation",
+    "equipment": [
+      "cable",
+      "band"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "static",
+    "laterality": "bilateral",
+    "default_rep_range": "8-12",
+    "default_rest_seconds": 45,
+    "posture_alignment_tags": [
+      "core stability",
+      "spinal alignment"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [
+      "Tall-Kneeling Pallof Press",
+      "Half-Kneeling Pallof Press",
+      "Pallof Press",
+      "Split-Stance Pallof Press",
+      "Pallof Press with Overhead Reach"
+    ],
+    "dominant_contraction": "isometric",
+    "tempo_suggestion": "press out 1 sec, hold 2-3 sec, return 1 sec",
+    "contraindications": [
+      "acute low back pain that worsens with bracing",
+      "recent abdominal surgery or hernia"
+    ],
+    "notes": [
+      "anti-rotation: the goal is to resist the cable, not to twist",
+      "do reps on both sides",
+      "stand side-on to the anchor, hands at the sternum, press straight out"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Bird Dog",
+    "primary_muscles": [
+      "erector spinae",
+      "glutes (gluteus maximus)"
+    ],
+    "secondary_muscles": [
+      "multifidus",
+      "obliques",
+      "shoulder (deltoids)"
+    ],
+    "movement_pattern": "rotation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "6-10",
+    "default_rest_seconds": 30,
+    "posture_alignment_tags": [
+      "core stability",
+      "spinal alignment",
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [
+      "Quadruped Arm Reach",
+      "Quadruped Leg Reach",
+      "Bird Dog",
+      "Bird Dog with Elbow-to-Knee",
+      "Plank with Contralateral Arm-Leg Lift"
+    ],
+    "dominant_contraction": "isometric",
+    "tempo_suggestion": "reach 2 sec, hold 3-5 sec, return 2 sec",
+    "contraindications": [
+      "wrist pain (use fists or forearms)",
+      "knee pain when kneeling (use a pad)"
+    ],
+    "notes": [
+      "reps are per side; extend the opposite arm and leg",
+      "keep the hips level; imagine a cup of water on the lower back",
+      "reach long, not high; don't arch the lower back"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Cable Woodchop",
+    "primary_muscles": [
+      "obliques"
+    ],
+    "secondary_muscles": [
+      "rectus abdominis",
+      "glutes (gluteus maximus)",
+      "lats (latissimus dorsi)"
+    ],
+    "movement_pattern": "rotation",
+    "equipment": [
+      "cable"
+    ],
+    "environment": [],
+    "difficulty": "intermediate",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "10-15",
+    "default_rest_seconds": 45,
+    "posture_alignment_tags": [
+      "core stability",
+      "hip mobility",
+      "thoracic extension"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "Half-Kneeling Band Chop",
+      "Half-Kneeling Cable Chop",
+      "Cable Woodchop",
+      "Split-Stance Cable Woodchop",
+      "Medicine Ball Rotational Throw"
+    ],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "1 sec chop, 2 sec return",
+    "contraindications": [
+      "acute low back pain or disc herniation (loaded rotation)",
+      "recent abdominal surgery"
+    ],
+    "notes": [
+      "high-to-low diagonal; do reps on both sides",
+      "rotate through the hips and upper back, pivoting the back foot",
+      "arms stay long; the trunk drives the movement, not the arms"
+    ],
+    "media": "TBD"
+  },
+  {
+    "name": "Medicine Ball Rotational Throw",
+    "primary_muscles": [
+      "obliques",
+      "glutes (gluteus maximus)"
+    ],
+    "secondary_muscles": [
+      "rectus abdominis",
+      "lats (latissimus dorsi)",
+      "front delts (anterior deltoid)"
+    ],
+    "movement_pattern": "rotation",
+    "equipment": [
+      "medicine_ball"
+    ],
+    "environment": [
+      "wall"
+    ],
+    "difficulty": "advanced",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "5-8",
+    "default_rest_seconds": 90,
+    "posture_alignment_tags": [
+      "core stability",
+      "hip mobility"
+    ],
+    "corrective_or_performance": "performance",
+    "progression_path": [
+      "Pallof Press",
+      "Cable Woodchop",
+      "Medicine Ball Rotational Scoop Toss",
+      "Medicine Ball Rotational Throw",
+      "Step-Behind Medicine Ball Rotational Throw"
+    ],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "explosive throw, reset fully between reps",
+    "contraindications": [
+      "acute low back pain or disc herniation",
+      "acute shoulder injury",
+      "recent abdominal surgery or hernia"
+    ],
+    "notes": [
+      "do reps on both sides; quality over fatigue (power drill)",
+      "load the back hip, then let hips, trunk, then arms fire in sequence",
+      "use a non-bouncing (slam/soft) ball against a solid wall"
+    ],
+    "media": "TBD"
+  }
+]

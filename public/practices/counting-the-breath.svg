@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <rect width="800" height="1000" fill="#f3eee6"/>
+  <circle cx="400" cy="430" r="250" fill="#e4ddd2" opacity="0.9"/><text x="560" y="300" fill="#7a8a90" font-size="22" font-family="Georgia, serif" opacity="0.45">1</text><text x="560" y="336" fill="#7a8a90" font-size="22" font-family="Georgia, serif" opacity="0.45">2</text><text x="560" y="372" fill="#7a8a90" font-size="22" font-family="Georgia, serif" opacity="0.45">3</text>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    
+    <circle cx="400" cy="338" r="30" fill="none" stroke="#4a5a62" stroke-width="1.55"/>
+    <path d="M 400 372 C 348 418, 362 480, 362 520 L 438 520 C 452 418, 400 402, 400 372" fill="none" stroke="#4a5a62" stroke-width="1.55" stroke-linejoin="round"/>
+    <path d="M 348 398 Q 342 450 372 490" fill="none" stroke="#4a5a62" stroke-width="1.55" stroke-linecap="round"/>
+    <path d="M 452 398 Q 458 450 428 490" fill="none" stroke="#4a5a62" stroke-width="1.55" stroke-linecap="round"/>
+    <path d="M 362 520 Q 330 580 358 595" fill="none" stroke="#4a5a62" stroke-width="1.55" stroke-linecap="round"/>
+    <path d="M 438 520 Q 470 580 442 595" fill="none" stroke="#4a5a62" stroke-width="1.55" stroke-linecap="round"/>
+    <circle cx="358" cy="595" r="4" fill="#4a5a62" opacity="0.35"/>
+    <circle cx="442" cy="595" r="4" fill="#4a5a62" opacity="0.35"/>
+  
+  </g>
+</svg>

@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Work Out Machine
 
-## Getting Started
+A personal visual library for taking care of the body in three ways:
 
-First, run the development server:
+1. **Inner** — breath and meditation
+2. **Soft body** — stretching and mobility
+3. **Strength** — capacity, plus surfing, climbing, and bicycling
+
+Version 1 is a field guide. There are no accounts.
+
+Favorites, notes, tags, photo choice, and the dumpster live in `localStorage` on this device only. Deleted items sit in the dumpster (icon in the nav) for two days, then they are permanently deleted.
+
+> General practice reference, not medical advice, physical therapy, or sport coaching. Strength and outdoor sports carry risk.
+
+## Run locally
+
+Requires Node.js 18 or newer.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This app has no backend. It deploys as a static-capable Next.js app on Vercel, or with `output: "standalone"` on Render.
 
-## Learn More
+## Catalog
 
-To learn more about Next.js, take a look at the following resources:
+`data/catalog.ts` is the public entry: exercises, suggested routines, and the catalog dumpster.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Inner: `data/inner.ts`
+- Soft body: `data/soft-body.ts`
+- Strength: `data/strength.ts` and `data/strength-staples.ts`
+- Combined: `data/practices.ts`
+- Muscle roles: `data/muscle-targets.ts`
+- Retired duplicates: `data/dumpster.ts` (aliases redirect to the kept exercise)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Add a practice with a stable kebab-case `id`, drop `public/practices/{id}.svg` (or a photo), and map muscles in `data/muscle-targets.ts`.
 
-## Deploy on Vercel
+## Nav
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Home · Routines · Exercises · Muscles**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Replace an image
+
+Every card reads, in order, from `public/practices/`:
+
+1. `{id}.jpg` (or `.jpeg`, `.webp`, `.png`)
+2. `{id}.svg`
+
+Starter drawings:
+
+```bash
+node scripts/generate-practice-images.mjs
+```
