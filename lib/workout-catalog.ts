@@ -17,6 +17,8 @@ export interface WorkoutExercise {
   /** Separate left and right rows. */
   bothSides: boolean;
   logging: Logging;
+  regressionId?: string;
+  progressionId?: string;
   exerciseType?: ExerciseType;
   pattern?: MovementPattern;
   force?: ForceType;
@@ -50,6 +52,8 @@ export function workoutCatalog(): WorkoutExercise[] {
       force: practice.profile?.forceType ?? practice.training?.forceType,
       dose: practice.profile?.dose,
       bothSides: logging.sideMode === "each_side",
+      regressionId: practice.regressionId,
+      progressionId: practice.progressionId,
       repRange: range,
       logging,
       muscles: [...targeting.primary, ...targeting.secondary],

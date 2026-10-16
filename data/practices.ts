@@ -20,6 +20,13 @@ import { resolveExerciseId } from "@/lib/legacy-ids";
  * goblet-squat, bulgarian-split-squat, farmer-carry, suitcase-carry,
  * pallof-press, bird-dog.
  */
+const LINKS: Record<string, Pick<Practice, "regressionId" | "progressionId">> = {
+  "inverted-row": { progressionId: "pull-up-or-negative" },
+  "pull-up-or-negative": { regressionId: "inverted-row" },
+  "split-squat": { progressionId: "bulgarian-split-squat" },
+  "bulgarian-split-squat": { regressionId: "split-squat" },
+};
+
 function finish(practice: Practice): Practice {
   if (!hasLogging(practice.id)) {
     throw new Error(`Missing logging block for ${practice.id}`);
@@ -28,6 +35,7 @@ function finish(practice: Practice): Practice {
   return {
     ...practice,
     ...(profile ? { profile } : {}),
+    ...LINKS[practice.id],
     logging: loggingFor(practice.id),
   };
 }

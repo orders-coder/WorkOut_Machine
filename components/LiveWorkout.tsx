@@ -13,16 +13,17 @@ import type { WorkoutExercise } from "@/lib/workout-catalog";
 import {
   activeSession,
   deleteSession,
+  exerciseNote,
   historyFor,
   lastSetFor,
   loadPrefs,
   loadSessions,
   mergeLoggedSet,
   previousSetsFor,
+  saveExerciseNote,
   savePrefs,
   upsertSession,
   volumeOf,
-  type LogSide,
   type SessionExercise,
   type SetLog,
   type SetPlan,
@@ -96,25 +97,6 @@ export function LiveWorkout({
   }, []);
 
   useEffect(() => {
-    if (mode !== "live" || !session) {
-      return;
-    }
-    let changed = false;
-    const exercises = session.exercises.map((item) => {
-      if (item.plan && item.plan.length > 0) {
-        return item;
-      }
-      changed = true;
-      const known = byId.get(item.practiceId);
-      return { ...item, plan: planFromLogs(item.sets, known?.logging, unit) };
-    });
-    if (!changed) {
-      return;
-    }
-    persist({ ...session, exercises });
-  }, [mode, session, unit]);
-
-  useEffect(() => {
     const timer = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(timer);
   }, []);
@@ -138,6 +120,24 @@ export function LiveWorkout({
   }
 
   const byId = useMemo(() => new Map(exercises.map((item) => [item.id, item])), [exercises]);
+
+  useEffect(() => {
+    if (mode !== "live" || !session) {
+      return;
+    }
+    let changed = false;
+    const nextExercises = session.exercises.map((item) => {
+      const plan = alignPlan(item.plan, item.sets, byId.get(item.practiceId)?.logging, unit);
+      if (JSON.stringify(plan) === JSON.stringify(item.plan ?? [])) {
+        return item;
+      }
+      changed = true;
+      return { ...item, plan };
+    });
+    if (changed) {
+      persist({ ...session, exercises: nextExercises });
+    }
+  }, [mode, session, unit, byId]);
   const buildDay = dayTypeById(day);
   const dayInfo = dayTypeById(session?.dayType ?? day);
 
@@ -385,7 +385,7 @@ export function LiveWorkout({
             return [];
           }
           const existing = item.sets.find((set) => set.completedAt === row.completedAt);
-          return [mergeLoggedSet(row, existing)];
+          return [mergeLoggedSet(rowForLog(row, byId.get(item.practiceId)?.logging), existing)];
         }),
       };
     });
@@ -415,7 +415,7 @@ export function LiveWorkout({
             return [];
           }
           const existing = entry.sets.find((set) => set.completedAt === planned.completedAt);
-          return [mergeLoggedSet(planned, existing)];
+          return [mergeLoggedSet(rowForLog(planned, byId.get(entry.practiceId)?.logging), existing)];
         }),
       };
     });
@@ -861,8 +861,23 @@ export function LiveWorkout({
                   {progressionHint(logging, plan) ? (
                     <p className="text-xs text-[#0071e3]">{progressionHint(logging, plan)}</p>
                   ) : null}
+                  {known?.regressionId || known?.progressionId ? (
+                    <p className="mt-1 flex flex-wrap gap-x-3 text-xs">
+                      {known?.regressionId ? (
+                        <Link href={`/practice/${known.regressionId}`} className="text-[#0071e3]">
+                          Easier · {byId.get(known.regressionId)?.name ?? "easier"}
+                        </Link>
+                      ) : null}
+                      {known?.progressionId ? (
+                        <Link href={`/practice/${known.progressionId}`} className="text-[#0071e3]">
+                          Harder · {byId.get(known.progressionId)?.name ?? "harder"}
+                        </Link>
+                      ) : null}
+                    </p>
+                  ) : null}
                 </div>
               </div>
+              <ExerciseNote key={item.practiceId} practiceId={item.practiceId} />
               <div
                 className="mt-3 grid items-center gap-1.5 px-1 text-[0.65rem] uppercase tracking-[0.12em] text-ink/40"
                 style={{ gridTemplateColumns: planGrid(columns.length) }}
@@ -916,6 +931,24 @@ export function LiveWorkout({
                       >
                         ✓
                       </button>
+                      <div className="flex justify-end" style={{ gridColumn: "1 / -1" }}>
+                        <PainField
+                          value={row.pain}
+                          editing={draft?.key === `${exerciseIndex}-${setIndex}-pain`}
+                          draft={draft?.value ?? ""}
+                          onStart={() =>
+                            setDraft({
+                              key: `${exerciseIndex}-${setIndex}-pain`,
+                              value: row.pain == null ? "" : String(row.pain),
+                            })
+                          }
+                          onDraft={(value) => setDraft({ key: `${exerciseIndex}-${setIndex}-pain`, value })}
+                          onCommit={(value) => {
+                            changePlan(exerciseIndex, setIndex, { pain: painOrUndefined(value) });
+                            setDraft(null);
+                          }}
+                        />
+                      </div>
                     </li>
                   );
                 })}
@@ -965,6 +998,69 @@ export function LiveWorkout({
         </div>
       </div>
     </div>
+  );
+}
+
+function painOrUndefined(value: string): number | undefined {
+  const parsed = numberOrUndefined(value);
+  if (parsed == null) {
+    return undefined;
+  }
+  return Math.min(10, Math.max(0, parsed));
+}
+
+function ExerciseNote({ practiceId }: { practiceId: string }) {
+  const [value, setValue] = useState(() => exerciseNote(practiceId));
+  return (
+    <textarea
+      value={value}
+      rows={2}
+      placeholder="Note for next time"
+      aria-label="Exercise note"
+      onChange={(event) => setValue(event.target.value)}
+      onBlur={() => saveExerciseNote(practiceId, value)}
+      className="mt-2 w-full resize-none rounded-xl bg-white px-3 py-2 text-sm ring-1 ring-ink/10"
+    />
+  );
+}
+
+function PainField({
+  value,
+  editing,
+  draft,
+  onStart,
+  onDraft,
+  onCommit,
+}: {
+  value: number | undefined;
+  editing: boolean;
+  draft: string;
+  onStart: () => void;
+  onDraft: (value: string) => void;
+  onCommit: (value: string) => void;
+}) {
+  if (editing) {
+    return (
+      <input
+        autoFocus
+        inputMode="numeric"
+        value={draft}
+        aria-label="Pain 0 to 10"
+        onChange={(event) => onDraft(event.target.value)}
+        onBlur={() => onCommit(draft)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            onCommit(draft);
+          }
+        }}
+        className="h-7 w-16 rounded-lg bg-white px-2 text-center text-xs ring-1 ring-[#0071e3]"
+      />
+    );
+  }
+  return (
+    <button type="button" onClick={onStart} className="h-7 px-1 text-[0.65rem] uppercase tracking-[0.12em] text-ink/40">
+      {value == null ? "Pain" : `Pain ${value}`}
+    </button>
   );
 }
 
@@ -1056,7 +1152,7 @@ function planGrid(count: number): string {
 }
 
 function columnHeader(column: PlanColumn, unit: WeightUnit): string {
-  if (column.key === "weight" || column.key === "load" || column.key === "added") {
+  if (column.key === "weight") {
     return unit;
   }
   return column.label;
@@ -1173,6 +1269,67 @@ function fieldPatch(key: PlanColumnKey, value: string): Partial<SetPlan> {
     case "height":
       return { boxHeightCm: parsed };
   }
+}
+
+function rowForLog(row: SetPlan, logging: Logging | undefined): SetPlan {
+  const next: SetPlan = {
+    unit: row.unit,
+    completedAt: row.completedAt,
+    side: row.side,
+    rir: row.rir,
+    breaths: row.breaths,
+    notes: row.notes,
+    pain: row.pain,
+  };
+  for (const column of columnsFor(logging)) {
+    Object.assign(next, fieldPatch(column.key, fieldText(row, column.key)));
+  }
+  return next;
+}
+
+function alignPlan(plan: SetPlan[] | undefined, logged: SetLog[], logging: Logging | undefined, unit: WeightUnit): SetPlan[] {
+  const base = plan && plan.length > 0 ? plan.map((row) => ({ ...row })) : planFromLogs(logged, logging, unit);
+  if (!logging) {
+    return base;
+  }
+  const defaults = defaultRows(logging, unit);
+  const shown = new Set(columnsFor(logging).map((column) => column.key));
+  const aligned = base.map((row, index) => {
+    const fallback = defaults[index] ?? defaults[0];
+    const matched = row.completedAt ? logged.find((set) => set.completedAt === row.completedAt) : undefined;
+    const next: SetPlan = { ...row, unit: row.unit || unit };
+    if (matched?.side) {
+      next.side = matched.side;
+    } else if (!next.side && logging.sideMode === "each_side") {
+      next.side = index % 2 === 0 ? "L" : "R";
+    }
+    if (!row.completedAt && next.seconds == null && fallback?.seconds != null) {
+      next.seconds = fallback.seconds;
+    }
+    if (!row.completedAt && next.reps == null && fallback?.reps != null && shown.has("reps")) {
+      next.reps = fallback.reps;
+    }
+    if (!row.completedAt && next.distanceM == null && fallback?.distanceM != null) {
+      next.distanceM = fallback.distanceM;
+    }
+    if (!row.completedAt && next.contacts == null && fallback?.contacts != null) {
+      next.contacts = fallback.contacts;
+    }
+    if (!row.completedAt && next.boxHeightCm == null && fallback?.boxHeightCm != null) {
+      next.boxHeightCm = fallback.boxHeightCm;
+    }
+    if (shown.has("load") && next.addedWeight == null && next.assistWeight == null && next.weight != null) {
+      next.addedWeight = next.weight;
+    }
+    if (!shown.has("reps")) {
+      delete next.reps;
+    }
+    if (!shown.has("weight")) {
+      delete next.weight;
+    }
+    return next;
+  });
+  return aligned;
 }
 
 function planFromLogs(logged: SetLog[], logging: Logging | undefined, unit: WeightUnit): SetPlan[] {
