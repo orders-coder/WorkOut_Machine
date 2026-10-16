@@ -1,0 +1,78 @@
+id,profile_type,log_fields,load_unit,side_mode,defaults_and_progression
+db-rdl,dumbbell_reps,"weight,reps","kg|lb per hand (goblet-squat/dumbbell-swing: total, 1 DB)",bilateral,"3x8-12, rest 60-90s, +2.5kg/+5lb when top of range all sets"
+overhead-press,dumbbell_reps,"weight,reps","kg|lb per hand (goblet-squat/dumbbell-swing: total, 1 DB)",bilateral,"3x8-12, rest 60-90s, +2.5kg/+5lb when top of range all sets"
+biceps-curl,dumbbell_reps,"weight,reps","kg|lb per hand (goblet-squat/dumbbell-swing: total, 1 DB)",bilateral,"3x8-12, rest 60-90s, +2.5kg/+5lb when top of range all sets"
+overhead-tricep-extension,dumbbell_reps,"weight,reps","kg|lb per hand (goblet-squat/dumbbell-swing: total, 1 DB)",bilateral,"3x8-12, rest 60-90s, +2.5kg/+5lb when top of range all sets"
+lateral-raise,dumbbell_reps,"weight,reps","kg|lb per hand (goblet-squat/dumbbell-swing: total, 1 DB)",bilateral,"3x8-12, rest 60-90s, +2.5kg/+5lb when top of range all sets"
+goblet-squat,dumbbell_reps,"weight,reps","kg|lb per hand (goblet-squat/dumbbell-swing: total, 1 DB)",bilateral,"3x8-12, rest 60-90s, +2.5kg/+5lb when top of range all sets"
+dumbbell-swing,dumbbell_reps,"weight,reps","kg|lb per hand (goblet-squat/dumbbell-swing: total, 1 DB)",bilateral,"3x8-12, rest 60-90s, +2.5kg/+5lb when top of range all sets"
+half-kneeling-single-arm-dumbbell-press,dumbbell_reps_per_side,"side,weight,reps",kg|lb in working hand (lunges: per hand),per-side: log L and R as separate rows,"3x8-12 each side, rest 60-75s, +reps then +load"
+dumbbell-row,dumbbell_reps_per_side,"side,weight,reps",kg|lb in working hand (lunges: per hand),per-side: log L and R as separate rows,"3x8-12 each side, rest 60-75s, +reps then +load"
+single-leg-romanian-deadlift,dumbbell_reps_per_side,"side,weight,reps",kg|lb in working hand (lunges: per hand),per-side: log L and R as separate rows,"3x8-12 each side, rest 60-75s, +reps then +load"
+bulgarian-split-squat,dumbbell_reps_per_side,"side,weight,reps",kg|lb in working hand (lunges: per hand),per-side: log L and R as separate rows,"3x8-12 each side, rest 60-75s, +reps then +load"
+split-squat,dumbbell_reps_per_side,"side,weight,reps",kg|lb in working hand (lunges: per hand),per-side: log L and R as separate rows,"3x8-12 each side, rest 60-75s, +reps then +load"
+reverse-lunge,dumbbell_reps_per_side,"side,weight,reps",kg|lb in working hand (lunges: per hand),per-side: log L and R as separate rows,"3x8-12 each side, rest 60-75s, +reps then +load"
+step-up,dumbbell_reps_per_side,"side,weight,reps",kg|lb in working hand (lunges: per hand),per-side: log L and R as separate rows,"3x8-12 each side, rest 60-75s, +reps then +load"
+turkish-get-up,dumbbell_reps_per_side,"side,weight,reps",kg|lb in working hand (lunges: per hand),per-side: log L and R as separate rows,"3x8-12 each side, rest 60-75s, +reps then +load"
+dumbbell-woodchop,dumbbell_reps_per_side,"side,weight,reps",kg|lb in working hand (lunges: per hand),per-side: log L and R as separate rows,"3x8-12 each side, rest 60-75s, +reps then +load"
+walking-lunge,alternating_reps,"weight,reps(total)","kg|lb per hand, optional","alternating: total reps, no L/R rows","3x10-20 total, rest 60s"
+push-up,bodyweight_reps,"reps,added_or_assist",bodyweight; optional +kg (vest/DB) or -assist (band/feet),bilateral,"3xrange, rest 60-120s; reps up -> harder variation in progressionPath"
+scapular-push-up,bodyweight_reps,"reps,added_or_assist",bodyweight; optional +kg (vest/DB) or -assist (band/feet),bilateral,"3xrange, rest 60-120s; reps up -> harder variation in progressionPath"
+pull-up-or-negative,bodyweight_reps,"reps,added_or_assist",bodyweight; optional +kg (vest/DB) or -assist (band/feet),bilateral,"3xrange, rest 60-120s; reps up -> harder variation in progressionPath"
+chin-up,bodyweight_reps,"reps,added_or_assist",bodyweight; optional +kg (vest/DB) or -assist (band/feet),bilateral,"3xrange, rest 60-120s; reps up -> harder variation in progressionPath"
+dip,bodyweight_reps,"reps,added_or_assist",bodyweight; optional +kg (vest/DB) or -assist (band/feet),bilateral,"3xrange, rest 60-120s; reps up -> harder variation in progressionPath"
+inverted-row,bodyweight_reps,"reps,added_or_assist",bodyweight; optional +kg (vest/DB) or -assist (band/feet),bilateral,"3xrange, rest 60-120s; reps up -> harder variation in progressionPath"
+hanging-knee-raise,bodyweight_reps,"reps,added_or_assist",bodyweight; optional +kg (vest/DB) or -assist (band/feet),bilateral,"3xrange, rest 60-120s; reps up -> harder variation in progressionPath"
+scapular-pull-up,bodyweight_reps,"reps,added_or_assist",bodyweight; optional +kg (vest/DB) or -assist (band/feet),bilateral,"3xrange, rest 60-120s; reps up -> harder variation in progressionPath"
+glute-bridge,bodyweight_reps,"reps,added_or_assist",bodyweight; optional +kg (vest/DB) or -assist (band/feet),bilateral,"3xrange, rest 60-120s; reps up -> harder variation in progressionPath"
+hip-thrust,bodyweight_reps,"reps,added_or_assist",bodyweight; optional +kg (vest/DB) or -assist (band/feet),bilateral,"3xrange, rest 60-120s; reps up -> harder variation in progressionPath"
+calf-raise,bodyweight_reps,"reps,added_or_assist",bodyweight; optional +kg (vest/DB) or -assist (band/feet),bilateral,"3xrange, rest 60-120s; reps up -> harder variation in progressionPath"
+nordic-hamstring,bodyweight_reps,"reps,added_or_assist",bodyweight; optional +kg (vest/DB) or -assist (band/feet),bilateral,"3xrange, rest 60-120s; reps up -> harder variation in progressionPath"
+box-jump,bodyweight_reps,"reps,added_or_assist",bodyweight; optional +kg (vest/DB) or -assist (band/feet),bilateral,"3xrange, rest 60-120s; reps up -> harder variation in progressionPath"
+jump-squat,bodyweight_reps,"reps,added_or_assist",bodyweight; optional +kg (vest/DB) or -assist (band/feet),bilateral,"3xrange, rest 60-120s; reps up -> harder variation in progressionPath"
+y-t-w-raise,bodyweight_reps,"reps,added_or_assist",bodyweight; optional +kg (vest/DB) or -assist (band/feet),bilateral,"3xrange, rest 60-120s; reps up -> harder variation in progressionPath"
+band-pull-apart,band_reps,"band_level,reps(,side)",band colour/level,bilateral (pallof: per side),"3x12-20, rest 45s; next band when top of range"
+face-pull,band_reps,"band_level,reps(,side)",band colour/level,bilateral (pallof: per side),"3x12-20, rest 45s; next band when top of range"
+pallof-press,band_reps,"band_level,reps(,side)",band colour/level,bilateral (pallof: per side),"3x12-20, rest 45s; next band when top of range"
+plank,hold_seconds,"seconds(,added)",none or optional load,bilateral,2-3x20-60s; +5s per session
+dead-hang,hold_seconds,"seconds(,added)",none or optional load,bilateral,2-3x20-60s; +5s per session
+spanish-squat,hold_seconds,"seconds(,added)",none or optional load,bilateral,2-3x20-60s; +5s per session
+chin-tuck,hold_seconds,"seconds(,added)",none or optional load,bilateral,2-3x20-60s; +5s per session
+doorway-pec-stretch,hold_seconds,"seconds(,added)",none or optional load,bilateral,2-3x20-60s; +5s per session
+childs-pose,hold_seconds,"seconds(,added)",none or optional load,bilateral,2-3x20-60s; +5s per session
+downward-dog,hold_seconds,"seconds(,added)",none or optional load,bilateral,2-3x20-60s; +5s per session
+standing-forward-fold,hold_seconds,"seconds(,added)",none or optional load,bilateral,2-3x20-60s; +5s per session
+seated-spinal-twist,hold_seconds,"seconds(,added)",none or optional load,bilateral,2-3x20-60s; +5s per session
+thoracic-extension-roller,hold_seconds,"seconds(,added)",none or optional load,bilateral,2-3x20-60s; +5s per session
+side-plank,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+neck-side-stretch,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+thread-the-needle,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+kneeling-hip-flexor,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+figure-four,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+couch-stretch,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+calf-stretch,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+wrist-stretch,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+lunge-90-hip-flexor,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+lunge-90-ankle-grab,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+half-split-hip-flexor,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+half-split-pnf,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+half-split-ankle-grab,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+hamstring-stretch-flexed,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+hamstring-stretch-pointed,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+pyramid-pose,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+front-split-hold,hold_seconds_per_side,"side,seconds",none,per-side,2x30s each side
+cat-cow,mobility_reps,"reps(,side)",none,per-side where unilateral,1-2x6-10 (each side)
+wall-angels,mobility_reps,"reps(,side)",none,per-side where unilateral,1-2x6-10 (each side)
+scapular-retraction,mobility_reps,"reps(,side)",none,per-side where unilateral,1-2x6-10 (each side)
+worlds-greatest-stretch,mobility_reps,"reps(,side)",none,per-side where unilateral,1-2x6-10 (each side)
+bird-dog,mobility_reps,"reps(,side)",none,per-side where unilateral,1-2x6-10 (each side)
+half-split-knee-taps,mobility_reps,"reps(,side)",none,per-side where unilateral,1-2x6-10 (each side)
+leg-swings,mobility_reps,"reps(,side)",none,per-side where unilateral,1-2x6-10 (each side)
+pyramid-good-morning,mobility_reps,"reps(,side)",none,per-side where unilateral,1-2x6-10 (each side)
+bodyweight-good-morning,mobility_reps,"reps(,side)",none,per-side where unilateral,1-2x6-10 (each side)
+farmer-carry,carry,"weight,seconds|distance(,side)",kg|lb per hand,farmer bilateral; suitcase/waiters per side,"3x30-45s or 20-40m, rest 60-75s; +time then +load"
+suitcase-carry,carry,"weight,seconds|distance(,side)",kg|lb per hand,farmer bilateral; suitcase/waiters per side,"3x30-45s or 20-40m, rest 60-75s; +time then +load"
+waiters-carry,carry,"weight,seconds|distance(,side)",kg|lb per hand,farmer bilateral; suitcase/waiters per side,"3x30-45s or 20-40m, rest 60-75s; +time then +load"
+march-in-place,timed_warmup,seconds,none,bilateral,"1x60-300s, done/not done"
+jumping-jacks,timed_warmup,seconds,none,bilateral,"1x60-300s, done/not done"
+warm-up-general,timed_warmup,seconds,none,bilateral,"1x60-300s, done/not done"

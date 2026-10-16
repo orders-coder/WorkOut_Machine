@@ -41,7 +41,7 @@ export function BodyFigure({
   const chosen = Array.isArray(selected) ? selected : selected ? [selected] : [];
   const shapes = shapesForView(view);
   const [focused, setFocused] = useState<MuscleId | null>(null);
-  const focus = hovered ?? focused ?? selected;
+  const focus = hovered ?? focused ?? (Array.isArray(selected) ? selected[0] : selected);
   const label = focus ? getMuscle(focus) : null;
 
   return (

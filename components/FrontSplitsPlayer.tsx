@@ -162,7 +162,12 @@ export function FrontSplitsPlayer({
         .filter((item) => item.guide !== "switch" && item.guide !== "note")
         .map((item) => ({
           practiceId: item.id,
-          sets: [{ seconds: item.seconds, at: finishedAt }],
+          sets: [{
+            unit: "lb" as const,
+            seconds: item.seconds,
+            completedAt: finishedAt,
+            side: item.side === "left" ? "L" as const : item.side === "right" ? "R" as const : undefined,
+          }],
         })),
       index: steps.length,
       phase: "done",

@@ -1,3 +1,4 @@
+import { loggingForCustom } from "@/lib/logging";
 import { MUSCLES, type MuscleId } from "@/lib/muscles";
 import type { WorkoutExercise } from "@/lib/workout-catalog";
 import type { Equipment, Level, Practice } from "@/lib/types";
@@ -79,6 +80,7 @@ export function customToWorkout(item: CustomExercise): WorkoutExercise {
     exerciseType: "strength",
     dose: item.dose,
     bothSides: false,
+    logging: loggingForCustom(item.dose, item.equipment === "dumbbells" || item.equipment === "barbell" || item.equipment === "kettlebell" || item.equipment === "cable-or-machine" || item.equipment === "medicine-ball"),
     repRange: item.repRange || undefined,
     muscles: item.muscles,
     compound: false,

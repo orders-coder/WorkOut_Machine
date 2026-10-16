@@ -8,6 +8,7 @@ import { DAY_TYPES, dayTypeById, longerDay, type DayType, type DayTypeId } from 
 import { readyToFinish, suggestNext, type SuggestCandidate } from "@/lib/suggest-next";
 import type { ExerciseType, ForceType, MovementPattern } from "@/lib/types";
 import { customToWorkout, loadCustomExercises } from "@/lib/custom-exercises";
+import { defaultRows, type Logging } from "@/lib/logging";
 import type { WorkoutExercise } from "@/lib/workout-catalog";
 import {
   activeSession,
@@ -16,9 +17,12 @@ import {
   lastSetFor,
   loadPrefs,
   loadSessions,
+  mergeLoggedSet,
+  previousSetsFor,
   savePrefs,
   upsertSession,
   volumeOf,
+  type LogSide,
   type SessionExercise,
   type SetLog,
   type SetPlan,
@@ -68,7 +72,7 @@ export function LiveWorkout({
   const [bodyweightOnly, setBodyweightOnly] = useState(false);
   const [picked, setPicked] = useState<string[]>([]);
   const [slot, setSlot] = useState<{ kind: "insert" | "swap"; at: number } | null>(null);
-  const [unit, setUnit] = useState<WeightUnit>("kg");
+  const [unit, setUnit] = useState<WeightUnit>("lb");
   const [now, setNow] = useState(() => Date.now());
   const [weight, setWeight] = useState("");
   const [reps, setReps] = useState("");
@@ -95,21 +99,14 @@ export function LiveWorkout({
     if (mode !== "live" || !session) {
       return;
     }
-    const weight = baselineWeight(unit);
     let changed = false;
     const exercises = session.exercises.map((item) => {
-      if (!item.plan || item.plan.length === 0) {
-        changed = true;
-        return { ...item, plan: planFromLogs(item.sets, weight) };
+      if (item.plan && item.plan.length > 0) {
+        return item;
       }
-      if (item.plan.some((row) => !row.doneAt && row.reps <= 0)) {
-        changed = true;
-        return {
-          ...item,
-          plan: item.plan.map((row) => (row.doneAt || row.reps > 0 ? row : { ...row, reps: 8 })),
-        };
-      }
-      return item;
+      changed = true;
+      const known = byId.get(item.practiceId);
+      return { ...item, plan: planFromLogs(item.sets, known?.logging, unit) };
     });
     if (!changed) {
       return;
@@ -215,11 +212,11 @@ export function LiveWorkout({
       exercises: picked.map((practiceId) => ({
         practiceId,
         sets: [],
-        plan: starterSets(baselineWeight(unit)),
+        plan: defaultRows(loggingForExercise(byId.get(practiceId)), unit),
       })),
       index: 0,
       phase: "work",
-      side: byId.get(picked[0])?.bothSides ? "right" : undefined,
+      side: byId.get(picked[0])?.bothSides ? "R" : undefined,
     };
     persist(next);
     fillFromLast(picked[0]);
@@ -250,34 +247,47 @@ export function LiveWorkout({
     if (!exercise || !info) {
       return;
     }
-    const entry: SetLog = { at: new Date().toISOString(), side: info.bothSides ? session.side ?? "right" : undefined };
+    const entry: SetLog = {
+      unit,
+      completedAt: new Date().toISOString(),
+      side: info.bothSides ? session.side ?? "R" : undefined,
+    };
     const dose = loggingDose(info);
-    if (info.weighted && weight) {
-      entry.weight = Number(weight);
+    const parsedWeight = numberOrUndefined(weight);
+    if (info.weighted && parsedWeight !== undefined) {
+      entry.weight = parsedWeight;
     }
     if (dose === "seconds") {
-      entry.seconds = Number(seconds) || 30;
+      const parsed = numberOrUndefined(seconds);
+      if (parsed !== undefined) {
+        entry.seconds = parsed;
+      }
     } else if (dose === "breaths") {
-      entry.breaths = breaths || 8;
+      if (breaths > 0) {
+        entry.breaths = breaths;
+      }
     } else {
-      entry.reps = Number(reps) || 0;
+      const parsed = numberOrUndefined(reps);
+      if (parsed !== undefined) {
+        entry.reps = parsed;
+      }
     }
     const exercises = session.exercises.map((item, index) =>
       index === session.index ? { ...item, sets: [...item.sets, entry] } : item,
     );
-    if (info.bothSides && (session.side ?? "right") !== "left") {
+    if (info.bothSides && (session.side ?? "R") !== "L") {
       setSeconds("");
       setReps("");
-      persist({ ...session, exercises, phase: "switch", side: "right" });
+      persist({ ...session, exercises, phase: "switch", side: "R" });
       return;
     }
-    const restEndsAt = new Date(Date.now() + 75 * 1000).toISOString();
+    const restEndsAt = new Date(Date.now() + info.logging.restSec * 1000).toISOString();
     persist({
       ...session,
       exercises,
       phase: "rest",
       restEndsAt,
-      side: info.bothSides ? "right" : undefined,
+      side: info.bothSides ? "R" : undefined,
     });
   }
 
@@ -305,10 +315,10 @@ export function LiveWorkout({
     }
     const exercise = currentExercise();
     const info = exercise ? byId.get(exercise.practiceId) : undefined;
-    if (info?.bothSides && (session.side ?? "right") !== "left") {
+    if (info?.bothSides && (session.side ?? "R") !== "L") {
       setSeconds("");
       setReps("");
-      persist({ ...session, phase: "switch", side: "right" });
+      persist({ ...session, phase: "switch", side: "R" });
       return;
     }
     persist({ ...session, phase: "suggest", side: undefined });
@@ -320,20 +330,20 @@ export function LiveWorkout({
     }
     setSeconds("");
     setReps("");
-    persist({ ...session, phase: "work", side: "left" });
+    persist({ ...session, phase: "work", side: "L" });
   }
 
   function chooseNext(id: string) {
     if (!session) {
       return;
     }
-    const exercises = [...session.exercises, { practiceId: id, sets: [], plan: starterSets(baselineWeight(unit)) }];
+    const exercises = [...session.exercises, { practiceId: id, sets: [], plan: defaultRows(loggingForExercise(byId.get(id)), unit) }];
     persist({
       ...session,
       exercises,
       index: exercises.length - 1,
       phase: "work",
-      side: byId.get(id)?.bothSides ? "right" : undefined,
+      side: byId.get(id)?.bothSides ? "R" : undefined,
     });
     fillFromLast(id);
     setQuery("");
@@ -370,12 +380,51 @@ export function LiveWorkout({
       return {
         ...item,
         plan: replacement.plan,
-        sets: replacement.plan
-          .filter((row) => row.doneAt)
-          .map((row) => ({ weight: row.weight, reps: row.reps, at: row.doneAt as string })),
+        sets: replacement.plan.flatMap((row) => {
+          if (!row.completedAt) {
+            return [];
+          }
+          const existing = item.sets.find((set) => set.completedAt === row.completedAt);
+          return [mergeLoggedSet(row, existing)];
+        }),
       };
     });
     persist({ ...session, exercises, phase: "work" });
+  }
+
+  function toggleLogged(exerciseIndex: number, setIndex: number, restSec: number) {
+    if (!session) {
+      return;
+    }
+    const item = session.exercises[exerciseIndex];
+    const row = item?.plan?.[setIndex];
+    if (!item?.plan || !row) {
+      return;
+    }
+    const completedAt = row.completedAt ? undefined : new Date().toISOString();
+    const plan = item.plan.map((entry, index) => (index === setIndex ? { ...entry, completedAt } : entry));
+    const exercises = session.exercises.map((entry, index) => {
+      if (index !== exerciseIndex) {
+        return entry;
+      }
+      return {
+        ...entry,
+        plan,
+        sets: plan.flatMap((planned) => {
+          if (!planned.completedAt) {
+            return [];
+          }
+          const existing = entry.sets.find((set) => set.completedAt === planned.completedAt);
+          return [mergeLoggedSet(planned, existing)];
+        }),
+      };
+    });
+    persist({
+      ...session,
+      exercises,
+      phase: completedAt ? "rest" : "work",
+      restEndsAt: completedAt ? new Date(Date.now() + restSec * 1000).toISOString() : undefined,
+    });
   }
 
   function changePlan(exerciseIndex: number, setIndex: number, patch: Partial<SetPlan>) {
@@ -615,8 +664,8 @@ export function LiveWorkout({
                                     : exercise.sets
                                         .map((set) => {
                                         const bits = [
-                                          set.side === "left" ? "left" : set.side === "right" ? "right" : "",
-                                          set.weight != null ? `${set.weight} ${unit}` : "",
+                                          set.side === "L" ? "L" : set.side === "R" ? "R" : "",
+                                          set.weight != null ? `${set.weight} ${set.unit}` : "",
                                             set.reps != null ? `${set.reps} reps` : "",
                                             set.seconds != null ? `${set.seconds}s` : "",
                                             set.breaths != null ? `${set.breaths} breaths` : "",
@@ -763,10 +812,20 @@ export function LiveWorkout({
                 ...session,
                 exercises: session.exercises.map((item) => ({
                   ...item,
-                  plan: item.plan?.map((row) => ({ ...row, weight: convertWeight(row.weight, unit, next) })),
-                  sets: item.sets.map((set) =>
-                    set.weight == null ? set : { ...set, weight: convertWeight(set.weight, unit, next) },
-                  ),
+                  plan: item.plan?.map((row) => ({
+                    ...row,
+                    unit: next,
+                    weight: row.weight == null ? undefined : convertWeight(row.weight, row.unit, next),
+                    addedWeight: row.addedWeight == null ? undefined : convertWeight(row.addedWeight, row.unit, next),
+                    assistWeight: row.assistWeight == null ? undefined : convertWeight(row.assistWeight, row.unit, next),
+                  })),
+                  sets: item.sets.map((set) => ({
+                    ...set,
+                    unit: next,
+                    weight: set.weight == null ? undefined : convertWeight(set.weight, set.unit, next),
+                    addedWeight: set.addedWeight == null ? undefined : convertWeight(set.addedWeight, set.unit, next),
+                    assistWeight: set.assistWeight == null ? undefined : convertWeight(set.assistWeight, set.unit, next),
+                  })),
                 })),
               });
             }}
@@ -784,8 +843,9 @@ export function LiveWorkout({
         {session.exercises.map((item, exerciseIndex) => {
           const known = byId.get(item.practiceId);
           const plan = item.plan ?? [];
-          const suggested = suggestedSetCount(known);
-          const earlier = historyFor(item.practiceId).at(-1)?.sets ?? [];
+          const logging = known?.logging;
+          const suggested = logging?.sets ?? 2;
+          const earlier = previousSetsFor(item.practiceId);
           return (
             <li key={`${item.practiceId}-${exerciseIndex}`} className="rounded-2xl bg-card px-3 py-3 ring-1 ring-ink/10">
               <div className="flex items-center gap-3">
@@ -796,10 +856,7 @@ export function LiveWorkout({
                     {known?.name ?? item.practiceId}
                   </Link>
                   <p className="text-sm text-ink/55">
-                    Suggested {suggested} {suggested === 1 ? "set" : "sets"}
-                    {known?.bothSides ? " each side" : ""}
-                    {" · "}
-                    starts at 2 × 8, 5 lb
+                    {suggestionLine(logging, suggested)}
                   </p>
                 </div>
               </div>
@@ -812,22 +869,24 @@ export function LiveWorkout({
               </div>
               <ol className="mt-1 space-y-1.5">
                 {plan.map((row, setIndex) => {
-                  const done = Boolean(row.doneAt);
+                  const done = Boolean(row.completedAt);
+                  const sideCount = plan.slice(0, setIndex + 1).filter((entry) => entry.side === row.side).length - 1;
+                  const previous = row.side ? earlier.filter((set) => set.side === row.side)[sideCount] : earlier[setIndex];
                   return (
                     <li
                       key={`${exerciseIndex}-${setIndex}`}
                       className={`grid grid-cols-[1.4rem_1fr_1fr_1fr_2.2rem] items-center gap-2 rounded-xl px-1 py-1.5 ${done ? "bg-[#e5f6ea]" : ""}`}
                     >
                       <span className="text-sm text-ink/50">{setIndex + 1}</span>
-                      <span className="truncate text-xs text-ink/45">{previousLabel(earlier[setIndex])}</span>
+                      <span className="truncate text-xs text-ink/45">{previousLabel(previous)}</span>
                       <SetNumber
                         value={row.weight}
                         editing={draft?.key === `${exerciseIndex}-${setIndex}-weight`}
                         draft={draft?.value ?? ""}
-                        onStart={() => setDraft({ key: `${exerciseIndex}-${setIndex}-weight`, value: String(row.weight) })}
+                        onStart={() => setDraft({ key: `${exerciseIndex}-${setIndex}-weight`, value: row.weight == null ? "" : String(row.weight) })}
                         onDraft={(value) => setDraft({ key: `${exerciseIndex}-${setIndex}-weight`, value })}
                         onCommit={(value) => {
-                          changePlan(exerciseIndex, setIndex, { weight: Number(value) || 0 });
+                          changePlan(exerciseIndex, setIndex, { weight: numberOrUndefined(value) });
                           setDraft(null);
                         }}
                       />
@@ -835,10 +894,10 @@ export function LiveWorkout({
                         value={row.reps}
                         editing={draft?.key === `${exerciseIndex}-${setIndex}-reps`}
                         draft={draft?.value ?? ""}
-                        onStart={() => setDraft({ key: `${exerciseIndex}-${setIndex}-reps`, value: String(row.reps) })}
+                        onStart={() => setDraft({ key: `${exerciseIndex}-${setIndex}-reps`, value: row.reps == null ? "" : String(row.reps) })}
                         onDraft={(value) => setDraft({ key: `${exerciseIndex}-${setIndex}-reps`, value })}
                         onCommit={(value) => {
-                          changePlan(exerciseIndex, setIndex, { reps: Number(value) || 0 });
+                          changePlan(exerciseIndex, setIndex, { reps: numberOrUndefined(value) });
                           setDraft(null);
                         }}
                       />
@@ -846,9 +905,7 @@ export function LiveWorkout({
                         type="button"
                         aria-label={done ? "Uncheck set" : "Log set"}
                         aria-pressed={done}
-                        onClick={() =>
-                          changePlan(exerciseIndex, setIndex, { doneAt: done ? undefined : new Date().toISOString() })
-                        }
+                        onClick={() => toggleLogged(exerciseIndex, setIndex, logging?.restSec ?? 75)}
                         className={`flex h-9 w-9 items-center justify-center rounded-full text-base ${done ? "bg-[#34c759] text-white" : "bg-white ring-1 ring-ink/15"}`}
                       >
                         ✓
@@ -861,12 +918,17 @@ export function LiveWorkout({
                 type="button"
                 onClick={() => {
                   const last = plan[plan.length - 1];
-                  writePlans([
-                    {
-                      index: exerciseIndex,
-                      plan: [...plan, { weight: last?.weight ?? baselineWeight(unit), reps: last?.reps ?? 8 }],
-                    },
-                  ]);
+                  const added: SetPlan = {
+                    unit: last?.unit ?? unit,
+                    weight: last?.weight,
+                    reps: last?.reps,
+                    seconds: last?.seconds,
+                    side: last?.side,
+                    distanceM: last?.distanceM,
+                    boxHeightCm: last?.boxHeightCm,
+                    contacts: last?.contacts,
+                  };
+                  writePlans([{ index: exerciseIndex, plan: [...plan, added] }]);
                 }}
                 className="mt-2 min-h-11 w-full rounded-xl text-sm text-[#0071e3]"
               >
@@ -881,6 +943,9 @@ export function LiveWorkout({
         className="fixed inset-x-0 z-30 border-t border-ink/10 bg-white/95 px-4 py-3 backdrop-blur"
         style={{ bottom: "calc(3rem + env(safe-area-inset-bottom))" }}
       >
+        {session.restEndsAt && restLeft > 0 ? (
+          <p className="text-center text-sm text-ink/70">Rest {formatClock(restLeft)}</p>
+        ) : null}
         <p className="text-center text-[0.65rem] uppercase tracking-[0.14em] text-ink/45">Time on Live</p>
         <p className="text-center font-display text-5xl tabular-nums leading-none tracking-tight">{spentLabel}</p>
         <p className="mt-1 text-center text-xs text-ink/45">stops at {capLabel}</p>
@@ -902,7 +967,7 @@ function SetNumber({
   onDraft,
   onCommit,
 }: {
-  value: number;
+  value: number | undefined;
   editing: boolean;
   draft: string;
   onStart: () => void;
@@ -928,13 +993,72 @@ function SetNumber({
   }
   return (
     <button type="button" onClick={onStart} className="h-9 w-full rounded-lg text-center text-base font-medium">
-      {value}
+      {value ?? "—"}
     </button>
   );
 }
 
-function baselineWeight(unit: WeightUnit): number {
-  return unit === "lb" ? 5 : 2.5;
+function numberOrUndefined(value: string): number | undefined {
+  if (value.trim() === "") {
+    return undefined;
+  }
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
+}
+
+function loggingForExercise(info?: WorkoutExercise): Logging {
+  if (!info) {
+    throw new Error("Missing exercise");
+  }
+  return info.logging;
+}
+
+function suggestionLine(logging: Logging | undefined, suggested: number): string {
+  if (!logging) {
+    return `${suggested} sets`;
+  }
+  const sets = `${logging.sets} ${logging.sets === 1 ? "set" : "sets"}`;
+  const side = logging.sideMode === "each_side" ? " each side" : logging.sideMode === "alternating" ? " alternating" : "";
+  const dose = logging.repRange
+    ? `${logging.repRange[0]}–${logging.repRange[1]} reps`
+    : logging.holdSec
+      ? `${logging.holdSec}s`
+      : logging.optional?.pnf
+        ? `${logging.optional.pnf.stretchSec}s stretch`
+        : "";
+  return [`Suggested ${sets}${side}`, dose].filter(Boolean).join(" · ");
+}
+
+function planFromLogs(logged: SetLog[], logging: Logging | undefined, unit: WeightUnit): SetPlan[] {
+  const seeded = logging ? defaultRows(logging, unit) : [];
+  if (logged.length === 0) {
+    return seeded;
+  }
+  const rows: SetPlan[] = logged.map((set) => ({
+    unit: set.unit,
+    weight: set.weight,
+    reps: set.reps,
+    seconds: set.seconds,
+    side: set.side,
+    rir: set.rir,
+    bandLevel: set.bandLevel,
+    addedWeight: set.addedWeight,
+    assistWeight: set.assistWeight,
+    distanceM: set.distanceM,
+    contacts: set.contacts,
+    boxHeightCm: set.boxHeightCm,
+    breaths: set.breaths,
+    notes: set.notes,
+    pain: set.pain,
+    completedAt: set.completedAt,
+  }));
+  for (const row of seeded) {
+    if (rows.length >= seeded.length) {
+      break;
+    }
+    rows.push(row);
+  }
+  return rows;
 }
 
 function convertWeight(value: number, from: WeightUnit, to: WeightUnit): number {
@@ -952,36 +1076,6 @@ function previousLabel(set?: SetLog): string {
   }
   const bits = [set.weight != null ? String(set.weight) : "", set.reps != null ? `× ${set.reps}` : ""].filter(Boolean);
   return bits.join(" ") || "—";
-}
-
-function starterSets(weight: number): SetPlan[] {
-  return [
-    { weight, reps: 8 },
-    { weight, reps: 8 },
-  ];
-}
-
-function planFromLogs(logged: SetLog[], weight: number): SetPlan[] {
-  const rows: SetPlan[] = logged.map((set) => ({
-    weight: set.weight ?? weight,
-    reps: set.reps ?? 8,
-    doneAt: set.at,
-  }));
-  while (rows.length < 2) {
-    const last = rows[rows.length - 1];
-    rows.push({ weight: last?.weight ?? weight, reps: last?.reps ?? 8 });
-  }
-  return rows;
-}
-
-function suggestedSetCount(info?: WorkoutExercise): number {
-  if (!info) {
-    return 2;
-  }
-  if (info.exerciseType === "strength") {
-    return 3;
-  }
-  return 2;
 }
 
 function rankedStart(items: WorkoutExercise[], focus: MuscleId[]): WorkoutExercise[] {
@@ -1230,7 +1324,7 @@ function toCandidates(items: WorkoutExercise[]): SuggestCandidate[] {
 
 export function PastSets({ practiceId }: { practiceId: string }) {
   const [rows, setRows] = useState<{ at: string; sets: SetLog[] }[]>([]);
-  const [unit, setUnit] = useState<WeightUnit>("kg");
+  const [unit, setUnit] = useState<WeightUnit>("lb");
   useEffect(() => {
     setRows(historyFor(practiceId));
     setUnit(loadPrefs().unit);
@@ -1246,9 +1340,10 @@ export function PastSets({ practiceId }: { practiceId: string }) {
           <li key={row.at} className="rounded-2xl bg-card px-3 py-2 text-sm ring-1 ring-ink/10">
             <p className="text-ink/50">{new Date(row.at).toLocaleDateString()}</p>
             {row.sets.map((set, index) => (
-              <p key={set.at}>
+              <p key={set.completedAt + index}>
                 Set {index + 1}
-                {set.weight ? ` · ${set.weight} ${unit}` : ""}
+                {set.side ? ` · ${set.side}` : ""}
+                {set.weight != null ? ` · ${set.weight} ${set.unit}` : ""}
                 {set.reps ? ` × ${set.reps}` : ""}
                 {set.seconds ? ` · ${set.seconds}s` : ""}
                 {set.breaths ? ` · ${set.breaths} breaths` : ""}

@@ -85,7 +85,7 @@ export function MuscleExplorer({
                 hovered={hovered}
                 counts={counts}
                 live={live}
-                onSelect={(muscleId) => choose(muscleId, true)}
+                onSelect={(muscleId) => choose(muscleId)}
                 onHover={setHovered}
                 showCaption={false}
                 className="mx-auto h-auto w-full"

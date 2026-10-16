@@ -1,9 +1,10 @@
 import { targetingFor } from "@/data/muscle-targets";
 import { practices } from "@/data/practices";
+import { hasLogging, loadsWeight, loggingFor, type Logging } from "@/lib/logging";
 import type { MuscleId } from "@/lib/muscles";
 import { resolvePracticeImage } from "@/lib/resolve-image";
 import type { ExerciseType, ForceType, Level, MovementPattern } from "@/lib/types";
-import { isBodyweightGear, isWeightedGear } from "@/lib/workout-gear";
+import { isBodyweightGear } from "@/lib/workout-gear";
 
 export interface WorkoutExercise {
   id: string;
@@ -11,10 +12,11 @@ export interface WorkoutExercise {
   image: string;
   level: Level;
   bodyweight: boolean;
-  /** True only when the load is something you can log in kg or lb. */
+  /** True when the logging block asks for a kg/lb column. */
   weighted: boolean;
-  /** One side, then the other. */
+  /** Separate left and right rows. */
   bothSides: boolean;
+  logging: Logging;
   exerciseType?: ExerciseType;
   pattern?: MovementPattern;
   force?: ForceType;
@@ -31,26 +33,25 @@ export function workoutCatalog(): WorkoutExercise[] {
     const targeting = targetingFor(practice.id);
     const pattern = practice.profile?.movementPattern ?? practice.training?.movementPattern;
     const exerciseType = practice.profile?.exerciseType;
+    const logging = hasLogging(practice.id) ? loggingFor(practice.id) : undefined;
+    if (!logging) {
+      throw new Error(`Missing logging block for ${practice.id}`);
+    }
+    const range = logging.repRange ? `${logging.repRange[0]}–${logging.repRange[1]}` : practice.training?.defaultRepRange;
     return {
       id: practice.id,
       name: practice.name,
       image: resolvePracticeImage(practice.id, practice.image),
       level: practice.level,
       bodyweight: isBodyweightGear(practice.equipment, practice.profile?.equipment),
-      weighted:
-        isWeightedGear(practice.equipment, practice.profile?.equipment) &&
-        practice.profile?.exerciseType !== "stretch" &&
-        practice.profile?.exerciseType !== "mobility" &&
-        practice.profile?.exerciseType !== "breathing" &&
-        practice.profile?.exerciseType !== "meditation" &&
-        practice.profile?.exerciseType !== "hang",
+      weighted: loadsWeight(logging),
       exerciseType,
       pattern,
       force: practice.profile?.forceType ?? practice.training?.forceType,
       dose: practice.profile?.dose,
-      bothSides:
-        practice.profile?.laterality === "unilateral" || practice.training?.laterality === "unilateral",
-      repRange: practice.training?.defaultRepRange,
+      bothSides: logging.sideMode === "each_side",
+      repRange: range,
+      logging,
       muscles: [...targeting.primary, ...targeting.secondary],
       compound:
         exerciseType === "strength" &&
