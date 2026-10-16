@@ -31,7 +31,7 @@ import {
   type WeightUnit,
   type WorkoutSession,
 } from "@/lib/workout-session";
-import { BodyFigure } from "./BodyMap";
+import { BodyFigure, type MuscleRole } from "./BodyMap";
 import { RoundClock } from "./RoundClock";
 import { RoutineList } from "./RoutineList";
 
@@ -112,7 +112,16 @@ export function LiveWorkout({
   }, [mode]);
 
   useEffect(() => {
-    const existing = activeSession();
+    let existing = activeSession();
+    if (existing && !existing.finishedAt && existing.timerStarted == null) {
+      const logged = existing.exercises.some(
+        (exercise) => exercise.sets.length > 0 || exercise.plan?.some((row) => row.completedAt),
+      );
+      existing = logged
+        ? { ...existing, timerStarted: true }
+        : { ...existing, timerHold: 0, timerStarted: false };
+      upsertSession(existing);
+    }
     setSession(existing ?? null);
     setHistory(loadSessions().filter((item) => item.finishedAt));
     setUnit(loadPrefs().unit);
@@ -211,8 +220,8 @@ export function LiveWorkout({
       if (current.includes(id)) {
         return current.filter((item) => item !== id);
       }
-      if (current.length >= 2) {
-        return [current[1], id];
+      if (current.length >= 3) {
+        return [current[0], current[1], id];
       }
       return [...current, id];
     });
@@ -244,6 +253,8 @@ export function LiveWorkout({
       mains,
       bodyweightOnly,
       startedAt: new Date().toISOString(),
+      timerHold: 0,
+      timerStarted: false,
       title: routineTitle ?? undefined,
       exercises: picked.map((practiceId) => ({
         practiceId,
@@ -389,9 +400,19 @@ export function LiveWorkout({
     if (!session) {
       return;
     }
+    if (session.timerStarted === false) {
+      persist({
+        ...session,
+        timerStarted: true,
+        timerHold: undefined,
+        startedAt: new Date().toISOString(),
+      });
+      return;
+    }
     if (session.timerHold != null) {
       persist({
         ...session,
+        timerStarted: true,
         timerHold: undefined,
         startedAt: new Date(Date.now() - session.timerHold * 1000).toISOString(),
       });
@@ -401,7 +422,7 @@ export function LiveWorkout({
       dayInfo.targetMinutes * 60,
       Math.max(0, Math.floor((Date.now() - new Date(session.startedAt).getTime()) / 1000)),
     );
-    persist({ ...session, timerHold: spent });
+    persist({ ...session, timerHold: spent, timerStarted: true });
   }
 
   function writePlans(nextPlans: { index: number; plan: SetPlan[] }[]) {
@@ -540,7 +561,22 @@ export function LiveWorkout({
     if (!session) {
       return;
     }
-    persist({ ...session, phase: "done", finishedAt: new Date().toISOString(), restEndsAt: undefined });
+    const spent =
+      session.timerHold != null
+        ? session.timerHold
+        : session.timerStarted === false
+          ? 0
+          : Math.min(budget, Math.max(0, Math.floor((Date.now() - new Date(session.startedAt).getTime()) / 1000)));
+    const finishedAt = new Date();
+    persist({
+      ...session,
+      phase: "done",
+      finishedAt: finishedAt.toISOString(),
+      restEndsAt: undefined,
+      timerHold: undefined,
+      timerStarted: true,
+      startedAt: new Date(finishedAt.getTime() - spent * 1000).toISOString(),
+    });
   }
 
   const budget = dayInfo.targetMinutes * 60;
@@ -601,10 +637,10 @@ export function LiveWorkout({
         </div>
 
         <MusclePick
-          label="Main muscles, up to two"
+          label="Primary, secondary, tertiary"
           selected={mains}
+          roles={focusRoles(mains)}
           onSelect={toggleMain}
-          note={mains.map((id) => MUSCLES.find((muscle) => muscle.id === id)?.label).filter(Boolean).join(" · ") || "Tap up to two"}
         />
         <label className="mt-4 flex min-h-11 items-center gap-2 text-sm">
           <input
@@ -628,39 +664,62 @@ export function LiveWorkout({
                   ? "Tap an exercise to swap it in"
                   : "Add exercises"}
             </p>
-            <div className="mt-2 grid grid-cols-3 gap-2">
-            {rankedStart(pool, mains).map((item) => {
-              const on = picked.includes(item.id);
+            {pool.length === 0 ? <p className="mt-2 text-sm text-ink/60">Nothing matches those muscles and that filter.</p> : null}
+            {FOCUS_ROLES.map((role, index) => {
+              const muscle = mains[index];
+              if (!muscle) {
+                return null;
+              }
+              const items = rankedStart(
+                pool.filter((item) => focusBucket(item, mains) === index),
+                mains,
+              );
+              if (items.length === 0) {
+                return null;
+              }
+              const name = MUSCLES.find((entry) => entry.id === muscle)?.label;
               return (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => {
-                    setPicked((current) => {
-                      if (slot?.kind === "swap") {
-                        const next = [...current];
-                        next[slot.at] = item.id;
-                        return next;
-                      }
-                      if (slot?.kind === "insert") {
-                        const next = [...current];
-                        next.splice(slot.at, 0, item.id);
-                        return next;
-                      }
-                      return [...current, item.id];
-                    });
-                    setSlot(null);
-                  }}
-                  className={`flex min-h-28 flex-col items-center justify-start gap-1 rounded-2xl px-2 py-2 text-center ${on ? "bg-ink text-white" : "bg-card ring-1 ring-ink/10"}`}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={item.image} alt="" className="h-16 w-full rounded-xl object-contain bg-white" />
-                  <span className="text-xs leading-tight">{item.name}</span>
-                </button>
+                <section key={role.role} className="mt-3">
+                  <p className="flex items-center gap-1.5 text-xs uppercase tracking-[0.14em] text-ink/45">
+                    <span className="inline-block h-2 w-2 rounded-full" style={{ background: role.swatch }} />
+                    {role.label}
+                    {name ? ` · ${name}` : ""}
+                  </p>
+                  <div className="mt-2 grid grid-cols-3 gap-2">
+                    {items.map((item) => {
+                      const on = picked.includes(item.id);
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          onClick={() => {
+                            setPicked((current) => {
+                              if (slot?.kind === "swap") {
+                                const next = [...current];
+                                next[slot.at] = item.id;
+                                return next;
+                              }
+                              if (slot?.kind === "insert") {
+                                const next = [...current];
+                                next.splice(slot.at, 0, item.id);
+                                return next;
+                              }
+                              return [...current, item.id];
+                            });
+                            setSlot(null);
+                          }}
+                          className={`flex min-h-28 flex-col items-center justify-start gap-1 rounded-2xl px-2 py-2 text-center ${on ? "bg-ink text-white" : "bg-card ring-1 ring-ink/10"}`}
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={item.image} alt="" className="h-16 w-full rounded-xl object-contain bg-white" />
+                          <span className="text-xs leading-tight">{item.name}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </section>
               );
             })}
-            </div>
-            {pool.length === 0 ? <p className="text-sm text-ink/60">Nothing matches those muscles and that filter.</p> : null}
           </div>
         ) : null}
 
@@ -1027,6 +1086,7 @@ export function LiveWorkout({
                           key={column.key}
                           column={column}
                           row={row}
+                          unit={unit}
                           editing={draft?.key === `${exerciseIndex}-${setIndex}-${column.key}`}
                           draft={draft?.value ?? ""}
                           onStart={() =>
@@ -1130,7 +1190,7 @@ export function LiveWorkout({
             </p>
           </div>
           <button type="button" onClick={stopTimer} className="absolute right-0 h-8 rounded-full px-3 text-xs ring-1 ring-ink/10">
-            {session.timerHold != null ? "Resume" : "Stop"}
+            {session.timerHold == null ? "Stop" : session.timerStarted === false ? "Start" : "Resume"}
           </button>
         </div>
       </div>
@@ -1560,9 +1620,140 @@ function previousLabel(set: SetLog | undefined, columns: PlanColumn[]): string {
   return bits.filter(Boolean).join(" ") || "—";
 }
 
+function isLoadColumn(key: PlanColumnKey): boolean {
+  return key === "weight" || key === "added" || key === "load";
+}
+
+function loadStep(unit: WeightUnit): number {
+  return unit === "kg" ? 2.5 : 5;
+}
+
+function snapLoad(value: number, step: number): number {
+  const snapped = Math.round(value / step) * step;
+  return step >= 1 ? Math.round(snapped) : Math.round(snapped * 10) / 10;
+}
+
+function clampLoad(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value));
+}
+
+function WeightRoller({
+  value,
+  unit,
+  signed,
+  label,
+  onChange,
+}: {
+  value: number | undefined;
+  unit: WeightUnit;
+  signed: boolean;
+  label: string;
+  onChange: (next: number | undefined) => void;
+}) {
+  const step = loadStep(unit);
+  const min = Math.min(signed ? (unit === "kg" ? -60 : -120) : 0, value ?? 0);
+  const max = Math.max(unit === "kg" ? 140 : 300, value ?? 0);
+  const [drag, setDrag] = useState<{ value: number; nudge: number } | null>(null);
+  const origin = useRef({ y: 0, value: 0 });
+  const box = useRef<HTMLDivElement>(null);
+  const shown = drag?.value ?? value ?? 0;
+  const text = shown === 0 ? "—" : String(shown);
+
+  function commit(next: number) {
+    const stored = next === 0 ? undefined : next;
+    if (stored !== value) {
+      onChange(stored);
+    }
+  }
+
+  function move(direction: 1 | -1) {
+    const next = clampLoad(snapLoad(value ?? 0, step) + direction * step, min, max);
+    commit(next);
+  }
+
+  useEffect(() => {
+    const el = box.current;
+    if (!el) {
+      return;
+    }
+    const onWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      move(event.deltaY < 0 ? 1 : -1);
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  });
+
+  return (
+    <div
+      ref={box}
+      role="slider"
+      tabIndex={0}
+      aria-label={`${label} ${text === "—" ? "none" : text}`}
+      aria-valuemin={min}
+      aria-valuemax={max}
+      aria-valuenow={shown}
+      aria-valuetext={text === "—" ? `No ${label}` : `${text} ${unit}`}
+      className="relative h-8 w-full touch-none overflow-hidden rounded-lg text-center text-sm tabular-nums outline-none focus-visible:ring-1 focus-visible:ring-[#0071e3]"
+      onPointerDown={(event) => {
+        origin.current = { y: event.clientY, value: value ?? 0 };
+        event.currentTarget.setPointerCapture(event.pointerId);
+        setDrag({ value: value ?? 0, nudge: 0 });
+      }}
+      onPointerMove={(event) => {
+        if (!event.currentTarget.hasPointerCapture(event.pointerId)) {
+          return;
+        }
+        const delta = origin.current.y - event.clientY;
+        const steps = Math.round(delta / 22);
+        const fraction = delta / 22 - steps;
+        const next = clampLoad(snapLoad(origin.current.value + steps * step, step), min, max);
+        setDrag({ value: next, nudge: Math.max(-12, Math.min(12, -fraction * 12)) });
+      }}
+      onPointerUp={(event) => {
+        const delta = origin.current.y - event.clientY;
+        setDrag(null);
+        if (Math.abs(delta) < 8) {
+          return;
+        }
+        const steps = Math.round(delta / 22);
+        commit(clampLoad(snapLoad(origin.current.value + steps * step, step), min, max));
+      }}
+      onPointerCancel={() => setDrag(null)}
+      onKeyDown={(event) => {
+        if (event.key === "ArrowUp" || event.key === "ArrowRight") {
+          event.preventDefault();
+          move(1);
+        }
+        if (event.key === "ArrowDown" || event.key === "ArrowLeft") {
+          event.preventDefault();
+          move(-1);
+        }
+      }}
+    >
+      <div
+        className="absolute inset-x-0 top-0"
+        style={{ transform: `translateY(calc(-2rem + ${drag?.nudge ?? 0}px))` }}
+      >
+        <span aria-hidden="true" className="block h-8 leading-8 text-ink/25">{formatLoad(clampLoad(shown - step, min, max), shown)}</span>
+        <span className="block h-8 leading-8">{text}</span>
+        <span aria-hidden="true" className="block h-8 leading-8 text-ink/25">{formatLoad(clampLoad(shown + step, min, max), shown)}</span>
+      </div>
+    </div>
+  );
+}
+
+function formatLoad(value: number, current: number): string {
+  if (value === current || value === 0) {
+    return value === 0 ? "—" : "";
+  }
+  return String(value);
+}
+
 function PlanField({
   column,
   row,
+  unit,
   editing,
   draft,
   onStart,
@@ -1571,12 +1762,25 @@ function PlanField({
 }: {
   column: PlanColumn;
   row: SetPlan;
+  unit: WeightUnit;
   editing: boolean;
   draft: string;
   onStart: () => void;
   onDraft: (value: string) => void;
   onCommit: (value: string) => void;
 }) {
+  if (isLoadColumn(column.key)) {
+    const raw = fieldValue(row, column.key);
+    return (
+      <WeightRoller
+        value={typeof raw === "number" ? raw : undefined}
+        unit={unit}
+        signed={column.key === "load"}
+        label={column.key === "weight" ? unit : column.label}
+        onChange={(next) => onCommit(next == null ? "" : String(next))}
+      />
+    );
+  }
   const shown = fieldText(row, column.key);
   if (editing) {
     return (
@@ -1603,6 +1807,14 @@ function PlanField({
   );
 }
 
+function focusBucket(item: WorkoutExercise, focus: MuscleId[]): number {
+  const lead = focus.indexOf(item.muscles[0]);
+  if (lead >= 0) {
+    return lead;
+  }
+  return focus.findIndex((muscle) => item.muscles.includes(muscle));
+}
+
 function rankedStart(items: WorkoutExercise[], focus: MuscleId[]): WorkoutExercise[] {
   return [...items].sort(
     (a, b) => intensity(b, focus) - intensity(a, focus) || a.name.localeCompare(b.name),
@@ -1610,8 +1822,9 @@ function rankedStart(items: WorkoutExercise[], focus: MuscleId[]): WorkoutExerci
 }
 
 function intensity(item: WorkoutExercise, focus: MuscleId[]): number {
-  const primary = item.muscles[0];
-  let score = primary && focus.includes(primary) ? 24 : 6;
+  const lead = focus.indexOf(item.muscles[0]);
+  const involved = focus.findIndex((muscle) => item.muscles.includes(muscle));
+  let score = lead === 0 ? 260 : lead === 1 ? 140 : lead === 2 ? 70 : involved === 0 ? 50 : involved === 1 ? 30 : involved === 2 ? 16 : 4;
   if (item.level === "advanced") {
     score += 30;
   } else if (item.level === "intermediate") {
@@ -1629,16 +1842,33 @@ function intensity(item: WorkoutExercise, focus: MuscleId[]): number {
   return score;
 }
 
+const FOCUS_ROLES: { role: MuscleRole; label: string; swatch: string }[] = [
+  { role: "primary", label: "Primary", swatch: "#e15d55" },
+  { role: "secondary", label: "Secondary", swatch: "#3d7ec9" },
+  { role: "tertiary", label: "Tertiary", swatch: "#6f9a3c" },
+];
+
+function focusRoles(ids: MuscleId[]): Partial<Record<MuscleId, MuscleRole>> {
+  const roles: Partial<Record<MuscleId, MuscleRole>> = {};
+  ids.forEach((id, index) => {
+    const role = FOCUS_ROLES[index]?.role;
+    if (role) {
+      roles[id] = role;
+    }
+  });
+  return roles;
+}
+
 function MusclePick({
   label,
   selected,
+  roles,
   onSelect,
-  note,
 }: {
   label: string;
   selected: MuscleId[];
+  roles: Partial<Record<MuscleId, MuscleRole>>;
   onSelect: (id: MuscleId) => void;
-  note: string;
 }) {
   const [hovered, setHovered] = useState<MuscleId | null>(null);
   const live = new Set(MUSCLES.map((muscle) => muscle.id));
@@ -1652,6 +1882,7 @@ function MusclePick({
               <BodyFigure
                 view={view}
                 selected={selected}
+                roles={roles}
                 hovered={hovered}
                 counts={{}}
                 live={live}
@@ -1666,7 +1897,34 @@ function MusclePick({
             </div>
           ))}
         </div>
-        <p className="px-2 pt-1 text-center text-[0.7rem] text-ink/55">{note}</p>
+        <div className="mt-2 flex justify-center gap-3">
+          {FOCUS_ROLES.map((item) => (
+            <span key={item.role} className="flex items-center gap-1 text-[0.65rem] text-ink/55">
+              <span className="inline-block h-2 w-2 rounded-full" style={{ background: item.swatch }} />
+              {item.label}
+            </span>
+          ))}
+        </div>
+        {selected.length === 0 ? (
+          <p className="px-2 pt-1 text-center text-[0.7rem] text-ink/55">Tap a primary, then a secondary, then a tertiary</p>
+        ) : (
+          <p className="flex flex-wrap items-center justify-center gap-x-1.5 px-2 pt-1 text-center text-[0.7rem] text-ink/55">
+            {selected.map((id, index) => {
+              const role = FOCUS_ROLES[index];
+              const name = MUSCLES.find((muscle) => muscle.id === id)?.label;
+              if (!role || !name) {
+                return null;
+              }
+              return (
+                <span key={id} className="inline-flex items-center gap-1">
+                  {index > 0 ? <span aria-hidden="true">·</span> : null}
+                  <span className="inline-block h-2 w-2 rounded-full" style={{ background: role.swatch }} />
+                  {role.label} {name}
+                </span>
+              );
+            })}
+          </p>
+        )}
       </div>
     </div>
   );

@@ -32,8 +32,10 @@ export interface WorkoutSession {
   rounds?: number;
   /** Which side is up, for exercises done on both sides. */
   side?: LogSide;
-  /** Elapsed seconds frozen when Stop is pressed. Absent while the clock is running. */
+  /** Elapsed seconds frozen while the clock is stopped. Absent while it is running. */
   timerHold?: number;
+  /** False until Start is pressed. Absent on older sessions that were already running. */
+  timerStarted?: boolean;
   /** Set after starter weights are removed from bodyweight added-load fields. */
   loggingCleanup?: 1;
 }
