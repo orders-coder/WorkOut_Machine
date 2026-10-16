@@ -7,13 +7,29 @@ import {
   practiceFromRecord,
 } from "./exercise-db";
 import { exerciseProfiles } from "./exercise-profile";
+import { hasLogging, loggingFor } from "@/lib/logging";
 import type { Practice } from "@/lib/types";
 import { waysOf } from "@/lib/ways";
 import { resolveExerciseId } from "@/lib/legacy-ids";
 
-function withProfile(practice: Practice): Practice {
+/**
+ * Ten ids exist in both the written modules and exercises.json.
+ * The JSON row wins for name, level, equipment, and target.
+ * The longer why, cues, and mistakes are kept.
+ * Resolved ids: push-up, dumbbell-row, pull-up-or-negative, glute-bridge,
+ * goblet-squat, bulgarian-split-squat, farmer-carry, suitcase-carry,
+ * pallof-press, bird-dog.
+ */
+function finish(practice: Practice): Practice {
+  if (!hasLogging(practice.id)) {
+    throw new Error(`Missing logging block for ${practice.id}`);
+  }
   const profile = exerciseProfiles[practice.id];
-  return profile ? { ...practice, profile } : practice;
+  return {
+    ...practice,
+    ...(profile ? { profile } : {}),
+    logging: loggingFor(practice.id),
+  };
 }
 
 const written = [...softBodyPractices, ...strengthPractices, ...strengthStaples];
@@ -26,7 +42,11 @@ export const practices: Practice[] = [
     const id = practiceFromRecord(record).id;
     return practiceFromRecord(record, writtenById.get(id));
   }),
-].map(withProfile);
+].map(finish);
+
+if (practices.length !== 77) {
+  throw new Error(`Expected 77 practices, found ${practices.length}`);
+}
 
 export function getPracticeById(id: string): Practice | undefined {
   const resolved = resolveExerciseId(id);

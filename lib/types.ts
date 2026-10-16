@@ -1,4 +1,5 @@
 import type { DumpsterEntry } from "./dumpster";
+import type { Logging } from "./logging";
 
 export type Way = "inner" | "soft-body" | "strength";
 
@@ -139,6 +140,14 @@ export interface Practice {
   setup?: string;
   training?: Training;
   profile?: ExerciseProfile;
+  /** How Live logs this exercise. Present on every catalog practice. */
+  logging?: Logging;
+  regressionId?: string;
+  progressionId?: string;
+  /** Guided-routine step kind, kept from the exercise record. */
+  guide?: "hold" | "reps" | "pnf" | "breath";
+  durationSec?: number;
+  minReps?: number;
 }
 
 export interface MediaPhoto {

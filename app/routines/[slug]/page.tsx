@@ -9,7 +9,6 @@ import { Disclaimer } from "@/components/Disclaimer";
 import { FrontSplitsRoutine } from "@/components/FrontSplitsRoutine";
 import { RoutineActions } from "@/components/RoutineActions";
 import { LEG_STEP_IDS, type GuideStep } from "@/data/front-splits";
-import { exerciseRecords } from "@/data/exercise-db";
 import { exercisesInRoutine, getRoutine, isRoutineSlug, suggestedRoutines } from "@/data/routines";
 import { getPracticeById } from "@/data/practices";
 import { resolvePracticeImage } from "@/lib/resolve-image";
@@ -29,8 +28,7 @@ function stepImage(id: string): string {
 
 function guideStep(id: string, side: GuideStep["side"]): GuideStep | undefined {
   const practice = getPracticeById(id);
-  const record = exerciseRecords.find((item) => item.id === id);
-  if (!practice || !record) {
+  if (!practice) {
     return undefined;
   }
   return {
@@ -38,13 +36,13 @@ function guideStep(id: string, side: GuideStep["side"]): GuideStep | undefined {
     name: practice.name,
     image: stepImage(id),
     side,
-    guide: (record.guide as GuideStep["guide"]) || "hold",
-    seconds: record.duration_seconds ?? 30,
-    minReps: record.min_reps ?? 0,
+    guide: practice.guide ?? "hold",
+    seconds: practice.durationSec ?? practice.logging?.holdSec ?? practice.logging?.optional?.pnf?.stretchSec ?? 30,
+    minReps: practice.minReps ?? practice.logging?.repRange?.[0] ?? 0,
     cues: practice.cues,
-    setup: practice.setup ?? record.setup ?? "",
+    setup: practice.setup ?? "",
     mistake: practice.mistakes[0] ?? "",
-    why: record.why ?? "",
+    why: practice.why,
     moves: [],
   };
 }

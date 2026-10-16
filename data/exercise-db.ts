@@ -142,9 +142,25 @@ function equipmentOf(record: ExerciseRecord): Equipment[] {
   return [...items];
 }
 
+function guideOf(value: string | undefined): Practice["guide"] {
+  if (value === "hold" || value === "reps" || value === "pnf" || value === "breath") {
+    return value;
+  }
+  return undefined;
+}
+
+function recordGuide(record: ExerciseRecord): Pick<Practice, "guide" | "durationSec" | "minReps"> {
+  return {
+    guide: guideOf(record.guide),
+    durationSec: record.duration_seconds && record.duration_seconds > 0 ? record.duration_seconds : undefined,
+    minReps: record.min_reps && record.min_reps > 0 ? record.min_reps : undefined,
+  };
+}
+
 export function practiceFromRecord(record: ExerciseRecord, existing?: Practice): Practice {
   const id = exerciseId(record);
   const training = trainingOf(record);
+  const guided = recordGuide(record);
   if (existing) {
     const cues = existing.cues.join(" ").length >= record.notes.join(" ").length ? existing.cues : record.notes;
     const why = (record.why ?? "").length > existing.why.length ? record.why ?? existing.why : existing.why;
@@ -159,6 +175,7 @@ export function practiceFromRecord(record: ExerciseRecord, existing?: Practice):
       setup: record.setup || existing.setup,
       mistakes: existing.mistakes.length >= (record.common_mistake ? 1 : 0) ? existing.mistakes : record.common_mistake ? [record.common_mistake] : existing.mistakes,
       training,
+      ...guided,
     };
   }
   return {
@@ -177,6 +194,7 @@ export function practiceFromRecord(record: ExerciseRecord, existing?: Practice):
     tags: [record.movement_pattern, record.corrective_or_performance],
     training,
     setup: record.setup ?? "",
+    ...guided,
     profile: record.guide
       ? {
           exerciseType: "stretch",

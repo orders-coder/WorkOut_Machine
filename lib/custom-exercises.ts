@@ -1,4 +1,4 @@
-import { loggingForCustom } from "@/lib/logging";
+import { loadsWeight, loggingForCustom } from "@/lib/logging";
 import { MUSCLES, type MuscleId } from "@/lib/muscles";
 import type { WorkoutExercise } from "@/lib/workout-catalog";
 import type { Equipment, Level, Practice } from "@/lib/types";
@@ -61,6 +61,7 @@ export function customToPractice(item: CustomExercise): Practice {
     image: "/practices/custom.svg",
     imageAlt: item.name,
     tags: ["custom"],
+    logging: loggingForCustom(item.dose, item.equipment === "dumbbells" || item.equipment === "barbell" || item.equipment === "kettlebell" || item.equipment === "cable-or-machine" || item.equipment === "medicine-ball"),
     profile: {
       exerciseType: "strength",
       position: "standing",
@@ -70,17 +71,21 @@ export function customToPractice(item: CustomExercise): Practice {
 }
 
 export function customToWorkout(item: CustomExercise): WorkoutExercise {
+  const logging = loggingForCustom(
+    item.dose,
+    item.equipment === "dumbbells" || item.equipment === "barbell" || item.equipment === "kettlebell" || item.equipment === "cable-or-machine" || item.equipment === "medicine-ball",
+  );
   return {
     id: item.id,
     name: item.name,
     image: "/practices/custom.svg",
     level: item.level,
     bodyweight: item.equipment === "none" || item.equipment === "floor" || item.equipment === "mat" || item.equipment === "band",
-    weighted: item.equipment === "dumbbells" || item.equipment === "barbell" || item.equipment === "kettlebell" || item.equipment === "cable-or-machine" || item.equipment === "medicine-ball",
+    weighted: loadsWeight(logging),
     exerciseType: "strength",
     dose: item.dose,
     bothSides: false,
-    logging: loggingForCustom(item.dose, item.equipment === "dumbbells" || item.equipment === "barbell" || item.equipment === "kettlebell" || item.equipment === "cable-or-machine" || item.equipment === "medicine-ball"),
+    logging,
     repRange: item.repRange || undefined,
     muscles: item.muscles,
     compound: false,
