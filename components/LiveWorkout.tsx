@@ -8,7 +8,7 @@ import { DAY_TYPES, dayTypeById, longerDay, type DayType, type DayTypeId } from 
 import { readyToFinish, suggestNext, type SuggestCandidate } from "@/lib/suggest-next";
 import type { ExerciseType, ForceType, MovementPattern } from "@/lib/types";
 import { customToWorkout, loadCustomExercises } from "@/lib/custom-exercises";
-import { defaultRows, type Logging } from "@/lib/logging";
+import { defaultRows, loadBasisLabel, loadsWeight, type Logging } from "@/lib/logging";
 import type { WorkoutExercise } from "@/lib/workout-catalog";
 import {
   activeSession,
@@ -844,6 +844,7 @@ export function LiveWorkout({
           const known = byId.get(item.practiceId);
           const plan = item.plan ?? [];
           const logging = known?.logging;
+          const columns = columnsFor(logging);
           const suggested = logging?.sets ?? 2;
           const earlier = previousSetsFor(item.practiceId);
           return (
@@ -855,16 +856,22 @@ export function LiveWorkout({
                   <Link href={`/practice/${item.practiceId}`} className="font-medium text-[#0071e3]">
                     {known?.name ?? item.practiceId}
                   </Link>
-                  <p className="text-sm text-ink/55">
-                    {suggestionLine(logging, suggested)}
-                  </p>
+                  <p className="text-sm text-ink/55">{suggestionLine(logging, suggested)}</p>
+                  {pnfLine(logging) ? <p className="text-xs text-ink/55">{pnfLine(logging)}</p> : null}
+                  {progressionHint(logging, plan) ? (
+                    <p className="text-xs text-[#0071e3]">{progressionHint(logging, plan)}</p>
+                  ) : null}
                 </div>
               </div>
-              <div className="mt-3 grid grid-cols-[1.4rem_1fr_1fr_1fr_2.2rem] gap-2 px-1 text-[0.65rem] uppercase tracking-[0.12em] text-ink/40">
+              <div
+                className="mt-3 grid items-center gap-1.5 px-1 text-[0.65rem] uppercase tracking-[0.12em] text-ink/40"
+                style={{ gridTemplateColumns: planGrid(columns.length) }}
+              >
                 <span>Set</span>
                 <span>Previous</span>
-                <span>{unit}</span>
-                <span>Reps</span>
+                {columns.map((column) => (
+                  <span key={column.key}>{columnHeader(column, unit)}</span>
+                ))}
                 <span className="text-right">Done</span>
               </div>
               <ol className="mt-1 space-y-1.5">
@@ -875,37 +882,36 @@ export function LiveWorkout({
                   return (
                     <li
                       key={`${exerciseIndex}-${setIndex}`}
-                      className={`grid grid-cols-[1.4rem_1fr_1fr_1fr_2.2rem] items-center gap-2 rounded-xl px-1 py-1.5 ${done ? "bg-[#e5f6ea]" : ""}`}
+                      className={`grid items-center gap-1.5 rounded-xl px-1 py-1.5 ${done ? "bg-[#e5f6ea]" : ""}`}
+                      style={{ gridTemplateColumns: planGrid(columns.length) }}
                     >
-                      <span className="text-sm text-ink/50">{setIndex + 1}</span>
-                      <span className="truncate text-xs text-ink/45">{previousLabel(previous)}</span>
-                      <SetNumber
-                        value={row.weight}
-                        editing={draft?.key === `${exerciseIndex}-${setIndex}-weight`}
-                        draft={draft?.value ?? ""}
-                        onStart={() => setDraft({ key: `${exerciseIndex}-${setIndex}-weight`, value: row.weight == null ? "" : String(row.weight) })}
-                        onDraft={(value) => setDraft({ key: `${exerciseIndex}-${setIndex}-weight`, value })}
-                        onCommit={(value) => {
-                          changePlan(exerciseIndex, setIndex, { weight: numberOrUndefined(value) });
-                          setDraft(null);
-                        }}
-                      />
-                      <SetNumber
-                        value={row.reps}
-                        editing={draft?.key === `${exerciseIndex}-${setIndex}-reps`}
-                        draft={draft?.value ?? ""}
-                        onStart={() => setDraft({ key: `${exerciseIndex}-${setIndex}-reps`, value: row.reps == null ? "" : String(row.reps) })}
-                        onDraft={(value) => setDraft({ key: `${exerciseIndex}-${setIndex}-reps`, value })}
-                        onCommit={(value) => {
-                          changePlan(exerciseIndex, setIndex, { reps: numberOrUndefined(value) });
-                          setDraft(null);
-                        }}
-                      />
+                      <span className="text-sm text-ink/50">{setLabel(row, plan, setIndex)}</span>
+                      <span className="truncate text-xs text-ink/45">{previousLabel(previous, columns)}</span>
+                      {columns.map((column) => (
+                        <PlanField
+                          key={column.key}
+                          column={column}
+                          row={row}
+                          editing={draft?.key === `${exerciseIndex}-${setIndex}-${column.key}`}
+                          draft={draft?.value ?? ""}
+                          onStart={() =>
+                            setDraft({
+                              key: `${exerciseIndex}-${setIndex}-${column.key}`,
+                              value: fieldText(row, column.key),
+                            })
+                          }
+                          onDraft={(value) => setDraft({ key: `${exerciseIndex}-${setIndex}-${column.key}`, value })}
+                          onCommit={(value) => {
+                            changePlan(exerciseIndex, setIndex, fieldPatch(column.key, value));
+                            setDraft(null);
+                          }}
+                        />
+                      ))}
                       <button
                         type="button"
                         aria-label={done ? "Uncheck set" : "Log set"}
                         aria-pressed={done}
-                        onClick={() => toggleLogged(exerciseIndex, setIndex, logging?.restSec ?? 75)}
+                        onClick={() => toggleLogged(exerciseIndex, setIndex, logging?.restSec ?? 30)}
                         className={`flex h-9 w-9 items-center justify-center rounded-full text-base ${done ? "bg-[#34c759] text-white" : "bg-white ring-1 ring-ink/15"}`}
                       >
                         ✓
@@ -924,6 +930,9 @@ export function LiveWorkout({
                     reps: last?.reps,
                     seconds: last?.seconds,
                     side: last?.side,
+                    bandLevel: last?.bandLevel,
+                    addedWeight: last?.addedWeight,
+                    assistWeight: last?.assistWeight,
                     distanceM: last?.distanceM,
                     boxHeightCm: last?.boxHeightCm,
                     contacts: last?.contacts,
@@ -959,45 +968,6 @@ export function LiveWorkout({
   );
 }
 
-function SetNumber({
-  value,
-  editing,
-  draft,
-  onStart,
-  onDraft,
-  onCommit,
-}: {
-  value: number | undefined;
-  editing: boolean;
-  draft: string;
-  onStart: () => void;
-  onDraft: (value: string) => void;
-  onCommit: (value: string) => void;
-}) {
-  if (editing) {
-    return (
-      <input
-        autoFocus
-        inputMode="decimal"
-        value={draft}
-        onChange={(event) => onDraft(event.target.value)}
-        onBlur={() => onCommit(draft)}
-        onKeyDown={(event) => {
-          if (event.key === "Enter") {
-            onCommit(draft);
-          }
-        }}
-        className="h-9 w-full rounded-lg bg-white px-2 text-center text-base ring-1 ring-[#0071e3]"
-      />
-    );
-  }
-  return (
-    <button type="button" onClick={onStart} className="h-9 w-full rounded-lg text-center text-base font-medium">
-      {value ?? "—"}
-    </button>
-  );
-}
-
 function numberOrUndefined(value: string): number | undefined {
   if (value.trim() === "") {
     return undefined;
@@ -1013,6 +983,85 @@ function loggingForExercise(info?: WorkoutExercise): Logging {
   return info.logging;
 }
 
+type PlanColumnKey = "weight" | "reps" | "seconds" | "band" | "load" | "added" | "distance" | "contacts" | "height";
+
+interface PlanColumn {
+  key: PlanColumnKey;
+  label: string;
+}
+
+function columnsFor(logging: Logging | undefined): PlanColumn[] {
+  if (!logging) {
+    return [
+      { key: "weight", label: "Wt" },
+      { key: "reps", label: "Reps" },
+    ];
+  }
+  switch (logging.profile) {
+    case "dumbbell_reps":
+    case "dumbbell_each_side":
+      return [
+        { key: "weight", label: "Wt" },
+        { key: "reps", label: "Reps" },
+      ];
+    case "bodyweight":
+      return [
+        { key: "reps", label: "Reps" },
+        { key: "load", label: "±" },
+      ];
+    case "band":
+      return [
+        { key: "band", label: "Band" },
+        { key: "reps", label: "Reps" },
+      ];
+    case "hold":
+    case "hold_each_side": {
+      const columns: PlanColumn[] = [{ key: "seconds", label: "Sec" }];
+      if (logging.optional?.added) {
+        columns.push({ key: "added", label: "Added" });
+      }
+      if (logging.optional?.bandLevel) {
+        columns.push({ key: "band", label: "Band" });
+      }
+      return columns;
+    }
+    case "mobility_reps":
+      return [{ key: "reps", label: "Reps" }];
+    case "carry":
+      return [
+        { key: "weight", label: "Wt" },
+        { key: "distance", label: "m" },
+        { key: "seconds", label: "Sec" },
+      ];
+    case "plyometric": {
+      const columns: PlanColumn[] = [{ key: "contacts", label: "Hits" }];
+      if (logging.optional?.boxHeightCm != null) {
+        columns.push({ key: "height", label: "cm" });
+      }
+      return columns;
+    }
+    case "sprint_interval":
+      return [
+        { key: "distance", label: "m" },
+        { key: "seconds", label: "Sec" },
+        { key: "reps", label: "Reps" },
+      ];
+    case "pnf_stretch":
+      return [{ key: "seconds", label: "Sec" }];
+  }
+}
+
+function planGrid(count: number): string {
+  return `1.7rem minmax(0,1.15fr) repeat(${count}, minmax(0,1fr)) 2.2rem`;
+}
+
+function columnHeader(column: PlanColumn, unit: WeightUnit): string {
+  if (column.key === "weight" || column.key === "load" || column.key === "added") {
+    return unit;
+  }
+  return column.label;
+}
+
 function suggestionLine(logging: Logging | undefined, suggested: number): string {
   if (!logging) {
     return `${suggested} sets`;
@@ -1026,7 +1075,104 @@ function suggestionLine(logging: Logging | undefined, suggested: number): string
       : logging.optional?.pnf
         ? `${logging.optional.pnf.stretchSec}s stretch`
         : "";
-  return [`Suggested ${sets}${side}`, dose].filter(Boolean).join(" · ");
+  const basis = loadsWeight(logging) ? loadBasisLabel(logging.loadBasis) : "";
+  return [`Suggested ${sets}${side}`, dose, basis].filter(Boolean).join(" · ");
+}
+
+function pnfLine(logging: Logging | undefined): string | null {
+  const pnf = logging?.optional?.pnf;
+  if (!pnf) {
+    return null;
+  }
+  return `Contract ${pnf.contractSec}s · stretch ${pnf.stretchSec}s · ${pnf.cycles} cycles · moderate effort`;
+}
+
+function progressionHint(logging: Logging | undefined, plan: SetPlan[]): string | null {
+  const top = logging?.repRange?.[1];
+  const step = logging?.progression.incrementLb;
+  if (!logging || logging.progression.rule !== "double" || top == null || step == null) {
+    return null;
+  }
+  if (plan.length === 0 || plan.some((row) => !row.completedAt || (row.reps ?? -1) < top)) {
+    return null;
+  }
+  return `Next time, add ${step} lb`;
+}
+
+function setLabel(row: SetPlan, plan: SetPlan[], setIndex: number): string {
+  if (!row.side) {
+    return String(setIndex + 1);
+  }
+  const count = plan.slice(0, setIndex + 1).filter((entry) => entry.side === row.side).length;
+  return `${count}${row.side}`;
+}
+
+function signedLoad(row: SetPlan): number | undefined {
+  if (row.assistWeight != null) {
+    return -row.assistWeight;
+  }
+  return row.addedWeight;
+}
+
+function fieldText(row: SetPlan, key: PlanColumnKey): string {
+  const value = fieldValue(row, key);
+  return value == null ? "" : String(value);
+}
+
+function fieldValue(row: SetPlan, key: PlanColumnKey): number | string | undefined {
+  switch (key) {
+    case "weight":
+      return row.weight;
+    case "reps":
+      return row.reps;
+    case "seconds":
+      return row.seconds;
+    case "band":
+      return row.bandLevel;
+    case "load":
+      return signedLoad(row);
+    case "added":
+      return row.addedWeight;
+    case "distance":
+      return row.distanceM;
+    case "contacts":
+      return row.contacts;
+    case "height":
+      return row.boxHeightCm;
+  }
+}
+
+function fieldPatch(key: PlanColumnKey, value: string): Partial<SetPlan> {
+  if (key === "band") {
+    const trimmed = value.trim();
+    return { bandLevel: trimmed ? trimmed : undefined };
+  }
+  const parsed = numberOrUndefined(value);
+  if (key === "load") {
+    if (parsed == null) {
+      return { addedWeight: undefined, assistWeight: undefined };
+    }
+    if (parsed < 0) {
+      return { addedWeight: undefined, assistWeight: Math.abs(parsed) };
+    }
+    return { addedWeight: parsed, assistWeight: undefined };
+  }
+  switch (key) {
+    case "weight":
+      return { weight: parsed };
+    case "reps":
+      return { reps: parsed };
+    case "seconds":
+      return { seconds: parsed };
+    case "added":
+      return { addedWeight: parsed };
+    case "distance":
+      return { distanceM: parsed };
+    case "contacts":
+      return { contacts: parsed };
+    case "height":
+      return { boxHeightCm: parsed };
+  }
 }
 
 function planFromLogs(logged: SetLog[], logging: Logging | undefined, unit: WeightUnit): SetPlan[] {
@@ -1070,12 +1216,67 @@ function convertWeight(value: number, from: WeightUnit, to: WeightUnit): number 
   return Math.round(next * 10) / 10;
 }
 
-function previousLabel(set?: SetLog): string {
+function previousLabel(set: SetLog | undefined, columns: PlanColumn[]): string {
   if (!set) {
     return "—";
   }
-  const bits = [set.weight != null ? String(set.weight) : "", set.reps != null ? `× ${set.reps}` : ""].filter(Boolean);
-  return bits.join(" ") || "—";
+  const bits = columns.map((column) => {
+    const value = fieldValue(set, column.key);
+    if (value == null || value === "") {
+      return "";
+    }
+    if (column.key === "reps") {
+      return `× ${value}`;
+    }
+    if (column.key === "seconds") {
+      return `${value}s`;
+    }
+    return String(value);
+  });
+  return bits.filter(Boolean).join(" ") || "—";
+}
+
+function PlanField({
+  column,
+  row,
+  editing,
+  draft,
+  onStart,
+  onDraft,
+  onCommit,
+}: {
+  column: PlanColumn;
+  row: SetPlan;
+  editing: boolean;
+  draft: string;
+  onStart: () => void;
+  onDraft: (value: string) => void;
+  onCommit: (value: string) => void;
+}) {
+  const shown = fieldText(row, column.key);
+  if (editing) {
+    return (
+      <input
+        autoFocus
+        inputMode={column.key === "band" ? "text" : "decimal"}
+        value={draft}
+        aria-label={column.label}
+        onChange={(event) => onDraft(event.target.value)}
+        onBlur={() => onCommit(draft)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            onCommit(draft);
+          }
+        }}
+        className="h-9 w-full rounded-lg bg-white px-1 text-center text-sm tabular-nums ring-1 ring-[#0071e3]"
+      />
+    );
+  }
+  return (
+    <button type="button" onClick={onStart} className="h-9 w-full rounded-lg text-center text-sm tabular-nums">
+      {shown || "—"}
+    </button>
+  );
 }
 
 function rankedStart(items: WorkoutExercise[], focus: MuscleId[]): WorkoutExercise[] {

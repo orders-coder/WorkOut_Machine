@@ -330,6 +330,7 @@ export function defaultRows(logging: Logging, unit: "lb" | "kg") {
     seconds?: number;
     side?: "L" | "R";
     distanceM?: number;
+    contacts?: number;
     boxHeightCm?: number;
   }> = [];
   for (let index = 0; index < logging.sets; index += 1) {
@@ -339,7 +340,7 @@ export function defaultRows(logging: Logging, unit: "lb" | "kg") {
         row.side = side;
       }
       if (logging.profile === "plyometric") {
-        row.reps = logging.optional?.contacts ?? logging.repRange?.[0];
+        row.contacts = logging.optional?.contacts ?? logging.repRange?.[0];
         if (logging.optional?.boxHeightCm) {
           row.boxHeightCm = logging.optional.boxHeightCm;
         }
