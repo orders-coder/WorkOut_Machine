@@ -3,7 +3,7 @@ import { practices } from "@/data/practices";
 import type { MuscleId } from "@/lib/muscles";
 import { resolvePracticeImage } from "@/lib/resolve-image";
 import type { ExerciseType, ForceType, Level, MovementPattern } from "@/lib/types";
-import { isBodyweightGear } from "@/lib/workout-gear";
+import { isBodyweightGear, isWeightedGear } from "@/lib/workout-gear";
 
 export interface WorkoutExercise {
   id: string;
@@ -11,6 +11,10 @@ export interface WorkoutExercise {
   image: string;
   level: Level;
   bodyweight: boolean;
+  /** True only when the load is something you can log in kg or lb. */
+  weighted: boolean;
+  /** One side, then the other. */
+  bothSides: boolean;
   exerciseType?: ExerciseType;
   pattern?: MovementPattern;
   force?: ForceType;
@@ -33,10 +37,19 @@ export function workoutCatalog(): WorkoutExercise[] {
       image: resolvePracticeImage(practice.id, practice.image),
       level: practice.level,
       bodyweight: isBodyweightGear(practice.equipment, practice.profile?.equipment),
+      weighted:
+        isWeightedGear(practice.equipment, practice.profile?.equipment) &&
+        practice.profile?.exerciseType !== "stretch" &&
+        practice.profile?.exerciseType !== "mobility" &&
+        practice.profile?.exerciseType !== "breathing" &&
+        practice.profile?.exerciseType !== "meditation" &&
+        practice.profile?.exerciseType !== "hang",
       exerciseType,
       pattern,
       force: practice.profile?.forceType ?? practice.training?.forceType,
       dose: practice.profile?.dose,
+      bothSides:
+        practice.profile?.laterality === "unilateral" || practice.training?.laterality === "unilateral",
       repRange: practice.training?.defaultRepRange,
       muscles: [...targeting.primary, ...targeting.secondary],
       compound:

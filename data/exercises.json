@@ -45,7 +45,8 @@
       "body in straight line from head to heels",
       "don't let hips sag"
     ],
-    "media": "TBD"
+    "media": "TBD",
+    "why": "You push the floor away until the arms are straight, then lower with the whole body in one line. The elbows stay near the ribs so the chest and triceps share the work."
   },
   {
     "name": "Scapular Push-up",
@@ -89,7 +90,8 @@
       "push the floor away to spread the shoulder blades apart",
       "let the chest sink between the shoulder blades without the lower back sagging"
     ],
-    "media": "TBD"
+    "media": "TBD",
+    "why": "The arms stay straight. You let the shoulder blades spread, then pull them forward around the ribs. It is a small motion that teaches the shoulder to sit on the ribcage."
   },
   {
     "name": "Half-Kneeling Single-Arm Dumbbell Press",
@@ -140,56 +142,8 @@
       "press slightly in front of the head, finishing with the biceps near the ear",
       "don't lean away from the working arm"
     ],
-    "media": "TBD"
-  },
-  {
-    "name": "Ring Dip",
-    "primary_muscles": [
-      "chest (pectoralis major, sternal head)",
-      "triceps brachii"
-    ],
-    "secondary_muscles": [
-      "front delts (anterior deltoid)"
-    ],
-    "movement_pattern": "push",
-    "equipment": [
-      "bodyweight"
-    ],
-    "environment": [
-      "rings"
-    ],
-    "difficulty": "advanced",
-    "force_type": "push",
-    "laterality": "bilateral",
-    "default_rep_range": "5-10",
-    "default_rest_seconds": 120,
-    "posture_alignment_tags": [
-      "scapular control",
-      "core stability"
-    ],
-    "corrective_or_performance": "performance",
-    "progression_path": [
-      "Parallel Bar Support Hold",
-      "Band-Assisted Parallel Bar Dip",
-      "Parallel Bar Dip",
-      "Ring Support Hold",
-      "Ring Dip",
-      "Weighted Ring Dip"
-    ],
-    "dominant_contraction": "concentric",
-    "tempo_suggestion": "3 sec down, 1 sec up",
-    "contraindications": [
-      "shoulder impingement or anterior shoulder instability",
-      "AC joint pain",
-      "elbow tendinopathy",
-      "recent shoulder dislocation or labral injury"
-    ],
-    "notes": [
-      "master a steady ring support hold (rings turned out at the top) before attempting reps",
-      "lower only until the shoulder is just below the elbow; stop short if the front of the shoulder hurts",
-      "keep the rings close to the body and the shoulders pulled down, not shrugged"
-    ],
-    "media": "TBD"
+    "media": "TBD",
+    "why": "One knee is down and the other foot is forward. You press one dumbbell overhead without leaning, then switch arms."
   },
   {
     "name": "Face Pull",
@@ -235,7 +189,8 @@
       "pull toward the face, splitting the rope and finishing with knuckles pointing back (external rotation)",
       "keep ribs down; don't lean back to move more weight"
     ],
-    "media": "TBD"
+    "media": "TBD",
+    "why": "You pull toward your face and finish with the hands apart and the knuckles back. The rear shoulder and upper back do the work."
   },
   {
     "name": "Single-Arm Dumbbell Row",
@@ -286,55 +241,8 @@
       "drive the elbow toward the hip, not straight up to the ear",
       "avoid twisting the torso to finish the rep"
     ],
-    "media": "TBD"
-  },
-  {
-    "name": "Barbell Bent-Over Row",
-    "primary_muscles": [
-      "lats (latissimus dorsi)",
-      "middle trapezius and rhomboids"
-    ],
-    "secondary_muscles": [
-      "rear delts (posterior deltoid)",
-      "biceps brachii",
-      "brachialis",
-      "teres major"
-    ],
-    "movement_pattern": "pull",
-    "equipment": [
-      "barbell"
-    ],
-    "environment": [],
-    "difficulty": "intermediate",
-    "force_type": "pull",
-    "laterality": "bilateral",
-    "default_rep_range": "6-10",
-    "default_rest_seconds": 120,
-    "posture_alignment_tags": [
-      "spinal alignment",
-      "core stability",
-      "scapular control"
-    ],
-    "corrective_or_performance": "performance",
-    "progression_path": [
-      "Inverted Row",
-      "Chest-Supported Dumbbell Row",
-      "Barbell Bent-Over Row",
-      "Pendlay Row"
-    ],
-    "dominant_contraction": "concentric",
-    "tempo_suggestion": "1 sec up, 1 sec pause, 2 sec down",
-    "contraindications": [
-      "low back pain or disc herniation (sustained bent-over position)",
-      "poor hip-hinge control",
-      "acute shoulder or elbow pain"
-    ],
-    "notes": [
-      "hinge to roughly 30-45 degrees above parallel with a neutral spine",
-      "pull the bar to the lower ribs/upper abdomen",
-      "torso angle stays fixed; no heaving with the hips"
-    ],
-    "media": "TBD"
+    "media": "TBD",
+    "why": "One hand braces. You row the dumbbell toward the hip, then lower it without shrugging. Finish that arm, then switch."
   },
   {
     "name": "Pull-up",
@@ -385,7 +293,8 @@
       "chin clears the bar without craning the neck",
       "avoid kipping; keep legs quiet and ribs down"
     ],
-    "media": "TBD"
+    "media": "TBD",
+    "why": "From a hang, you pull until the chin clears the bar. If a full pull is not there yet, lower yourself slowly through the same path."
   },
   {
     "name": "Glute Bridge",
@@ -432,10 +341,11 @@
       "finish with hips extended by the glutes, not by arching the lower back",
       "keep ribs down and pelvis slightly tucked at the top"
     ],
-    "media": "TBD"
+    "media": "TBD",
+    "why": "Feet planted, you lift the hips until the body is a line from knee to shoulder. The glutes finish the lift. The low back does not arch to get higher."
   },
   {
-    "name": "Kettlebell Swing",
+    "name": "Dumbbell Swing",
     "primary_muscles": [
       "glutes (gluteus maximus)",
       "hamstrings"
@@ -445,7 +355,7 @@
     ],
     "movement_pattern": "hinge",
     "equipment": [
-      "kettlebell"
+      "dumbbell"
     ],
     "environment": [],
     "difficulty": "intermediate",
@@ -475,11 +385,13 @@
       "pregnancy (consult provider)"
     ],
     "notes": [
-      "it's a hinge, not a squat: hips go back, shins stay near vertical",
-      "power comes from the hips; arms just guide the bell to chest height",
-      "finish standing tall with glutes squeezed; don't lean back"
+      "one dumbbell held by the head",
+      "hip hinge, swing to chest height",
+      "Needs new art. Currently using the kettlebell swing image."
     ],
-    "media": "TBD"
+    "media": "/exercises/dumbbell-swing/demo.gif",
+    "id": "dumbbell-swing",
+    "why": "One dumbbell hangs between the legs. You hinge, then snap the hips so the bell floats up to chest height. The arms guide it. They do not lift it."
   },
   {
     "name": "Single-Leg Romanian Deadlift",
@@ -526,55 +438,8 @@
       "keep hips square to the floor; don't let the raised hip open up",
       "soft stance knee; lower until a hamstring stretch, spine stays neutral"
     ],
-    "media": "TBD"
-  },
-  {
-    "name": "Barbell Deadlift",
-    "primary_muscles": [
-      "glutes (gluteus maximus)",
-      "hamstrings",
-      "erector spinae"
-    ],
-    "secondary_muscles": [
-      "adductor magnus",
-      "quadriceps"
-    ],
-    "movement_pattern": "hinge",
-    "equipment": [
-      "barbell"
-    ],
-    "environment": [],
-    "difficulty": "intermediate",
-    "force_type": "pull",
-    "laterality": "bilateral",
-    "default_rep_range": "3-6",
-    "default_rest_seconds": 180,
-    "posture_alignment_tags": [
-      "spinal alignment",
-      "core stability"
-    ],
-    "corrective_or_performance": "performance",
-    "progression_path": [
-      "Kettlebell Deadlift",
-      "Trap Bar Deadlift",
-      "Barbell Rack Pull",
-      "Barbell Deadlift",
-      "Deficit Deadlift"
-    ],
-    "dominant_contraction": "concentric",
-    "tempo_suggestion": "1-2 sec up, controlled 2 sec down, reset each rep",
-    "contraindications": [
-      "acute low back pain or disc herniation",
-      "uncontrolled hypertension (heavy bracing)",
-      "unable to hip-hinge with a neutral spine",
-      "recent hernia or abdominal surgery"
-    ],
-    "notes": [
-      "bar over mid-foot, shins close, lats tight before the bar leaves the floor",
-      "push the floor away and keep the bar dragging up the legs",
-      "lock out with glutes, not by leaning back"
-    ],
-    "media": "TBD"
+    "media": "TBD",
+    "why": "You hinge on one leg and reach toward the floor with a long back. The standing hip stays square. Then the other leg."
   },
   {
     "name": "Spanish Squat",
@@ -617,7 +482,8 @@
       "sit back into the band so shins stay vertical and the knees don't drift forward",
       "commonly used to load the quads/patellar tendon with less knee pain"
     ],
-    "media": "TBD"
+    "media": "TBD",
+    "why": "A band holds you back at the knees so you can sit into a squat and stay. The quads work while the knees stay over the feet."
   },
   {
     "name": "Goblet Squat",
@@ -664,7 +530,8 @@
       "knees track over the toes; sit between the heels",
       "keep the chest tall and heels down"
     ],
-    "media": "TBD"
+    "media": "TBD",
+    "why": "One dumbbell sits at the chest while you sit between the hips. Elbows stay inside the knees. You stand by pushing the floor away."
   },
   {
     "name": "Bulgarian Split Squat",
@@ -713,54 +580,8 @@
       "front foot far enough forward that the heel stays down",
       "slight forward torso lean shifts work to the glutes; upright shifts it to the quads"
     ],
-    "media": "TBD"
-  },
-  {
-    "name": "Barbell Back Squat",
-    "primary_muscles": [
-      "quadriceps",
-      "glutes (gluteus maximus)"
-    ],
-    "secondary_muscles": [
-      "adductor magnus"
-    ],
-    "movement_pattern": "squat",
-    "equipment": [
-      "barbell"
-    ],
-    "environment": [],
-    "difficulty": "intermediate",
-    "force_type": "push",
-    "laterality": "bilateral",
-    "default_rep_range": "5-8",
-    "default_rest_seconds": 150,
-    "posture_alignment_tags": [
-      "spinal alignment",
-      "core stability",
-      "hip mobility"
-    ],
-    "corrective_or_performance": "performance",
-    "progression_path": [
-      "Bodyweight Squat",
-      "Goblet Squat",
-      "Barbell Box Squat",
-      "Barbell Back Squat",
-      "Pause Back Squat"
-    ],
-    "dominant_contraction": "concentric",
-    "tempo_suggestion": "2-3 sec down, 1 sec up",
-    "contraindications": [
-      "acute low back pain or disc herniation",
-      "acute knee pain",
-      "limited shoulder mobility to hold the bar",
-      "uncontrolled hypertension (heavy bracing)"
-    ],
-    "notes": [
-      "use a squat rack with safety pins set just below the bottom position",
-      "brace before descending and keep the bar over mid-foot",
-      "knees track over the toes; depth only as far as a neutral spine allows"
-    ],
-    "media": "TBD"
+    "media": "TBD",
+    "why": "The back foot rests on a bench. You lower the back knee, then stand on the front leg. Finish that side, then switch."
   },
   {
     "name": "Farmer's Carry",
@@ -808,7 +629,8 @@
       "walk heel-to-toe without the weights swinging",
       "set the weights down with a hinge, not a rounded back"
     ],
-    "media": "TBD"
+    "media": "TBD",
+    "why": "A weight in each hand. You walk tall, ribs down, without leaning. The hands and the trunk hold while the legs walk."
   },
   {
     "name": "Suitcase Carry",
@@ -854,7 +676,8 @@
       "don't lean toward or away from the weight; shoulders stay level",
       "the side opposite the weight is doing the most work"
     ],
-    "media": "TBD"
+    "media": "TBD",
+    "why": "One weight in one hand. You walk without leaning toward it or away from it. Then the other hand."
   },
   {
     "name": "Waiter's Carry",
@@ -903,53 +726,8 @@
       "ribs down; don't arch the lower back to get the weight overhead",
       "start light: this is a stability drill"
     ],
-    "media": "TBD"
-  },
-  {
-    "name": "Bottoms-Up Kettlebell Carry",
-    "primary_muscles": [
-      "forearm flexors (grip)",
-      "rotator cuff"
-    ],
-    "secondary_muscles": [
-      "deltoids",
-      "biceps brachii"
-    ],
-    "movement_pattern": "carry",
-    "equipment": [
-      "kettlebell"
-    ],
-    "environment": [],
-    "difficulty": "advanced",
-    "force_type": "static",
-    "laterality": "unilateral",
-    "default_rep_range": "20-40s",
-    "default_rest_seconds": 60,
-    "posture_alignment_tags": [
-      "scapular control",
-      "core stability",
-      "spinal alignment"
-    ],
-    "corrective_or_performance": "performance",
-    "progression_path": [
-      "Kettlebell Front Rack Carry",
-      "Bottoms-Up Kettlebell Hold",
-      "Bottoms-Up Kettlebell Carry",
-      "Bottoms-Up Waiter's Carry"
-    ],
-    "dominant_contraction": "isometric",
-    "tempo_suggestion": "slow walk; time is per side",
-    "contraindications": [
-      "wrist or elbow pain",
-      "acute shoulder injury",
-      "grip-limiting hand injury"
-    ],
-    "notes": [
-      "time is per side",
-      "crush the handle; bell upside down, forearm vertical, elbow under the wrist",
-      "use a light bell and clear space: the bell can tip"
-    ],
-    "media": "TBD"
+    "media": "TBD",
+    "why": "One weight stays overhead while you walk, ribs quiet. Then the other arm."
   },
   {
     "name": "Pallof Press",
@@ -969,7 +747,7 @@
     "environment": [],
     "difficulty": "beginner",
     "force_type": "static",
-    "laterality": "bilateral",
+    "laterality": "unilateral",
     "default_rep_range": "8-12",
     "default_rest_seconds": 45,
     "posture_alignment_tags": [
@@ -995,7 +773,8 @@
       "do reps on both sides",
       "stand side-on to the anchor, hands at the sternum, press straight out"
     ],
-    "media": "TBD"
+    "media": "TBD",
+    "why": "A band or cable tries to turn you. You press the hands straight out and hold the trunk still. Then the other side."
   },
   {
     "name": "Bird Dog",
@@ -1044,10 +823,11 @@
       "keep the hips level; imagine a cup of water on the lower back",
       "reach long, not high; don't arch the lower back"
     ],
-    "media": "TBD"
+    "media": "TBD",
+    "why": "From hands and knees you reach one arm and the opposite leg, then come back without rocking. Then the other pair."
   },
   {
-    "name": "Cable Woodchop",
+    "name": "Dumbbell Woodchop",
     "primary_muscles": [
       "obliques"
     ],
@@ -1058,12 +838,14 @@
     ],
     "movement_pattern": "rotation",
     "equipment": [
-      "cable"
+      "dumbbell"
     ],
-    "environment": [],
+    "environment": [
+      "floor"
+    ],
     "difficulty": "intermediate",
     "force_type": "pull",
-    "laterality": "bilateral",
+    "laterality": "unilateral",
     "default_rep_range": "10-15",
     "default_rest_seconds": 45,
     "posture_alignment_tags": [
@@ -1086,59 +868,660 @@
       "recent abdominal surgery"
     ],
     "notes": [
-      "high-to-low diagonal; do reps on both sides",
-      "rotate through the hips and upper back, pivoting the back foot",
-      "arms stay long; the trunk drives the movement, not the arms"
+      "one dumbbell in both hands",
+      "high-to-low diagonal chop across the body",
+      "pivot the back foot",
+      "Needs new art. Currently using the cable woodchop image."
     ],
-    "media": "TBD"
+    "media": "/exercises/dumbbell-woodchop/demo.gif",
+    "id": "dumbbell-woodchop",
+    "why": "Both hands hold one dumbbell. You lift it high and chop down across the body, turning from the hips. Then the other direction."
   },
   {
-    "name": "Medicine Ball Rotational Throw",
-    "primary_muscles": [
-      "obliques",
-      "glutes (gluteus maximus)"
-    ],
     "secondary_muscles": [
-      "rectus abdominis",
-      "lats (latissimus dorsi)",
-      "front delts (anterior deltoid)"
+      "quads",
+      "calves"
     ],
-    "movement_pattern": "rotation",
-    "equipment": [
-      "medicine_ball"
-    ],
-    "environment": [
-      "wall"
-    ],
-    "difficulty": "advanced",
-    "force_type": "push",
-    "laterality": "bilateral",
-    "default_rep_range": "5-8",
-    "default_rest_seconds": 90,
+    "progression_path": [],
+    "contraindications": [],
+    "tempo_suggestion": "",
+    "media": "/exercises/march-in-place/still.png",
+    "default_rest_seconds": 0,
     "posture_alignment_tags": [
-      "core stability",
       "hip mobility"
     ],
-    "corrective_or_performance": "performance",
-    "progression_path": [
-      "Pallof Press",
-      "Cable Woodchop",
-      "Medicine Ball Rotational Scoop Toss",
-      "Medicine Ball Rotational Throw",
-      "Step-Behind Medicine Ball Rotational Throw"
+    "corrective_or_performance": "corrective",
+    "equipment": [
+      "bodyweight"
     ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "id": "march-in-place",
+    "name": "March in Place",
+    "primary_muscles": [
+      "hip flexors"
+    ],
+    "movement_pattern": "squat",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "60s",
     "dominant_contraction": "concentric",
-    "tempo_suggestion": "explosive throw, reset fully between reps",
-    "contraindications": [
-      "acute low back pain or disc herniation",
-      "acute shoulder injury",
-      "recent abdominal surgery or hernia"
-    ],
     "notes": [
-      "do reps on both sides; quality over fatigue (power drill)",
-      "load the back hip, then let hips, trunk, then arms fire in sequence",
-      "use a non-bouncing (slam/soft) ball against a solid wall"
+      "breathe a little harder",
+      "get warm, not tired"
     ],
-    "media": "TBD"
+    "why": "A warm muscle stretches further and more safely.",
+    "guide": "hold",
+    "duration_seconds": 60,
+    "setup": "",
+    "common_mistake": ""
+  },
+  {
+    "secondary_muscles": [
+      "shoulders",
+      "hip flexors"
+    ],
+    "progression_path": [],
+    "contraindications": [],
+    "tempo_suggestion": "",
+    "media": "/exercises/jumping-jacks/still.png",
+    "default_rest_seconds": 0,
+    "posture_alignment_tags": [
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "id": "jumping-jacks",
+    "name": "Jumping Jacks",
+    "primary_muscles": [
+      "calves"
+    ],
+    "movement_pattern": "squat",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "60s",
+    "dominant_contraction": "concentric",
+    "notes": [
+      "breathe a little harder",
+      "get warm, not tired"
+    ],
+    "why": "A warm muscle stretches further and more safely.",
+    "guide": "hold",
+    "duration_seconds": 60,
+    "setup": "",
+    "common_mistake": ""
+  },
+  {
+    "secondary_muscles": [
+      "hamstrings",
+      "glutes"
+    ],
+    "progression_path": [],
+    "contraindications": [],
+    "tempo_suggestion": "",
+    "media": "/exercises/leg-swings/still.png",
+    "default_rest_seconds": 0,
+    "posture_alignment_tags": [
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "id": "leg-swings",
+    "name": "Leg Swings",
+    "primary_muscles": [
+      "hip flexors"
+    ],
+    "movement_pattern": "hinge",
+    "force_type": "push",
+    "laterality": "unilateral",
+    "default_rep_range": "60s",
+    "dominant_contraction": "concentric",
+    "notes": [
+      "swing front and back",
+      "one side, then the other",
+      "stay tall"
+    ],
+    "why": "You swing one leg forward and back, loose and easy, to wake the hip up. Then the other leg.",
+    "guide": "hold",
+    "duration_seconds": 60,
+    "setup": "Hold a chair or wall. Swing one leg forward and back.",
+    "common_mistake": ""
+  },
+  {
+    "secondary_muscles": [
+      "glutes",
+      "lower back"
+    ],
+    "progression_path": [],
+    "contraindications": [],
+    "tempo_suggestion": "",
+    "media": "/exercises/bodyweight-good-morning/still.png",
+    "default_rest_seconds": 0,
+    "posture_alignment_tags": [
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "id": "bodyweight-good-morning",
+    "name": "Bodyweight Good Morning",
+    "primary_muscles": [
+      "hamstrings"
+    ],
+    "movement_pattern": "hinge",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "60s",
+    "dominant_contraction": "eccentric",
+    "notes": [
+      "flat back",
+      "hinge from the hips",
+      "soft knees"
+    ],
+    "why": "Hands at the head or crossed, you hinge at the hips with a long back and stand back up. The hamstrings and glutes do the work.",
+    "guide": "hold",
+    "duration_seconds": 60,
+    "setup": "",
+    "common_mistake": "Rounding your back."
+  },
+  {
+    "secondary_muscles": [
+      "quads"
+    ],
+    "progression_path": [],
+    "contraindications": [],
+    "tempo_suggestion": "",
+    "media": "/exercises/lunge-90-hip-flexor/still.png",
+    "default_rest_seconds": 0,
+    "posture_alignment_tags": [
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "id": "lunge-90-hip-flexor",
+    "name": "Lunge 90 Hip Flexor",
+    "primary_muscles": [
+      "hip flexors"
+    ],
+    "movement_pattern": "squat",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "30s",
+    "dominant_contraction": "isometric",
+    "notes": [
+      "tuck your tailbone down",
+      "squeeze your back glute",
+      "press the top of your back foot down"
+    ],
+    "setup": "Kneeling lunge, front knee over ankle, hips over back knee, hips facing forward. Pad under the back knee.",
+    "common_mistake": "Arching your low back instead of tucking.",
+    "why": "A kneeling lunge opens the front of the back hip. You tuck the tail and stay, instead of arching the low back to feel more.",
+    "guide": "hold",
+    "duration_seconds": 30
+  },
+  {
+    "secondary_muscles": [],
+    "progression_path": [],
+    "contraindications": [],
+    "tempo_suggestion": "",
+    "media": "/exercises/lunge-90-ankle-grab/still.png",
+    "default_rest_seconds": 0,
+    "posture_alignment_tags": [
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "id": "lunge-90-ankle-grab",
+    "name": "Lunge 90 Ankle Grab",
+    "primary_muscles": [
+      "quads"
+    ],
+    "movement_pattern": "squat",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "30s",
+    "dominant_contraction": "isometric",
+    "notes": [
+      "bring your foot to your butt, not your butt to your foot",
+      "chest faces forward",
+      "keep your tail tucked"
+    ],
+    "setup": "Same lunge. Bend your back knee and hold your shin or ankle, or use a strap.",
+    "common_mistake": "Twisting your torso to reach the foot.",
+    "why": "From the same lunge you bend the back knee and hold the ankle, so the front of the thigh joins the hip flexor stretch.",
+    "guide": "hold",
+    "duration_seconds": 30
+  },
+  {
+    "secondary_muscles": [],
+    "progression_path": [],
+    "contraindications": [],
+    "tempo_suggestion": "",
+    "media": "/exercises/half-split-hip-flexor/still.png",
+    "default_rest_seconds": 0,
+    "posture_alignment_tags": [
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "id": "half-split-hip-flexor",
+    "name": "Half Split Hip Flexor",
+    "primary_muscles": [
+      "hip flexors"
+    ],
+    "movement_pattern": "squat",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "30s",
+    "dominant_contraction": "isometric",
+    "notes": [
+      "torso stays upright",
+      "let gravity pull your hips down",
+      "breathe"
+    ],
+    "setup": "Walk your front foot forward about 6 inches and sink your hips low. Front knee over ankle. Blocks under your hands.",
+    "common_mistake": "Leaning forward over your front leg.",
+    "why": "The back leg is straight behind you and the hips stay square. You sink a little and breathe, without dropping into the low back.",
+    "guide": "hold",
+    "duration_seconds": 30
+  },
+  {
+    "secondary_muscles": [],
+    "progression_path": [],
+    "contraindications": [],
+    "tempo_suggestion": "",
+    "media": "/exercises/half-split-pnf/still.png",
+    "default_rest_seconds": 0,
+    "posture_alignment_tags": [
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "id": "half-split-pnf",
+    "name": "Half Split PNF",
+    "primary_muscles": [
+      "hip flexors"
+    ],
+    "movement_pattern": "squat",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "60s",
+    "dominant_contraction": "isometric",
+    "notes": [
+      "press at about 50% effort",
+      "relax fully",
+      "then sink deeper"
+    ],
+    "setup": "Same position as the half split.",
+    "common_mistake": "Holding your breath during the press.",
+    "why": "Contract-relax lets your nervous system allow more range.",
+    "guide": "pnf",
+    "duration_seconds": 60
+  },
+  {
+    "secondary_muscles": [],
+    "progression_path": [],
+    "contraindications": [],
+    "tempo_suggestion": "",
+    "media": "/exercises/half-split-ankle-grab/still.png",
+    "default_rest_seconds": 0,
+    "posture_alignment_tags": [
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "id": "half-split-ankle-grab",
+    "name": "Half Split Ankle Grab",
+    "primary_muscles": [
+      "quads"
+    ],
+    "movement_pattern": "squat",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "30s",
+    "dominant_contraction": "isometric",
+    "notes": [
+      "tailbone points down toward your back knee",
+      "chest square to the front"
+    ],
+    "setup": "From the half split, hold your back foot. A strap is fine.",
+    "common_mistake": "Your tailbone flaring back.",
+    "why": "In the half split you reach back for the ankle so the front of the thigh stretches with the hip.",
+    "guide": "hold",
+    "duration_seconds": 30
+  },
+  {
+    "secondary_muscles": [],
+    "progression_path": [],
+    "contraindications": [],
+    "tempo_suggestion": "",
+    "media": "/exercises/half-split-knee-taps/still.png",
+    "default_rest_seconds": 0,
+    "posture_alignment_tags": [
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "id": "half-split-knee-taps",
+    "name": "Half Split Knee Taps",
+    "primary_muscles": [
+      "hip flexors"
+    ],
+    "movement_pattern": "squat",
+    "force_type": "push",
+    "laterality": "unilateral",
+    "default_rep_range": "6-10",
+    "dominant_contraction": "concentric",
+    "notes": [
+      "hips stay low",
+      "the knee just grazes the mat",
+      "all the movement comes from your back leg"
+    ],
+    "setup": "Tuck your back toes and lift your back knee so the leg is straight.",
+    "common_mistake": "Pushing your hips up with your front leg. It's fine to lean onto blocks.",
+    "why": "From the half split you tap the back knee down and lift it again. The hip learns to bend and open without a long hold.",
+    "guide": "reps",
+    "min_reps": 6,
+    "duration_seconds": 0
+  },
+  {
+    "secondary_muscles": [
+      "calves"
+    ],
+    "progression_path": [],
+    "contraindications": [],
+    "tempo_suggestion": "",
+    "media": "/exercises/hamstring-stretch-flexed/still.png",
+    "default_rest_seconds": 0,
+    "posture_alignment_tags": [
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "id": "hamstring-stretch-flexed",
+    "name": "Hamstring Stretch Flexed",
+    "primary_muscles": [
+      "hamstrings"
+    ],
+    "movement_pattern": "hinge",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "15s",
+    "dominant_contraction": "isometric",
+    "notes": [
+      "flat back",
+      "lift your tailbone toward the wall behind you",
+      "lean from the hips"
+    ],
+    "setup": "Rock your hips back over your back knee. Front leg straight, toes up.",
+    "common_mistake": "Rounding your back to reach the foot.",
+    "why": "One leg is straight in front, toes pulled toward you. You fold from the hip over that leg, back long.",
+    "guide": "hold",
+    "duration_seconds": 15
+  },
+  {
+    "secondary_muscles": [],
+    "progression_path": [],
+    "contraindications": [],
+    "tempo_suggestion": "",
+    "media": "/exercises/hamstring-stretch-pointed/still.png",
+    "default_rest_seconds": 0,
+    "posture_alignment_tags": [
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "id": "hamstring-stretch-pointed",
+    "name": "Hamstring Stretch Pointed",
+    "primary_muscles": [
+      "hamstrings"
+    ],
+    "movement_pattern": "hinge",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "15s",
+    "dominant_contraction": "isometric",
+    "notes": [
+      "you may sink a little deeper",
+      "keep lifting your tailbone"
+    ],
+    "setup": "Same as the flexed hamstring stretch, with your foot pointed.",
+    "common_mistake": "",
+    "why": "The same fold, with the toes pointed, so the stretch sits higher in the hamstring and less in the calf.",
+    "guide": "hold",
+    "duration_seconds": 15
+  },
+  {
+    "secondary_muscles": [
+      "calves"
+    ],
+    "progression_path": [],
+    "contraindications": [],
+    "tempo_suggestion": "",
+    "media": "/exercises/pyramid-pose/still.png",
+    "default_rest_seconds": 0,
+    "posture_alignment_tags": [
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "id": "pyramid-pose",
+    "name": "Pyramid Pose",
+    "primary_muscles": [
+      "hamstrings"
+    ],
+    "movement_pattern": "hinge",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "30s",
+    "dominant_contraction": "isometric",
+    "notes": [
+      "flat-back hinge",
+      "hands on your thigh or blocks",
+      "micro-bend if your knees hyperextend"
+    ],
+    "setup": "Stand in a short split stance with both legs straight and both hip bones facing forward.",
+    "common_mistake": "Your back hip opening out to the side.",
+    "why": "The front leg is straight, the back heel is down, and you fold over the front leg from the hip.",
+    "guide": "hold",
+    "duration_seconds": 30
+  },
+  {
+    "secondary_muscles": [
+      "glutes"
+    ],
+    "progression_path": [],
+    "contraindications": [],
+    "tempo_suggestion": "",
+    "media": "/exercises/pyramid-good-morning/still.png",
+    "default_rest_seconds": 0,
+    "posture_alignment_tags": [
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "id": "pyramid-good-morning",
+    "name": "Pyramid Good Morning",
+    "primary_muscles": [
+      "hamstrings"
+    ],
+    "movement_pattern": "hinge",
+    "force_type": "pull",
+    "laterality": "unilateral",
+    "default_rep_range": "30s",
+    "dominant_contraction": "eccentric",
+    "notes": [
+      "hinge down with a flat back",
+      "press your front foot down to stand up",
+      "squeeze your glutes at the top"
+    ],
+    "setup": "Pyramid stance, hands on hips.",
+    "common_mistake": "Rushing the reps or rounding your back.",
+    "why": "From the pyramid stance you hinge up and down with a long back, so the hamstring stretch becomes a small strength move.",
+    "guide": "hold",
+    "min_reps": 0,
+    "duration_seconds": 30
+  },
+  {
+    "secondary_muscles": [
+      "hamstrings"
+    ],
+    "progression_path": [],
+    "contraindications": [],
+    "tempo_suggestion": "",
+    "media": "/exercises/front-split-hold/still.png",
+    "default_rest_seconds": 0,
+    "posture_alignment_tags": [
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "id": "front-split-hold",
+    "name": "Front Split Hold",
+    "primary_muscles": [
+      "hip flexors"
+    ],
+    "movement_pattern": "hinge",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "60s",
+    "dominant_contraction": "isometric",
+    "notes": [
+      "hips square, pull your back hip forward",
+      "torso tall",
+      "inhale 4 seconds, exhale 6 seconds"
+    ],
+    "setup": "Slide into your deepest comfortable front split. Blocks under your hands. A cushion under your hips if you need it.",
+    "common_mistake": "Hips turning open to the side. You can let them open only after the minute is up.",
+    "why": "You ease toward the split, front heel down and back knee or toes down, and breathe there. You do not force the hips to the floor.",
+    "guide": "breath",
+    "duration_seconds": 60
+  },
+  {
+    "id": "warm-up-general",
+    "name": "Warm-up",
+    "primary_muscles": [
+      "hip flexors"
+    ],
+    "secondary_muscles": [
+      "hamstrings",
+      "quads"
+    ],
+    "movement_pattern": "squat",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "300s",
+    "default_rest_seconds": 0,
+    "posture_alignment_tags": [
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "",
+    "contraindications": [],
+    "notes": [
+      "breathe a little harder",
+      "get warm, not tired",
+      "start slow before the first stretch"
+    ],
+    "media": "/exercises/warm-up-general/still.png",
+    "setup": "Move easily for a few minutes. Get warm, not tired.",
+    "common_mistake": "",
+    "why": "A warm muscle stretches further and more safely.",
+    "guide": "hold",
+    "duration_seconds": 300
   }
 ]

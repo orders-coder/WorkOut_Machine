@@ -7,6 +7,19 @@ import { resolveChosenImage } from "@/lib/media";
 import { WayMarks } from "./WayMarks";
 import { useLibrary } from "./LibraryProvider";
 
+function VideoSearch({ name, className = "" }: { name: string; className?: string }) {
+  return (
+    <a
+      href={`https://www.youtube.com/results?search_query=${encodeURIComponent(name)}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex min-h-7 items-center text-[0.7rem] font-medium text-[#0071e3] ${className}`}
+    >
+      Video
+    </a>
+  );
+}
+
 function HeartIcon({ filled }: { filled: boolean }) {
   return (
     <svg
@@ -60,6 +73,9 @@ export function PracticeCard({
             <h2 className="mt-0.5 font-display text-base leading-tight text-ink">
               {practice.name}
             </h2>
+            {practice.profile?.laterality === "unilateral" || practice.training?.laterality === "unilateral" ? (
+              <p className="mt-0.5 text-[0.7rem] text-ink/45">Both sides</p>
+            ) : null}
             {sports.length > 0 ? (
               <p className="mt-0.5 text-[0.7rem] tracking-wide text-ink/50">
                 {sports.map((sport) => SPORT_LABEL[sport]).join(" · ")}
@@ -67,6 +83,7 @@ export function PracticeCard({
             ) : null}
           </div>
         </Link>
+        <VideoSearch name={practice.name} className="self-center" />
         <button
           type="button"
           onClick={() => toggleFavorite(practice.id)}
@@ -83,7 +100,7 @@ export function PracticeCard({
   return (
     <article className={`group relative overflow-hidden rounded-2xl bg-card shadow-sm ring-1 ring-ink/5 ${fade}`}>
       <Link href={`/practice/${practice.id}`} className="block">
-        <div className="relative aspect-[5/4] overflow-hidden bg-wash">
+        <div className="relative aspect-square overflow-hidden bg-wash">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={picture}
@@ -91,11 +108,14 @@ export function PracticeCard({
             className="h-full w-full object-cover"
           />
         </div>
-        <div className="space-y-0.5 px-2.5 pb-2.5 pt-2">
+        <div className="space-y-0.5 px-1.5 pb-2 pt-1.5">
           <WayMarks practice={practice} size="sm" />
-          <h2 className="font-display text-[1.02rem] leading-snug text-ink">
+          <h2 className="font-display text-xs leading-snug text-ink">
             {practice.name}
           </h2>
+          {practice.profile?.laterality === "unilateral" || practice.training?.laterality === "unilateral" ? (
+            <p className="text-[0.65rem] text-ink/45">Both sides</p>
+          ) : null}
           {sports.length > 0 ? (
             <p className="text-xs tracking-wide text-ink/50">
               {sports.map((sport) => SPORT_LABEL[sport]).join(" · ")}
@@ -103,6 +123,7 @@ export function PracticeCard({
           ) : null}
         </div>
       </Link>
+      <VideoSearch name={practice.name} className="px-1.5 pb-2" />
       <button
         type="button"
         onClick={() => toggleFavorite(practice.id)}

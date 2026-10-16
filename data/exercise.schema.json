@@ -69,20 +69,24 @@
     },
     "corrective_or_performance": { "enum": ["corrective", "performance"] },
     "progression_path": {
-      "description": "Easiest to hardest; must include the exercise itself.",
-      "$ref": "#/$defs/stringList",
-      "minItems": 4,
-      "maxItems": 6
+      "description": "Easiest to hardest. Empty until a path is known.",
+      "$ref": "#/$defs/stringList"
     },
     "dominant_contraction": { "enum": ["concentric", "eccentric", "isometric"] },
-    "tempo_suggestion": { "$ref": "#/$defs/nonEmptyString" },
+    "tempo_suggestion": { "type": "string" },
     "contraindications": { "$ref": "#/$defs/stringList" },
     "notes": { "$ref": "#/$defs/stringList" },
     "media": {
-      "description": "Media URL, or the placeholder 'TBD' while drafting.",
-      "type": "string",
-      "minLength": 1
-    }
+      "description": "Media URL, or the placeholder 'TBD' while drafting. Empty until a file exists.",
+      "type": "string"
+    },
+    "id": { "type": "string" },
+    "setup": { "type": "string" },
+    "common_mistake": { "type": "string" },
+    "why": { "type": "string" },
+    "guide": { "type": "string" },
+    "duration_seconds": { "type": "integer", "minimum": 0 },
+    "min_reps": { "type": "integer", "minimum": 0 }
   },
   "allOf": [
     {

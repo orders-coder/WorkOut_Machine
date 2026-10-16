@@ -5,11 +5,13 @@ import { DetailActions } from "@/components/DetailActions";
 import { ExerciseMenu } from "@/components/ExerciseMenu";
 import { DumpsterFade } from "@/components/DumpsterFade";
 import { Disclaimer } from "@/components/Disclaimer";
+import { ExerciseGuide } from "@/components/ExerciseGuide";
 import { MuscleTargets } from "@/components/MuscleTargets";
+import { CustomExercisePage } from "@/components/CustomExercisePage";
 import { PastSets } from "@/components/LiveWorkout";
 import { PracticeMedia } from "@/components/PracticeMedia";
 import { WayMarks } from "@/components/WayMarks";
-import { getAlias } from "@/data/dumpster";
+import { resolveExerciseId } from "@/lib/legacy-ids";
 import { getPracticeById, getRelatedPractices, practices } from "@/data/practices";
 import {
   CONTRACTION_LABEL,
@@ -31,19 +33,22 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const alias = getAlias(id);
-  const practice = getPracticeById(alias ?? id);
+  const alias = resolveExerciseId(id);
+  const practice = getPracticeById(alias);
   return { title: practice?.name ?? "Practice" };
 }
 
 export default async function PracticePage({ params }: Props) {
   const { id } = await params;
-  const alias = getAlias(id);
-  if (alias) {
+  const alias = resolveExerciseId(id);
+  if (alias !== id) {
     redirect(`/practice/${alias}`);
   }
   const practice = getPracticeById(id);
   if (!practice) {
+    if (id.startsWith("custom-")) {
+      return <CustomExercisePage id={id} />;
+    }
     notFound();
   }
   const image = resolvePracticeImage(practice.id, practice.image);
@@ -70,6 +75,14 @@ export default async function PracticePage({ params }: Props) {
           <WayMarks practice={practice} />
         </div>
         <h1 className="mt-1.5 font-display text-4xl leading-none tracking-tight text-ink">{practice.name}</h1>
+        <a
+          href={`https://www.youtube.com/results?search_query=${encodeURIComponent(practice.name)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 flex min-h-11 items-center justify-center rounded-full bg-[#0071e3] text-sm text-white"
+        >
+          Video
+        </a>
         {practice.aka?.length ? (
           <p className="mt-1 text-xs text-ink/50">{practice.aka.join(" · ")}</p>
         ) : null}
@@ -99,10 +112,7 @@ export default async function PracticePage({ params }: Props) {
           ) : null}
         </dl>
 
-        <section className="mt-5">
-          <h2 className="font-display text-xl">Why</h2>
-          <p className="mt-1 text-base leading-snug text-ink/80">{practice.why}</p>
-        </section>
+        <ExerciseGuide practice={practice} />
 
         <MuscleTargets practiceId={practice.id} />
 
@@ -143,14 +153,6 @@ export default async function PracticePage({ params }: Props) {
                 </dd>
               </div>
               <div className="col-span-2 rounded-xl bg-card px-3 py-2 ring-1 ring-ink/8">
-                <dt className="text-[0.6rem] tracking-[0.14em] uppercase text-ink/45">Primary</dt>
-                <dd className="mt-0.5">{practice.training.primaryMuscles.join(" · ")}</dd>
-              </div>
-              <div className="col-span-2 rounded-xl bg-card px-3 py-2 ring-1 ring-ink/8">
-                <dt className="text-[0.6rem] tracking-[0.14em] uppercase text-ink/45">Secondary</dt>
-                <dd className="mt-0.5">{practice.training.secondaryMuscles.join(" · ")}</dd>
-              </div>
-              <div className="col-span-2 rounded-xl bg-card px-3 py-2 ring-1 ring-ink/8">
                 <dt className="text-[0.6rem] tracking-[0.14em] uppercase text-ink/45">Posture</dt>
                 <dd className="mt-0.5">{practice.training.postureAlignmentTags.join(" · ")}</dd>
               </div>
@@ -180,30 +182,6 @@ export default async function PracticePage({ params }: Props) {
                 );
               })}
             </ol>
-          </section>
-        ) : null}
-
-        <section className="mt-5">
-          <h2 className="font-display text-xl">Cues</h2>
-          <ul className="mt-1.5 list-disc space-y-1 pl-4">
-            {practice.cues.map((cue) => (
-              <li key={cue} className="text-sm leading-snug text-ink/80">
-                {cue}
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {practice.mistakes.length > 0 ? (
-          <section className="mt-5">
-            <h2 className="font-display text-xl">Mistakes</h2>
-            <ul className="mt-1.5 list-disc space-y-1 pl-4">
-              {practice.mistakes.map((mistake) => (
-                <li key={mistake} className="text-sm leading-snug text-ink/80">
-                  {mistake}
-                </li>
-              ))}
-            </ul>
           </section>
         ) : null}
 

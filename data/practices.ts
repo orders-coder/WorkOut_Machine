@@ -9,6 +9,7 @@ import {
 import { exerciseProfiles } from "./exercise-profile";
 import type { Practice } from "@/lib/types";
 import { waysOf } from "@/lib/ways";
+import { resolveExerciseId } from "@/lib/legacy-ids";
 
 function withProfile(practice: Practice): Practice {
   const profile = exerciseProfiles[practice.id];
@@ -28,7 +29,8 @@ export const practices: Practice[] = [
 ].map(withProfile);
 
 export function getPracticeById(id: string): Practice | undefined {
-  return practices.find((practice) => practice.id === id);
+  const resolved = resolveExerciseId(id);
+  return practices.find((practice) => practice.id === resolved);
 }
 
 export function getRelatedPractices(practice: Practice, limit = 4): Practice[] {

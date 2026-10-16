@@ -136,6 +136,7 @@ export interface Practice {
   imageAlt: string;
   tags: string[];
   durationHint?: string;
+  setup?: string;
   training?: Training;
   profile?: ExerciseProfile;
 }
@@ -168,6 +169,8 @@ export interface Routine {
   way?: Way;
   exerciseIds: string[];
   suggested: boolean;
+  tags?: string[];
+  credits?: { label: string; href: string }[];
 }
 
 export type LibraryView = "grid" | "list";

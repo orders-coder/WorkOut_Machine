@@ -35,6 +35,13 @@ export interface ExerciseRecord {
   contraindications: string[];
   notes: string[];
   media: string;
+  id?: string;
+  setup?: string;
+  common_mistake?: string;
+  why?: string;
+  guide?: string;
+  duration_seconds?: number;
+  min_reps?: number;
 }
 
 export const exerciseRecords = exercisesJson as ExerciseRecord[];
@@ -50,7 +57,8 @@ const EXISTING_ID: Record<string, string> = {
   "Suitcase Carry": "suitcase-carry",
   "Pallof Press": "pallof-press",
   "Bird Dog": "bird-dog",
-  "Kettlebell Swing": "kettlebell-swing",
+  "Kettlebell Swing": "dumbbell-swing",
+  "Cable Woodchop": "dumbbell-woodchop",
   "Pull-up": "pull-up-or-negative",
   "Single-Arm Dumbbell Row": "dumbbell-row",
   "Barbell Bent-Over Row": "barbell-row",
@@ -79,6 +87,9 @@ const FIXTURE: Record<ExerciseEnvironment, Equipment | null> = {
 };
 
 export function exerciseId(record: ExerciseRecord): string {
+  if (record.id) {
+    return record.id;
+  }
   return (
     EXISTING_ID[record.name] ??
     record.name
@@ -135,30 +146,44 @@ export function practiceFromRecord(record: ExerciseRecord, existing?: Practice):
   const id = exerciseId(record);
   const training = trainingOf(record);
   if (existing) {
+    const cues = existing.cues.join(" ").length >= record.notes.join(" ").length ? existing.cues : record.notes;
+    const why = (record.why ?? "").length > existing.why.length ? record.why ?? existing.why : existing.why;
     return {
       ...existing,
       name: record.name,
       level: record.difficulty,
       equipment: equipmentOf(record),
       target: [...record.primary_muscles, ...record.secondary_muscles],
-      cues: record.notes,
+      cues,
+      why,
+      setup: record.setup || existing.setup,
+      mistakes: existing.mistakes.length >= (record.common_mistake ? 1 : 0) ? existing.mistakes : record.common_mistake ? [record.common_mistake] : existing.mistakes,
       training,
     };
   }
   return {
     id,
     name: record.name,
-    way: "strength",
-    kinds: ["lift"],
+    way: record.guide ? "soft-body" : "strength",
+    kinds: record.guide ? ["moving-stretch"] : ["lift"],
     equipment: equipmentOf(record),
     level: record.difficulty,
     target: [...record.primary_muscles, ...record.secondary_muscles],
-    why: record.notes[0] ?? record.name,
+    why: record.why || record.notes[0] || record.name,
     cues: record.notes,
-    mistakes: [],
+    mistakes: record.common_mistake ? [record.common_mistake] : [],
     image: `/practices/${id}.svg`,
     imageAlt: record.name,
     tags: [record.movement_pattern, record.corrective_or_performance],
     training,
+    setup: record.setup ?? "",
+    profile: record.guide
+      ? {
+          exerciseType: "stretch",
+          position: "kneeling",
+          dose: record.min_reps ? "reps" : "seconds",
+          laterality: record.laterality,
+        }
+      : undefined,
   };
 }

@@ -38,10 +38,10 @@ export const softBodyPractices: Practice[] = [
     target: ["neck", "upper trap", "scalenes"],
     why: "Ear toward shoulder. The side of the neck gets a longer line.",
     cues: [
-      "Sit or stand tall. Shoulders heavy.",
-      "Tip one ear toward the same-side shoulder.",
-      "Optional: fingertips rest on the opposite side of the head — weight, not a pull.",
-      "Breathe. Switch sides.",
+      "Sit on one hand, or hold a chair, so that shoulder stays down.",
+      "Tip one ear toward the same-side shoulder. Optional: look a little toward the opposite armpit.",
+      "Fingertips may rest on the head — weight, not a yank.",
+      "Breathe into the stretched side. Switch sides.",
     ],
     mistakes: [
       "Yank the head with the hand.",
@@ -74,31 +74,7 @@ export const softBodyPractices: Practice[] = [
     image: img("doorway-pec-stretch"),
     imageAlt: "Figure standing in a doorway with the arm on the frame, chest open",
     tags: ["chest", "desk", "doorway"],
-  },
-  {
-    id: "upper-trap-stretch",
-    name: "Upper trap stretch",
-    way: "soft-body",
-    equipment: ["none"],
-    level: "beginner",
-    target: ["upper trapezius", "neck", "shoulder"],
-    why: "The place that shrugs all day. Give it a longer side.",
-    cues: [
-      "Sit on one hand, or hold the edge of a chair, to keep that shoulder down.",
-      "Look a little toward the opposite armpit.",
-      "Let the head be heavy. Do not crank.",
-      "Breathe into the stretched side.",
-    ],
-    mistakes: [
-      "Pulling the head aggressively.",
-      "Letting the held shoulder creep up.",
-      "Rounding the whole spine instead of isolating the neck.",
-    ],
-    image: img("upper-trap-stretch"),
-    imageAlt: "Seated figure with one shoulder anchored and the neck lengthened",
-    tags: ["neck", "trap", "desk"],
-  },
-  {
+  },  {
     id: "cat-cow",
     also: "inner",
     kinds: ["moving-stretch"],

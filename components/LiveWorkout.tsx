@@ -4,12 +4,14 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MUSCLES, type MuscleId } from "@/lib/muscles";
-import { DAY_TYPES, dayTypeById, type DayType, type DayTypeId } from "@/lib/routine-types";
+import { DAY_TYPES, dayTypeById, longerDay, type DayType, type DayTypeId } from "@/lib/routine-types";
 import { readyToFinish, suggestNext, type SuggestCandidate } from "@/lib/suggest-next";
 import type { ExerciseType, ForceType, MovementPattern } from "@/lib/types";
+import { customToWorkout, loadCustomExercises } from "@/lib/custom-exercises";
 import type { WorkoutExercise } from "@/lib/workout-catalog";
 import {
   activeSession,
+  deleteSession,
   historyFor,
   lastSetFor,
   loadPrefs,
@@ -19,10 +21,12 @@ import {
   volumeOf,
   type SessionExercise,
   type SetLog,
+  type SetPlan,
   type WeightUnit,
   type WorkoutSession,
 } from "@/lib/workout-session";
 import { BodyFigure } from "./BodyMap";
+import { RoundClock } from "./RoundClock";
 import { RoutineList } from "./RoutineList";
 
 function playDone() {
@@ -59,7 +63,7 @@ export function LiveWorkout({
 }) {
   const [session, setSession] = useState<WorkoutSession | null>(null);
   const [ready, setReady] = useState(false);
-  const [day, setDay] = useState<DayTypeId>("standard");
+  const [day, setDay] = useState<DayTypeId>("40");
   const [mains, setMains] = useState<MuscleId[]>([]);
   const [bodyweightOnly, setBodyweightOnly] = useState(false);
   const [picked, setPicked] = useState<string[]>([]);
@@ -72,15 +76,46 @@ export function LiveWorkout({
   const [breaths, setBreaths] = useState(0);
   const [query, setQuery] = useState("");
   const [history, setHistory] = useState<WorkoutSession[]>([]);
+  const [openHistory, setOpenHistory] = useState<string | null>(null);
+  const [draft, setDraft] = useState<{ key: string; value: string } | null>(null);
+  const [extra, setExtra] = useState<WorkoutExercise[]>([]);
   const router = useRouter();
+  const exercises = useMemo(() => [...extra, ...catalog], [extra, catalog]);
 
   useEffect(() => {
     const existing = activeSession();
     setSession(existing ?? null);
     setHistory(loadSessions().filter((item) => item.finishedAt));
     setUnit(loadPrefs().unit);
+    setExtra(loadCustomExercises().map(customToWorkout));
     setReady(true);
   }, []);
+
+  useEffect(() => {
+    if (mode !== "live" || !session) {
+      return;
+    }
+    const weight = baselineWeight(unit);
+    let changed = false;
+    const exercises = session.exercises.map((item) => {
+      if (!item.plan || item.plan.length === 0) {
+        changed = true;
+        return { ...item, plan: planFromLogs(item.sets, weight) };
+      }
+      if (item.plan.some((row) => !row.doneAt && row.reps <= 0)) {
+        changed = true;
+        return {
+          ...item,
+          plan: item.plan.map((row) => (row.doneAt || row.reps > 0 ? row : { ...row, reps: 8 })),
+        };
+      }
+      return item;
+    });
+    if (!changed) {
+      return;
+    }
+    persist({ ...session, exercises });
+  }, [mode, session, unit]);
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(Date.now()), 1000);
@@ -105,18 +140,34 @@ export function LiveWorkout({
     setHistory(loadSessions().filter((item) => item.finishedAt));
   }
 
-  const byId = useMemo(() => new Map(catalog.map((item) => [item.id, item])), [catalog]);
+  const byId = useMemo(() => new Map(exercises.map((item) => [item.id, item])), [exercises]);
+  const buildDay = dayTypeById(day);
   const dayInfo = dayTypeById(session?.dayType ?? day);
 
-  const pool = catalog.filter((item) => {
+  useEffect(() => {
+    const seconds = planSegments(picked, byId).reduce((sum, segment) => sum + segment.seconds, 0);
+    const next = longerDay(day, seconds / 60);
+    if (next !== day) {
+      setDay(next);
+      return;
+    }
+    if (next !== "60" || seconds <= 60 * 60 || picked.length < 2) {
+      return;
+    }
+    let remaining = picked;
+    while (remaining.length > 1) {
+      const trial = remaining.slice(1);
+      const trialSeconds = planSegments(trial, byId).reduce((sum, segment) => sum + segment.seconds, 0);
+      remaining = trial;
+      if (trialSeconds <= 60 * 60) {
+        break;
+      }
+    }
+    setPicked(remaining);
+  }, [picked, byId, day]);
+
+  const pool = exercises.filter((item) => {
     if (bodyweightOnly && !item.bodyweight) {
-      return false;
-    }
-    const info = dayTypeById(day);
-    if (info.mobilityOnly && item.exerciseType !== "mobility" && item.exerciseType !== "stretch") {
-      return false;
-    }
-    if (info.harder && item.level === "beginner" && item.exerciseType === "strength") {
       return false;
     }
     const focus = mains;
@@ -161,9 +212,14 @@ export function LiveWorkout({
       mains,
       bodyweightOnly,
       startedAt: new Date().toISOString(),
-      exercises: picked.map((practiceId) => ({ practiceId, sets: [] })),
+      exercises: picked.map((practiceId) => ({
+        practiceId,
+        sets: [],
+        plan: starterSets(baselineWeight(unit)),
+      })),
       index: 0,
       phase: "work",
+      side: byId.get(picked[0])?.bothSides ? "right" : undefined,
     };
     persist(next);
     fillFromLast(picked[0]);
@@ -194,22 +250,35 @@ export function LiveWorkout({
     if (!exercise || !info) {
       return;
     }
-    const entry: SetLog = { at: new Date().toISOString() };
-    if (info.dose === "seconds" || info.dose === "minutes") {
+    const entry: SetLog = { at: new Date().toISOString(), side: info.bothSides ? session.side ?? "right" : undefined };
+    const dose = loggingDose(info);
+    if (info.weighted && weight) {
+      entry.weight = Number(weight);
+    }
+    if (dose === "seconds") {
       entry.seconds = Number(seconds) || 30;
-    } else if (info.dose === "breaths") {
+    } else if (dose === "breaths") {
       entry.breaths = breaths || 8;
     } else {
       entry.reps = Number(reps) || 0;
-      if (weight) {
-        entry.weight = Number(weight);
-      }
     }
     const exercises = session.exercises.map((item, index) =>
       index === session.index ? { ...item, sets: [...item.sets, entry] } : item,
     );
-    const restEndsAt = new Date(Date.now() + dayTypeById(session.dayType).restSeconds * 1000).toISOString();
-    persist({ ...session, exercises, phase: "rest", restEndsAt });
+    if (info.bothSides && (session.side ?? "right") !== "left") {
+      setSeconds("");
+      setReps("");
+      persist({ ...session, exercises, phase: "switch", side: "right" });
+      return;
+    }
+    const restEndsAt = new Date(Date.now() + 75 * 1000).toISOString();
+    persist({
+      ...session,
+      exercises,
+      phase: "rest",
+      restEndsAt,
+      side: info.bothSides ? "right" : undefined,
+    });
   }
 
   useEffect(() => {
@@ -234,17 +303,89 @@ export function LiveWorkout({
     if (!session) {
       return;
     }
-    persist({ ...session, phase: "suggest" });
+    const exercise = currentExercise();
+    const info = exercise ? byId.get(exercise.practiceId) : undefined;
+    if (info?.bothSides && (session.side ?? "right") !== "left") {
+      setSeconds("");
+      setReps("");
+      persist({ ...session, phase: "switch", side: "right" });
+      return;
+    }
+    persist({ ...session, phase: "suggest", side: undefined });
+  }
+
+  function beginOtherSide() {
+    if (!session) {
+      return;
+    }
+    setSeconds("");
+    setReps("");
+    persist({ ...session, phase: "work", side: "left" });
   }
 
   function chooseNext(id: string) {
     if (!session) {
       return;
     }
-    const exercises = [...session.exercises, { practiceId: id, sets: [] }];
-    persist({ ...session, exercises, index: exercises.length - 1, phase: "work" });
+    const exercises = [...session.exercises, { practiceId: id, sets: [], plan: starterSets(baselineWeight(unit)) }];
+    persist({
+      ...session,
+      exercises,
+      index: exercises.length - 1,
+      phase: "work",
+      side: byId.get(id)?.bothSides ? "right" : undefined,
+    });
     fillFromLast(id);
     setQuery("");
+  }
+
+  function stopTimer() {
+    if (!session) {
+      return;
+    }
+    if (session.timerHold != null) {
+      persist({
+        ...session,
+        timerHold: undefined,
+        startedAt: new Date(Date.now() - session.timerHold * 1000).toISOString(),
+      });
+      return;
+    }
+    const spent = Math.min(
+      dayInfo.targetMinutes * 60,
+      Math.max(0, Math.floor((Date.now() - new Date(session.startedAt).getTime()) / 1000)),
+    );
+    persist({ ...session, timerHold: spent });
+  }
+
+  function writePlans(nextPlans: { index: number; plan: SetPlan[] }[]) {
+    if (!session) {
+      return;
+    }
+    const exercises = session.exercises.map((item, index) => {
+      const replacement = nextPlans.find((entry) => entry.index === index);
+      if (!replacement) {
+        return item;
+      }
+      return {
+        ...item,
+        plan: replacement.plan,
+        sets: replacement.plan
+          .filter((row) => row.doneAt)
+          .map((row) => ({ weight: row.weight, reps: row.reps, at: row.doneAt as string })),
+      };
+    });
+    persist({ ...session, exercises, phase: "work" });
+  }
+
+  function changePlan(exerciseIndex: number, setIndex: number, patch: Partial<SetPlan>) {
+    const plan = [...(session?.exercises[exerciseIndex]?.plan ?? [])];
+    const row = plan[setIndex];
+    if (!row) {
+      return;
+    }
+    plan[setIndex] = { ...row, ...patch };
+    writePlans([{ index: exerciseIndex, plan }]);
   }
 
   function finishWorkout() {
@@ -254,7 +395,11 @@ export function LiveWorkout({
     persist({ ...session, phase: "done", finishedAt: new Date().toISOString(), restEndsAt: undefined });
   }
 
-  const elapsed = session ? Math.max(0, Math.floor((now - new Date(session.startedAt).getTime()) / 1000)) : 0;
+  const budget = dayInfo.targetMinutes * 60;
+  const rawElapsed = session
+    ? session.timerHold ?? Math.max(0, Math.floor((now - new Date(session.startedAt).getTime()) / 1000))
+    : 0;
+  const elapsed = Math.min(budget, rawElapsed);
   const restLeft = session?.restEndsAt
     ? Math.max(0, Math.ceil((new Date(session.restEndsAt).getTime() - now) / 1000))
     : 0;
@@ -281,7 +426,7 @@ export function LiveWorkout({
         <p className="text-[0.65rem] tracking-[0.18em] uppercase text-ink/45">Work Out Machine</p>
         <h1 className="mt-1 font-display text-[2.35rem] leading-none tracking-tight text-ink">Routines</h1>
         <p className="mt-1.5 text-sm text-ink/70">Build the session here. Weights and reps get logged on Live.</p>
-        <PlanBar segments={planSegments(picked, byId, dayInfo)} day={dayInfo} />
+        <PlanBar segments={planSegments(picked, byId)} day={buildDay} />
         {session ? (
           <Link href="/live" className="mt-3 flex min-h-12 items-center justify-center rounded-full bg-ink text-sm text-white">
             Continue the workout on Live
@@ -295,13 +440,11 @@ export function LiveWorkout({
               type="button"
               onClick={() => {
                 setDay(item.id);
-                setPicked([]);
                 setSlot(null);
               }}
               className={`min-h-11 rounded-full px-3 text-sm ${day === item.id ? "bg-[#0071e3] text-white" : "bg-card text-ink ring-1 ring-ink/10"}`}
             >
               {item.label}
-              <span className="ml-1 text-xs opacity-70">{item.targetMinutes}m</span>
             </button>
           ))}
         </div>
@@ -335,7 +478,7 @@ export function LiveWorkout({
                   : "Add exercises"}
             </p>
             <div className="mt-2 grid grid-cols-3 gap-2">
-            {rankedStart(pool, mains, dayTypeById(day).mobilityOnly).map((item) => {
+            {rankedStart(pool, mains).map((item) => {
               const on = picked.includes(item.id);
               return (
                 <button
@@ -430,15 +573,78 @@ export function LiveWorkout({
           <section className="mt-8">
             <h2 className="font-display text-xl">History</h2>
             <ul className="mt-2 space-y-2">
-              {history.map((item) => (
-                <li key={item.id} className="rounded-2xl bg-card px-3 py-3 text-sm ring-1 ring-ink/10">
-                  <p className="font-medium">{dayTypeById(item.dayType).label}</p>
-                  <p className="text-ink/60">
-                    {new Date(item.startedAt).toLocaleDateString()} · {item.exercises.length} exercises ·{" "}
-                    {item.exercises.reduce((sum, exercise) => sum + exercise.sets.length, 0)} sets
-                  </p>
-                </li>
-              ))}
+              {history.map((item) => {
+                const open = openHistory === item.id;
+                return (
+                  <li key={item.id} className="rounded-2xl bg-card px-3 py-3 text-sm ring-1 ring-ink/10">
+                    <button
+                      type="button"
+                      onClick={() => setOpenHistory(open ? null : item.id)}
+                      className="w-full text-left"
+                      aria-expanded={open}
+                    >
+                      <p className="font-medium">{item.title ?? dayTypeById(item.dayType).label}</p>
+                      <p className="text-ink/60">
+                        {new Date(item.startedAt).toLocaleDateString()}
+                        {item.rounds ? ` · ${item.rounds} ${item.rounds === 1 ? "round" : "rounds"}` : ""}
+                        {item.finishedAt
+                          ? ` · ${Math.max(1, Math.round((new Date(item.finishedAt).getTime() - new Date(item.startedAt).getTime()) / 60000))} min`
+                          : ""}
+                        {" · "}
+                        {item.exercises.length} exercises ·{" "}
+                        {item.exercises.reduce((sum, exercise) => sum + exercise.sets.length, 0)} sets
+                      </p>
+                    </button>
+                    {open ? (
+                      <div className="mt-3 border-t border-ink/10 pt-3">
+                        <ol className="grid grid-cols-3 gap-2">
+                          {item.exercises.map((exercise, index) => {
+                            const info = byId.get(exercise.practiceId);
+                            const name = info?.name ?? exercise.practiceId;
+                            return (
+                              <li key={`${exercise.practiceId}-${index}`} className="min-w-0 text-center">
+                                <img
+                                  src={info?.image ?? "/practices/custom.svg"}
+                                  alt=""
+                                  className="aspect-[16/9] w-full rounded-lg bg-white object-cover ring-1 ring-ink/10"
+                                />
+                                <p className="mt-1 text-xs font-medium leading-tight">{name}</p>
+                                <p className="mt-0.5 text-[0.7rem] leading-snug text-ink/60">
+                                  {exercise.sets.length === 0
+                                    ? "No sets logged"
+                                    : exercise.sets
+                                        .map((set) => {
+                                        const bits = [
+                                          set.side === "left" ? "left" : set.side === "right" ? "right" : "",
+                                          set.weight != null ? `${set.weight} ${unit}` : "",
+                                            set.reps != null ? `${set.reps} reps` : "",
+                                            set.seconds != null ? `${set.seconds}s` : "",
+                                            set.breaths != null ? `${set.breaths} breaths` : "",
+                                          ].filter(Boolean);
+                                          return bits.join(" · ") || "done";
+                                        })
+                                        .join(", ")}
+                                </p>
+                              </li>
+                            );
+                          })}
+                        </ol>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            deleteSession(item.id);
+                            setHistory(loadSessions().filter((entry) => entry.finishedAt));
+                            setOpenHistory(null);
+                          }}
+                          className="mt-3 min-h-10 text-sm text-strength-clay"
+                        >
+                          Delete this session
+                        </button>
+                      </div>
+                    ) : null}
+                  </li>
+                );
+              })}
             </ul>
           </section>
         ) : null}
@@ -496,7 +702,7 @@ export function LiveWorkout({
 
   const exercise = currentExercise();
   const info = exercise ? byId.get(exercise.practiceId) : undefined;
-  const candidates = toCandidates(catalog.filter((item) => (session.bodyweightOnly ? item.bodyweight : true)));
+  const candidates = toCandidates(exercises.filter((item) => (session.bodyweightOnly ? item.bodyweight : true)));
   const setCounts: Partial<Record<MuscleId, number>> = {};
   let pushSets = 0;
   let pullSets = 0;
@@ -528,162 +734,263 @@ export function LiveWorkout({
     pullSets,
     minutesLeft: dayInfo.targetMinutes - elapsed / 60,
     exercisesDone: session.exercises.filter((item) => item.sets.length > 0).length,
-    setsPerMain: dayInfo.setsPerMain,
-    setsPerAddon: dayInfo.setsPerAddon,
+    setsPerMain: 3,
+    setsPerAddon: 2,
   };
   const suggestions = suggestNext(suggestionInput);
 
-  return (
-    <div className="px-3 pb-6 pt-1">
-      <div className="flex items-baseline justify-between">
-        <p className="text-sm text-ink/70">
-          {formatClock(elapsed)} <span className="text-ink/40">/ {dayInfo.targetMinutes}:00</span>
-        </p>
-        <p className="text-xs uppercase tracking-[0.14em] text-ink/45">{dayInfo.label}</p>
-      </div>
+  const spentLabel = formatClock(elapsed);
+  const capLabel = formatClock(budget);
 
-      {session.phase === "suggest" && info ? (
-        <div className="mt-4">
-          <h1 className="font-display text-3xl">Next</h1>
-          {readyToFinish(suggestionInput) ? (
-            <p className="mt-1 text-sm text-ink/70">Time or muscles are covered. A stretch is a good way to stop.</p>
-          ) : null}
-          <div className="mt-3 space-y-2">
-            {suggestions.map((item) => {
-              const full = byId.get(item.id);
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => chooseNext(item.id)}
-                  className="flex min-h-14 w-full items-center gap-3 rounded-2xl bg-card px-3 text-left ring-1 ring-ink/10"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={full?.image} alt="" className="h-12 w-12 rounded-xl object-contain" />
-                  <span>{item.name}</span>
-                </button>
-              );
-            })}
-          </div>
-          <input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search any exercise"
-            className="mt-3 min-h-12 w-full rounded-full bg-card px-4 ring-1 ring-ink/10"
-          />
-          {query ? (
-            <div className="mt-2 space-y-2">
-              {catalog
-                .filter((item) => item.name.toLowerCase().includes(query.toLowerCase()))
-                .slice(0, 6)
-                .map((item) => (
-                  <button key={item.id} type="button" onClick={() => chooseNext(item.id)} className="min-h-12 w-full rounded-2xl bg-card px-3 text-left ring-1 ring-ink/10">
-                    {item.name}
-                  </button>
-                ))}
-            </div>
-          ) : null}
-          <button type="button" onClick={finishWorkout} className="mt-4 min-h-14 w-full rounded-full bg-ink text-white">
+  return (
+    <div className="px-3 pb-36 pt-1">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-[0.65rem] tracking-[0.18em] uppercase text-ink/45">Live</p>
+          <h1 className="font-display text-3xl leading-none">{session.title ?? dayInfo.label}</h1>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              const next = unit === "kg" ? "lb" : "kg";
+              setUnit(next);
+              savePrefs({ unit: next });
+              if (!session) {
+                return;
+              }
+              persist({
+                ...session,
+                exercises: session.exercises.map((item) => ({
+                  ...item,
+                  plan: item.plan?.map((row) => ({ ...row, weight: convertWeight(row.weight, unit, next) })),
+                  sets: item.sets.map((set) =>
+                    set.weight == null ? set : { ...set, weight: convertWeight(set.weight, unit, next) },
+                  ),
+                })),
+              });
+            }}
+            className="min-h-11 rounded-full px-3 text-sm ring-1 ring-ink/10"
+          >
+            {unit}
+          </button>
+          <button type="button" onClick={finishWorkout} className="min-h-11 rounded-full bg-[#0071e3] px-4 text-sm text-white">
             Finish
           </button>
         </div>
-      ) : null}
+      </div>
 
-      {info && exercise && session.phase !== "suggest" ? (
-        <div className="mt-3">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={info.image} alt="" className="mx-auto h-36 w-auto object-contain" />
-          <h1 className="mt-2 font-display text-4xl leading-none">{info.name}</h1>
-          <p className="mt-1 text-sm text-ink/60">{doseLine(info, dayInfo.harder)}</p>
-          <p className="mt-1 text-sm text-ink/50">
-            {exercise.sets.length} {exercise.sets.length === 1 ? "set" : "sets"} logged
-          </p>
-
-          {session.phase === "rest" ? (
-            <div className="mt-4 rounded-3xl bg-ink px-4 py-6 text-center text-white">
-              <p className="text-xs uppercase tracking-[0.16em] text-white/60">Rest</p>
-              <p className="mt-1 font-display text-6xl">{formatClock(restLeft)}</p>
-              <div className="mt-4 grid grid-cols-2 gap-2">
-                <button type="button" onClick={() => addRest(15)} className="min-h-14 rounded-full bg-white/15">
-                  +15s
-                </button>
-                <button type="button" onClick={() => persist({ ...session, phase: "work", restEndsAt: undefined })} className="min-h-14 rounded-full bg-white text-ink">
-                  Skip
-                </button>
+      <ol className="mt-4 space-y-3">
+        {session.exercises.map((item, exerciseIndex) => {
+          const known = byId.get(item.practiceId);
+          const plan = item.plan ?? [];
+          const suggested = suggestedSetCount(known);
+          const earlier = historyFor(item.practiceId).at(-1)?.sets ?? [];
+          return (
+            <li key={`${item.practiceId}-${exerciseIndex}`} className="rounded-2xl bg-card px-3 py-3 ring-1 ring-ink/10">
+              <div className="flex items-center gap-3">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={known?.image ?? "/practices/custom.svg"} alt="" className="h-14 w-14 rounded-xl bg-white object-contain" />
+                <div className="min-w-0">
+                  <Link href={`/practice/${item.practiceId}`} className="font-medium text-[#0071e3]">
+                    {known?.name ?? item.practiceId}
+                  </Link>
+                  <p className="text-sm text-ink/55">
+                    Suggested {suggested} {suggested === 1 ? "set" : "sets"}
+                    {known?.bothSides ? " each side" : ""}
+                    {" · "}
+                    starts at 2 × 8, 5 lb
+                  </p>
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className="mt-4 space-y-2">
-              {info.dose === "breaths" ? (
-                <button type="button" onClick={() => setBreaths((count) => count + 1)} className="min-h-14 w-full rounded-2xl bg-card text-lg ring-1 ring-ink/10">
-                  Breath {breaths}
-                </button>
-              ) : info.dose === "seconds" || info.dose === "minutes" ? (
-                <HoldField value={seconds} onChange={setSeconds} />
-              ) : (
-                <>
-                  <div className="grid grid-cols-[1fr_auto] gap-2">
-                    <input
-                      inputMode="decimal"
-                      value={weight}
-                      onChange={(event) => setWeight(event.target.value)}
-                      placeholder="Weight"
-                      className="min-h-14 rounded-2xl bg-card px-3 text-lg ring-1 ring-ink/10"
-                    />
-                    <button
-                      type="button"
-                      className="min-h-14 rounded-2xl bg-card px-4 ring-1 ring-ink/10"
-                      onClick={() => {
-                        const next = unit === "kg" ? "lb" : "kg";
-                        setUnit(next);
-                        savePrefs({ unit: next });
-                      }}
+              <div className="mt-3 grid grid-cols-[1.4rem_1fr_1fr_1fr_2.2rem] gap-2 px-1 text-[0.65rem] uppercase tracking-[0.12em] text-ink/40">
+                <span>Set</span>
+                <span>Previous</span>
+                <span>{unit}</span>
+                <span>Reps</span>
+                <span className="text-right">Done</span>
+              </div>
+              <ol className="mt-1 space-y-1.5">
+                {plan.map((row, setIndex) => {
+                  const done = Boolean(row.doneAt);
+                  return (
+                    <li
+                      key={`${exerciseIndex}-${setIndex}`}
+                      className={`grid grid-cols-[1.4rem_1fr_1fr_1fr_2.2rem] items-center gap-2 rounded-xl px-1 py-1.5 ${done ? "bg-[#e5f6ea]" : ""}`}
                     >
-                      {unit}
-                    </button>
-                  </div>
-                  <input
-                    inputMode="numeric"
-                    value={reps}
-                    onChange={(event) => setReps(event.target.value)}
-                    placeholder="Reps"
-                    className="min-h-14 w-full rounded-2xl bg-card px-3 text-lg ring-1 ring-ink/10"
-                  />
-                </>
-              )}
-              <button type="button" onClick={logSet} className="min-h-14 w-full rounded-full bg-[#0071e3] text-base text-white">
-                Log set
-              </button>
-              <button type="button" onClick={finishExercise} className="min-h-12 w-full rounded-full text-sm text-ink/70">
-                Exercise done
-              </button>
+                      <span className="text-sm text-ink/50">{setIndex + 1}</span>
+                      <span className="truncate text-xs text-ink/45">{previousLabel(earlier[setIndex])}</span>
+                      <SetNumber
+                        value={row.weight}
+                        editing={draft?.key === `${exerciseIndex}-${setIndex}-weight`}
+                        draft={draft?.value ?? ""}
+                        onStart={() => setDraft({ key: `${exerciseIndex}-${setIndex}-weight`, value: String(row.weight) })}
+                        onDraft={(value) => setDraft({ key: `${exerciseIndex}-${setIndex}-weight`, value })}
+                        onCommit={(value) => {
+                          changePlan(exerciseIndex, setIndex, { weight: Number(value) || 0 });
+                          setDraft(null);
+                        }}
+                      />
+                      <SetNumber
+                        value={row.reps}
+                        editing={draft?.key === `${exerciseIndex}-${setIndex}-reps`}
+                        draft={draft?.value ?? ""}
+                        onStart={() => setDraft({ key: `${exerciseIndex}-${setIndex}-reps`, value: String(row.reps) })}
+                        onDraft={(value) => setDraft({ key: `${exerciseIndex}-${setIndex}-reps`, value })}
+                        onCommit={(value) => {
+                          changePlan(exerciseIndex, setIndex, { reps: Number(value) || 0 });
+                          setDraft(null);
+                        }}
+                      />
+                      <button
+                        type="button"
+                        aria-label={done ? "Uncheck set" : "Log set"}
+                        aria-pressed={done}
+                        onClick={() =>
+                          changePlan(exerciseIndex, setIndex, { doneAt: done ? undefined : new Date().toISOString() })
+                        }
+                        className={`flex h-9 w-9 items-center justify-center rounded-full text-base ${done ? "bg-[#34c759] text-white" : "bg-white ring-1 ring-ink/15"}`}
+                      >
+                        ✓
+                      </button>
+                    </li>
+                  );
+                })}
+              </ol>
               <button
                 type="button"
-                onClick={() => persist({ ...session, phase: "suggest" })}
-                className="min-h-12 w-full rounded-full bg-card text-sm ring-1 ring-ink/10"
+                onClick={() => {
+                  const last = plan[plan.length - 1];
+                  writePlans([
+                    {
+                      index: exerciseIndex,
+                      plan: [...plan, { weight: last?.weight ?? baselineWeight(unit), reps: last?.reps ?? 8 }],
+                    },
+                  ]);
+                }}
+                className="mt-2 min-h-11 w-full rounded-xl text-sm text-[#0071e3]"
               >
-                Add exercise
+                + Add set
               </button>
-            </div>
-          )}
-          <p className="mt-4 text-center text-xs">
-            <Link href={`/practice/${info.id}`} className="text-[#0071e3]">
-              Open the exercise page
-            </Link>
-          </p>
+            </li>
+          );
+        })}
+      </ol>
+
+      <div
+        className="fixed inset-x-0 z-30 border-t border-ink/10 bg-white/95 px-4 py-3 backdrop-blur"
+        style={{ bottom: "calc(3rem + env(safe-area-inset-bottom))" }}
+      >
+        <p className="text-center text-[0.65rem] uppercase tracking-[0.14em] text-ink/45">Time on Live</p>
+        <p className="text-center font-display text-5xl tabular-nums leading-none tracking-tight">{spentLabel}</p>
+        <p className="mt-1 text-center text-xs text-ink/45">stops at {capLabel}</p>
+        <div className="mt-2 flex justify-center">
+          <button type="button" onClick={stopTimer} className="min-h-10 rounded-full px-5 text-sm ring-1 ring-ink/10">
+            {session.timerHold != null ? "Resume" : "Stop"}
+          </button>
         </div>
-      ) : null}
+      </div>
     </div>
   );
 }
 
-function rankedStart(items: WorkoutExercise[], focus: MuscleId[], mobilityOnly: boolean): WorkoutExercise[] {
-  return [...items].sort(
-    (a, b) => intensity(b, focus, mobilityOnly) - intensity(a, focus, mobilityOnly) || a.name.localeCompare(b.name),
+function SetNumber({
+  value,
+  editing,
+  draft,
+  onStart,
+  onDraft,
+  onCommit,
+}: {
+  value: number;
+  editing: boolean;
+  draft: string;
+  onStart: () => void;
+  onDraft: (value: string) => void;
+  onCommit: (value: string) => void;
+}) {
+  if (editing) {
+    return (
+      <input
+        autoFocus
+        inputMode="decimal"
+        value={draft}
+        onChange={(event) => onDraft(event.target.value)}
+        onBlur={() => onCommit(draft)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            onCommit(draft);
+          }
+        }}
+        className="h-9 w-full rounded-lg bg-white px-2 text-center text-base ring-1 ring-[#0071e3]"
+      />
+    );
+  }
+  return (
+    <button type="button" onClick={onStart} className="h-9 w-full rounded-lg text-center text-base font-medium">
+      {value}
+    </button>
   );
 }
 
-function intensity(item: WorkoutExercise, focus: MuscleId[], mobilityOnly: boolean): number {
+function baselineWeight(unit: WeightUnit): number {
+  return unit === "lb" ? 5 : 2.5;
+}
+
+function convertWeight(value: number, from: WeightUnit, to: WeightUnit): number {
+  if (from === to) {
+    return value;
+  }
+  const pounds = from === "lb" ? value : value * 2.2;
+  const next = to === "lb" ? pounds : pounds / 2.2;
+  return Math.round(next * 10) / 10;
+}
+
+function previousLabel(set?: SetLog): string {
+  if (!set) {
+    return "—";
+  }
+  const bits = [set.weight != null ? String(set.weight) : "", set.reps != null ? `× ${set.reps}` : ""].filter(Boolean);
+  return bits.join(" ") || "—";
+}
+
+function starterSets(weight: number): SetPlan[] {
+  return [
+    { weight, reps: 8 },
+    { weight, reps: 8 },
+  ];
+}
+
+function planFromLogs(logged: SetLog[], weight: number): SetPlan[] {
+  const rows: SetPlan[] = logged.map((set) => ({
+    weight: set.weight ?? weight,
+    reps: set.reps ?? 8,
+    doneAt: set.at,
+  }));
+  while (rows.length < 2) {
+    const last = rows[rows.length - 1];
+    rows.push({ weight: last?.weight ?? weight, reps: last?.reps ?? 8 });
+  }
+  return rows;
+}
+
+function suggestedSetCount(info?: WorkoutExercise): number {
+  if (!info) {
+    return 2;
+  }
+  if (info.exerciseType === "strength") {
+    return 3;
+  }
+  return 2;
+}
+
+function rankedStart(items: WorkoutExercise[], focus: MuscleId[]): WorkoutExercise[] {
+  return [...items].sort(
+    (a, b) => intensity(b, focus) - intensity(a, focus) || a.name.localeCompare(b.name),
+  );
+}
+
+function intensity(item: WorkoutExercise, focus: MuscleId[]): number {
   const primary = item.muscles[0];
   let score = primary && focus.includes(primary) ? 24 : 6;
   if (item.level === "advanced") {
@@ -698,7 +1005,7 @@ function intensity(item: WorkoutExercise, focus: MuscleId[], mobilityOnly: boole
     score += 14;
   }
   if (item.exerciseType === "stretch" || item.exerciseType === "mobility") {
-    score += mobilityOnly ? 30 : -40;
+    score -= 40;
   }
   return score;
 }
@@ -778,8 +1085,8 @@ function HoldField({ value, onChange }: { value: string; onChange: (value: strin
     return () => window.clearInterval(timer);
   }, [running, onChange]);
   return (
-    <button type="button" onClick={() => setRunning((value) => !value)} className="min-h-14 w-full rounded-2xl bg-card text-lg ring-1 ring-ink/10">
-      {running ? `Hold ${formatClock(left)}` : `Start hold ${value || 30}s`}
+    <button type="button" onClick={() => setRunning((value) => !value)} className="w-full rounded-2xl bg-card px-3 py-4 text-sm text-ink/70 ring-1 ring-ink/10">
+      {running ? <RoundClock seconds={left} total={Math.max(Number(value) || 30, left, 1)} /> : `Start hold ${value || 30}s`}
     </button>
   );
 }
@@ -806,27 +1113,26 @@ const MUSCLE_COLOR: Record<string, string> = {
   calves: "#7dcea0",
 };
 
-function exerciseBlock(item: WorkoutExercise, day: DayType): number {
-  const sets = day.setsPerMain;
+function exerciseBlock(item: WorkoutExercise): number {
+  const sets = 3;
   const work = item.dose === "seconds" || item.dose === "minutes" ? 40 : item.dose === "breaths" ? 60 : 35;
-  const rest = item.exerciseType === "stretch" || item.exerciseType === "mobility" || item.exerciseType === "breathing" ? Math.min(15, day.restSeconds) : day.restSeconds;
+  const rest = item.exerciseType === "stretch" || item.exerciseType === "mobility" || item.exerciseType === "breathing" ? 15 : 60;
   return sets * work + Math.max(0, sets - 1) * rest;
 }
 
 function planSegments(
   ids: string[],
   byId: Map<string, WorkoutExercise>,
-  day: DayType,
 ): { seconds: number; muscle: string; label: string }[] {
   return ids.flatMap((id, index) => {
     const item = byId.get(id);
     if (!item) {
       return [];
     }
-    const rest = item.exerciseType === "stretch" || item.exerciseType === "mobility" || item.exerciseType === "breathing" ? 15 : day.restSeconds;
+    const rest = item.exerciseType === "stretch" || item.exerciseType === "mobility" || item.exerciseType === "breathing" ? 15 : 60;
     const gap = index < ids.length - 1 ? rest : 0;
     const muscle = item.muscles[0] ?? "other";
-    return [{ seconds: exerciseBlock(item, day) + gap, muscle, label: MUSCLES.find((entry) => entry.id === muscle)?.label ?? "Other" }];
+    return [{ seconds: exerciseBlock(item) + gap, muscle, label: MUSCLES.find((entry) => entry.id === muscle)?.label ?? "Other" }];
   });
 }
 
@@ -879,15 +1185,35 @@ function PlanBar({
   );
 }
 
-function doseLine(info: WorkoutExercise, harder: boolean): string {
+function loggingDose(info: WorkoutExercise): "reps" | "seconds" | "breaths" {
   if (info.dose === "seconds" || info.dose === "minutes") {
-    return info.repRange ?? "Hold 30s";
+    return "seconds";
   }
   if (info.dose === "breaths") {
-    return "8 breaths";
+    return "breaths";
   }
-  const sets = harder ? 4 : 3;
-  return `${sets} × ${info.repRange ?? "8–12"}`;
+  if (info.dose === "reps") {
+    return "reps";
+  }
+  if (info.exerciseType === "breathing" || info.exerciseType === "meditation") {
+    return "breaths";
+  }
+  if (info.exerciseType === "stretch" || info.exerciseType === "mobility" || info.exerciseType === "hang") {
+    return "seconds";
+  }
+  return "reps";
+}
+
+function doseLine(info: WorkoutExercise): string {
+  const dose = loggingDose(info);
+  const each = info.bothSides ? " · each side" : "";
+  if (dose === "seconds") {
+    return `${info.repRange ?? "Hold 30s"}${each}`;
+  }
+  if (dose === "breaths") {
+    return `8 breaths${each}`;
+  }
+  return `3 × ${info.repRange ?? "8–12"}${each}`;
 }
 
 function toCandidates(items: WorkoutExercise[]): SuggestCandidate[] {

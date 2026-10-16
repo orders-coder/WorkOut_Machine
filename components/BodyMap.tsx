@@ -5,6 +5,14 @@ import { defaultViewFor, shapesForView, type BodyView } from "@/data/body-paths"
 import { musclesInCatalog } from "@/lib/muscle-index";
 import { getMuscle, type MuscleId } from "@/lib/muscles";
 
+export type MuscleRole = "primary" | "secondary" | "tertiary";
+
+const ROLE_STYLE: Record<MuscleRole, { opacity: number; filter: string }> = {
+  primary: { opacity: 0.92, filter: "saturate(1.15)" },
+  secondary: { opacity: 0.78, filter: "hue-rotate(195deg) saturate(1.35)" },
+  tertiary: { opacity: 0.62, filter: "hue-rotate(78deg) saturate(1.1)" },
+};
+
 export function BodyFigure({
   view,
   selected,
@@ -15,6 +23,7 @@ export function BodyFigure({
   onHover,
   interactive = true,
   showCaption = true,
+  roles,
   className = "mx-auto h-auto w-full max-w-[11rem]",
 }: {
   view: BodyView;
@@ -26,6 +35,7 @@ export function BodyFigure({
   onHover: (id: MuscleId | null) => void;
   interactive?: boolean;
   showCaption?: boolean;
+  roles?: Partial<Record<MuscleId, MuscleRole>>;
   className?: string;
 }) {
   const chosen = Array.isArray(selected) ? selected : selected ? [selected] : [];
@@ -48,7 +58,20 @@ export function BodyFigure({
         if (!src) {
           return null;
         }
+        const role = roles?.[shape.id];
         const lit = chosen.includes(shape.id) || hovered === shape.id || focused === shape.id;
+        if (!lit && !role) {
+          return (
+            <img
+              key={`${view}-glow-${shape.id}`}
+              src={src}
+              alt=""
+              className="pointer-events-none absolute max-w-none opacity-0"
+              style={{ width: "374.27%", height: "107.46%", left: "-136.84%", top: "-1.79%" }}
+            />
+          );
+        }
+        const tint = role ? ROLE_STYLE[role] : null;
         return (
           <img
             key={`${view}-glow-${shape.id}`}
@@ -60,8 +83,8 @@ export function BodyFigure({
               height: "107.46%",
               left: "-136.84%",
               top: "-1.79%",
-              opacity: lit ? 0.85 : 0,
-              filter: lit ? "drop-shadow(0 0 6px rgba(225, 93, 85, 0.85))" : undefined,
+              opacity: lit ? 0.95 : tint?.opacity,
+              filter: tint?.filter ?? "drop-shadow(0 0 6px rgba(225, 93, 85, 0.85))",
             }}
           />
         );

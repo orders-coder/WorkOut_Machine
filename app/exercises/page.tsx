@@ -21,6 +21,7 @@ export default function ExercisesPage() {
       practices={withImages(practices)}
       heading="Find your next move."
       intro="Pick your workouts. Make them your own."
+      showBody
     />
   );
 }

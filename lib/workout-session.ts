@@ -1,5 +1,6 @@
 import type { MuscleId } from "./muscles";
 import type { DayTypeId } from "./routine-types";
+import { resolveExerciseId } from "./legacy-ids";
 
 export type WeightUnit = "kg" | "lb";
 
@@ -8,15 +9,24 @@ export interface SetLog {
   reps?: number;
   seconds?: number;
   breaths?: number;
+  side?: "right" | "left";
   at: string;
+}
+
+export interface SetPlan {
+  weight: number;
+  reps: number;
+  doneAt?: string;
 }
 
 export interface SessionExercise {
   practiceId: string;
   sets: SetLog[];
+  /** Rows shown on Live. Checked rows are copied into `sets`. */
+  plan?: SetPlan[];
 }
 
-export type SessionPhase = "work" | "rest" | "suggest" | "done";
+export type SessionPhase = "work" | "switch" | "rest" | "suggest" | "done";
 
 export interface WorkoutSession {
   id: string;
@@ -30,6 +40,12 @@ export interface WorkoutSession {
   index: number;
   phase: SessionPhase;
   restEndsAt?: string;
+  title?: string;
+  rounds?: number;
+  /** Which side is up, for exercises done on both sides. */
+  side?: "right" | "left";
+  /** Elapsed seconds frozen when Stop is pressed. Absent while the clock is running. */
+  timerHold?: number;
 }
 
 export interface WorkoutPrefs {
@@ -49,7 +65,16 @@ export function loadSessions(): WorkoutSession[] {
       return [];
     }
     const parsed = JSON.parse(raw) as WorkoutSession[];
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+    return parsed.map((session) => ({
+      ...session,
+      exercises: session.exercises.map((exercise) => ({
+        ...exercise,
+        practiceId: resolveExerciseId(exercise.practiceId),
+      })),
+    }));
   } catch {
     return [];
   }
@@ -57,6 +82,10 @@ export function loadSessions(): WorkoutSession[] {
 
 export function saveSessions(sessions: WorkoutSession[]) {
   window.localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
+}
+
+export function deleteSession(id: string) {
+  saveSessions(loadSessions().filter((item) => item.id !== id));
 }
 
 export function upsertSession(session: WorkoutSession) {

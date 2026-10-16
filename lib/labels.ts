@@ -70,7 +70,7 @@ export const FORCE_LABEL: Record<ForceType, string> = {
 };
 
 export const LATERALITY_LABEL: Record<Laterality, string> = {
-  unilateral: "Unilateral",
+  unilateral: "Each side",
   bilateral: "Bilateral",
 };
 

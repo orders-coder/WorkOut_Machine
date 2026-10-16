@@ -1,13 +1,15 @@
 import { getPracticeById, practices } from "./practices";
 import { exercisesInRoutine, getRoutine, suggestedRoutines } from "./routines";
-import { catalogDumpster, getAlias } from "./dumpster";
+import { resolveExerciseId } from "@/lib/legacy-ids";
 
 export const catalog = {
   exercises: practices,
   routines: suggestedRoutines,
-  dumpster: catalogDumpster,
   getExercise: getPracticeById,
   getRoutine,
   exercisesInRoutine,
-  getAlias,
+  getAlias: (id: string) => {
+    const next = resolveExerciseId(id);
+    return next === id ? undefined : next;
+  },
 };

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LiveWorkout } from "@/components/LiveWorkout";
+import { LiveScreen } from "@/components/LiveScreen";
 import { workoutCatalog } from "@/lib/workout-catalog";
 
 export const metadata: Metadata = {
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function LivePage() {
-  return <LiveWorkout catalog={workoutCatalog()} mode="live" />;
+  return <LiveScreen catalog={workoutCatalog()} />;
 }

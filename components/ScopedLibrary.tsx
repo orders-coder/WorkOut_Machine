@@ -7,12 +7,14 @@ export function ScopedLibrary({
   intro,
   empty,
   lockFavorites,
+  showBody,
 }: {
   practices: Practice[];
   heading?: string;
   intro?: string;
   empty?: string;
   lockFavorites?: boolean;
+  showBody?: boolean;
 }) {
   return (
     <LibraryClient
@@ -21,6 +23,7 @@ export function ScopedLibrary({
       intro={intro}
       empty={empty}
       lockFavorites={lockFavorites}
+      showBody={showBody}
     />
   );
 }

@@ -8,7 +8,6 @@ const ITEMS = [
   { href: "/routines", label: "Routines" },
   { href: "/live", label: "Live" },
   { href: "/exercises", label: "Exercises" },
-  { href: "/muscles", label: "Muscles" },
 ] as const;
 
 export function TopNav() {
@@ -21,7 +20,7 @@ export function TopNav() {
       aria-label="Primary"
     >
       <div className="mx-auto max-w-lg">
-        <ul className="grid h-12 grid-cols-5 items-center">
+        <ul className="grid h-12 grid-cols-4 items-center">
           {ITEMS.map((item) => {
             const active =
               item.href === "/"
