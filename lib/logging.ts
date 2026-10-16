@@ -77,7 +77,12 @@ function dumbbell(id: string, load: LoadBasis, side: SideMode): Logging {
   };
 }
 
-function bodyweight(id: string, range: [number, number], restSec: number): Logging {
+function bodyweight(
+  id: string,
+  range: [number, number],
+  restSec: number,
+  load?: { added?: boolean; assist?: boolean },
+): Logging {
   return {
     profile: "bodyweight",
     loadBasis: "none",
@@ -86,7 +91,11 @@ function bodyweight(id: string, range: [number, number], restSec: number): Loggi
     repRange: range,
     restSec,
     progression: { rule: "double", incrementLb: step(id) },
-    optional: { rir: true, added: true, assist: true },
+    optional: {
+      rir: true,
+      ...(load?.added ? { added: true } : {}),
+      ...(load?.assist ? { assist: true } : {}),
+    },
   };
 }
 
@@ -157,9 +166,9 @@ export const LOGGING: Record<string, Logging> = {
   },
   "push-up": bodyweight("push-up", [6, 15], 75),
   "scapular-push-up": bodyweight("scapular-push-up", [8, 12], 60),
-  "pull-up-or-negative": bodyweight("pull-up-or-negative", [3, 8], 120),
-  "chin-up": bodyweight("chin-up", [3, 8], 120),
-  dip: bodyweight("dip", [5, 10], 120),
+  "pull-up-or-negative": bodyweight("pull-up-or-negative", [3, 8], 120, { added: true, assist: true }),
+  "chin-up": bodyweight("chin-up", [3, 8], 120, { added: true, assist: true }),
+  dip: bodyweight("dip", [5, 10], 120, { added: true, assist: true }),
   "inverted-row": bodyweight("inverted-row", [8, 12], 75),
   "hanging-knee-raise": bodyweight("hanging-knee-raise", [8, 12], 75),
   "scapular-pull-up": bodyweight("scapular-pull-up", [5, 10], 75),
@@ -198,8 +207,8 @@ export const LOGGING: Record<string, Logging> = {
     progression: { rule: "variation" },
     optional: { bandLevel: true, rir: true },
   },
-  plank: hold(3, 30, 45, { added: true }),
-  "dead-hang": hold(3, 30, 45, { added: true }),
+  plank: hold(3, 30, 45),
+  "dead-hang": hold(3, 30, 45),
   "spanish-squat": hold(3, 30, 45, { added: true, bandLevel: true }),
   "chin-tuck": hold(2, 20, 30),
   "doorway-pec-stretch": hold(2, 30, 30),
@@ -370,6 +379,22 @@ export function loggingForCustom(dose: "reps" | "seconds", weighted: boolean): L
     return dumbbell("custom", "total", "both");
   }
   return bodyweight("custom", [8, 12], 75);
+}
+
+/** Short dose line shared by the library and the live logger. */
+export function loggingSummary(logging: Logging): string {
+  const side = logging.sideMode === "each_side" ? " each side" : logging.sideMode === "alternating" ? " alternating" : "";
+  const dose = logging.repRange
+    ? `${logging.repRange[0]}–${logging.repRange[1]} reps`
+    : logging.holdSec
+      ? `${logging.holdSec}s`
+      : logging.optional?.pnf
+        ? `${logging.optional.pnf.stretchSec}s stretch`
+        : logging.optional?.contacts
+          ? `${logging.optional.contacts} contacts`
+          : "";
+  const load = loadsWeight(logging) ? loadBasisLabel(logging.loadBasis) : logging.optional?.added || logging.optional?.assist ? "± load" : "";
+  return [`${logging.sets}×`, dose, side.trim(), load].filter(Boolean).join(" ");
 }
 
 export function loadBasisLabel(basis: LoadBasis): string {

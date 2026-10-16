@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { loggingSummary } from "@/lib/logging";
 import type { Practice } from "@/lib/types";
 import { SPORT_LABEL } from "@/lib/labels";
 import { resolveChosenImage } from "@/lib/media";
@@ -73,8 +74,8 @@ export function PracticeCard({
             <h2 className="mt-0.5 font-display text-base leading-tight text-ink">
               {practice.name}
             </h2>
-            {practice.profile?.laterality === "unilateral" || practice.training?.laterality === "unilateral" ? (
-              <p className="mt-0.5 text-[0.7rem] text-ink/45">Both sides</p>
+            {practice.logging ? (
+              <p className="mt-0.5 text-[0.7rem] text-ink/55">{loggingSummary(practice.logging)}</p>
             ) : null}
             {sports.length > 0 ? (
               <p className="mt-0.5 text-[0.7rem] tracking-wide text-ink/50">
@@ -113,8 +114,8 @@ export function PracticeCard({
           <h2 className="font-display text-xs leading-snug text-ink">
             {practice.name}
           </h2>
-          {practice.profile?.laterality === "unilateral" || practice.training?.laterality === "unilateral" ? (
-            <p className="text-[0.65rem] text-ink/45">Both sides</p>
+          {practice.logging ? (
+            <p className="text-[0.65rem] text-ink/55">{loggingSummary(practice.logging)}</p>
           ) : null}
           {sports.length > 0 ? (
             <p className="text-xs tracking-wide text-ink/50">

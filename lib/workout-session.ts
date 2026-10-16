@@ -34,6 +34,8 @@ export interface WorkoutSession {
   side?: LogSide;
   /** Elapsed seconds frozen when Stop is pressed. Absent while the clock is running. */
   timerHold?: number;
+  /** Set after starter weights are removed from bodyweight added-load fields. */
+  loggingCleanup?: 1;
 }
 
 export interface WorkoutPrefs {

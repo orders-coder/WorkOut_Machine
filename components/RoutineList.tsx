@@ -40,7 +40,11 @@ export function RoutineList({
             {live.map((routine) => (
               <li key={routine.slug} className="relative">
                 <Link
-                  href={`/routines/${routine.slug}`}
+                  href={
+                    routine.slug === "front-splits-12"
+                      ? "/routines?routine=front-splits-12"
+                      : `/routines/${routine.slug}`
+                  }
                   className="block rounded-3xl bg-card px-4 py-4 pr-20 shadow-sm ring-1 ring-ink/8"
                 >
                   <p className="text-[0.65rem] tracking-[0.14em] uppercase text-ink/45">

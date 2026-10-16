@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MUSCLES, type MuscleId } from "@/lib/muscles";
+import { getRoutine } from "@/data/routines";
 import { DAY_TYPES, dayTypeById, longerDay, type DayType, type DayTypeId } from "@/lib/routine-types";
 import { readyToFinish, suggestNext, type SuggestCandidate } from "@/lib/suggest-next";
 import type { ExerciseType, ForceType, MovementPattern } from "@/lib/types";
@@ -72,6 +73,7 @@ export function LiveWorkout({
   const [mains, setMains] = useState<MuscleId[]>([]);
   const [bodyweightOnly, setBodyweightOnly] = useState(false);
   const [picked, setPicked] = useState<string[]>([]);
+  const [routineTitle, setRoutineTitle] = useState<string | null>(null);
   const [slot, setSlot] = useState<{ kind: "insert" | "swap"; at: number } | null>(null);
   const [unit, setUnit] = useState<WeightUnit>("lb");
   const [now, setNow] = useState(() => Date.now());
@@ -83,9 +85,31 @@ export function LiveWorkout({
   const [history, setHistory] = useState<WorkoutSession[]>([]);
   const [openHistory, setOpenHistory] = useState<string | null>(null);
   const [draft, setDraft] = useState<{ key: string; value: string } | null>(null);
+  const [hold, setHold] = useState<{ exerciseIndex: number; setIndex: number; endsAt: number; total: number } | null>(null);
   const [extra, setExtra] = useState<WorkoutExercise[]>([]);
+  const holdTimer = useRef<number | null>(null);
   const router = useRouter();
   const exercises = useMemo(() => [...extra, ...catalog], [extra, catalog]);
+
+  useEffect(() => {
+    if (mode !== "build") {
+      return;
+    }
+    const slug = new URLSearchParams(window.location.search).get("routine");
+    if (!slug) {
+      return;
+    }
+    const routine = getRoutine(slug);
+    if (!routine) {
+      return;
+    }
+    setPicked(routine.exerciseIds);
+    setRoutineTitle(routine.title);
+    if (routine.slug === "front-splits-12") {
+      setDay("20");
+    }
+    sessionStorage.removeItem("work-out-machine:front-splits-live");
+  }, [mode]);
 
   useEffect(() => {
     const existing = activeSession();
@@ -99,6 +123,12 @@ export function LiveWorkout({
   useEffect(() => {
     const timer = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => () => {
+    if (holdTimer.current != null) {
+      window.clearTimeout(holdTimer.current);
+    }
   }, []);
 
   useEffect(() => {
@@ -120,22 +150,27 @@ export function LiveWorkout({
   }
 
   const byId = useMemo(() => new Map(exercises.map((item) => [item.id, item])), [exercises]);
+  const sessionRef = useRef(session);
+  const byIdRef = useRef(byId);
+  sessionRef.current = session;
+  byIdRef.current = byId;
 
   useEffect(() => {
     if (mode !== "live" || !session) {
       return;
     }
+    const stripCopiedLoad = session.loggingCleanup !== 1;
     let changed = false;
     const nextExercises = session.exercises.map((item) => {
-      const plan = alignPlan(item.plan, item.sets, byId.get(item.practiceId)?.logging, unit);
+      const plan = alignPlan(item.plan, item.sets, byId.get(item.practiceId)?.logging, unit, stripCopiedLoad);
       if (JSON.stringify(plan) === JSON.stringify(item.plan ?? [])) {
         return item;
       }
       changed = true;
       return { ...item, plan };
     });
-    if (changed) {
-      persist({ ...session, exercises: nextExercises });
+    if (changed || stripCopiedLoad) {
+      persist({ ...session, exercises: nextExercises, loggingCleanup: 1 });
     }
   }, [mode, session, unit, byId]);
   const buildDay = dayTypeById(day);
@@ -209,6 +244,7 @@ export function LiveWorkout({
       mains,
       bodyweightOnly,
       startedAt: new Date().toISOString(),
+      title: routineTitle ?? undefined,
       exercises: picked.map((practiceId) => ({
         practiceId,
         sets: [],
@@ -392,6 +428,66 @@ export function LiveWorkout({
     persist({ ...session, exercises, phase: "work" });
   }
 
+  function clearHoldTimer() {
+    if (holdTimer.current != null) {
+      window.clearTimeout(holdTimer.current);
+      holdTimer.current = null;
+    }
+  }
+
+  function cancelHold() {
+    clearHoldTimer();
+    setHold(null);
+  }
+
+  function startHold(exerciseIndex: number, setIndex: number, total: number, restSec: number) {
+    clearHoldTimer();
+    const endsAt = Date.now() + total * 1000;
+    setHold({ exerciseIndex, setIndex, endsAt, total });
+    setNow(Date.now());
+    holdTimer.current = window.setTimeout(() => {
+      holdTimer.current = null;
+      setHold((active) =>
+        active && active.exerciseIndex === exerciseIndex && active.setIndex === setIndex && active.endsAt === endsAt
+          ? null
+          : active,
+      );
+      const current = sessionRef.current;
+      const item = current?.exercises[exerciseIndex];
+      const row = item?.plan?.[setIndex];
+      if (!current || !item?.plan || !row || row.completedAt) {
+        return;
+      }
+      const completedAt = new Date().toISOString();
+      const plan = item.plan.map((entry, index) =>
+        index === setIndex ? { ...entry, completedAt, seconds: total } : entry,
+      );
+      const exercises = current.exercises.map((entry, index) => {
+        if (index !== exerciseIndex) {
+          return entry;
+        }
+        return {
+          ...entry,
+          plan,
+          sets: plan.flatMap((planned) => {
+            if (!planned.completedAt) {
+              return [];
+            }
+            const existing = entry.sets.find((set) => set.completedAt === planned.completedAt);
+            return [mergeLoggedSet(rowForLog(planned, byIdRef.current.get(entry.practiceId)?.logging), existing)];
+          }),
+        };
+      });
+      persist({
+        ...current,
+        exercises,
+        phase: "rest",
+        restEndsAt: new Date(Date.now() + restSec * 1000).toISOString(),
+      });
+      playDone();
+    }, total * 1000);
+  }
+
   function toggleLogged(exerciseIndex: number, setIndex: number, restSec: number) {
     if (!session) {
       return;
@@ -400,6 +496,9 @@ export function LiveWorkout({
     const row = item?.plan?.[setIndex];
     if (!item?.plan || !row) {
       return;
+    }
+    if (hold?.exerciseIndex === exerciseIndex && hold.setIndex === setIndex) {
+      cancelHold();
     }
     const completedAt = row.completedAt ? undefined : new Date().toISOString();
     const plan = item.plan.map((entry, index) => (index === setIndex ? { ...entry, completedAt } : entry));
@@ -475,6 +574,9 @@ export function LiveWorkout({
         <p className="text-[0.65rem] tracking-[0.18em] uppercase text-ink/45">Work Out Machine</p>
         <h1 className="mt-1 font-display text-[2.35rem] leading-none tracking-tight text-ink">Routines</h1>
         <p className="mt-1.5 text-sm text-ink/70">Build the session here. Weights and reps get logged on Live.</p>
+        {routineTitle && picked.length > 0 ? (
+          <p className="mt-2 text-sm text-ink/70">{routineTitle} is in today’s map. Change the list if you want, then start.</p>
+        ) : null}
         <PlanBar segments={planSegments(picked, byId)} day={buildDay} />
         {session ? (
           <Link href="/live" className="mt-3 flex min-h-12 items-center justify-center rounded-full bg-ink text-sm text-white">
@@ -791,14 +893,13 @@ export function LiveWorkout({
   const spentLabel = formatClock(elapsed);
   const capLabel = formatClock(budget);
 
+  const holdLeft = hold ? Math.max(0, Math.ceil((hold.endsAt - now) / 1000)) : 0;
+
   return (
-    <div className="px-3 pb-36 pt-1">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-[0.65rem] tracking-[0.18em] uppercase text-ink/45">Live</p>
-          <h1 className="font-display text-3xl leading-none">{session.title ?? dayInfo.label}</h1>
-        </div>
-        <div className="flex items-center gap-2">
+    <div className="px-3 pb-24 pt-1">
+      <div className="flex items-center justify-between gap-2">
+        <h1 className="truncate font-display text-xl leading-none">{session.title ?? dayInfo.label}</h1>
+        <div className="flex shrink-0 items-center gap-1.5">
           <button
             type="button"
             onClick={() => {
@@ -829,17 +930,17 @@ export function LiveWorkout({
                 })),
               });
             }}
-            className="min-h-11 rounded-full px-3 text-sm ring-1 ring-ink/10"
+            className="h-8 rounded-full px-2.5 text-xs ring-1 ring-ink/10"
           >
             {unit}
           </button>
-          <button type="button" onClick={finishWorkout} className="min-h-11 rounded-full bg-[#0071e3] px-4 text-sm text-white">
+          <button type="button" onClick={finishWorkout} className="h-8 rounded-full bg-[#0071e3] px-3 text-xs text-white">
             Finish
           </button>
         </div>
       </div>
 
-      <ol className="mt-4 space-y-3">
+      <ol className="mt-2 space-y-2">
         {session.exercises.map((item, exerciseIndex) => {
           const known = byId.get(item.practiceId);
           const plan = item.plan ?? [];
@@ -848,21 +949,21 @@ export function LiveWorkout({
           const suggested = logging?.sets ?? 2;
           const earlier = previousSetsFor(item.practiceId);
           return (
-            <li key={`${item.practiceId}-${exerciseIndex}`} className="rounded-2xl bg-card px-3 py-3 ring-1 ring-ink/10">
-              <div className="flex items-center gap-3">
+            <li key={`${item.practiceId}-${exerciseIndex}`} className="rounded-xl bg-card px-2.5 py-2 ring-1 ring-ink/10">
+              <div className="flex items-center gap-2">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={known?.image ?? "/practices/custom.svg"} alt="" className="h-14 w-14 rounded-xl bg-white object-contain" />
+                <img src={known?.image ?? "/practices/custom.svg"} alt="" className="h-9 w-9 rounded-lg bg-white object-contain" />
                 <div className="min-w-0">
-                  <Link href={`/practice/${item.practiceId}`} className="font-medium text-[#0071e3]">
+                  <Link href={`/practice/${item.practiceId}`} className="text-sm font-medium text-[#0071e3]">
                     {known?.name ?? item.practiceId}
                   </Link>
-                  <p className="text-sm text-ink/55">{suggestionLine(logging, suggested)}</p>
-                  {pnfLine(logging) ? <p className="text-xs text-ink/55">{pnfLine(logging)}</p> : null}
+                  <p className="truncate text-[0.7rem] text-ink/55">{suggestionLine(logging, suggested)}</p>
+                  {pnfLine(logging) ? <p className="text-[0.7rem] text-ink/55">{pnfLine(logging)}</p> : null}
                   {progressionHint(logging, plan) ? (
-                    <p className="text-xs text-[#0071e3]">{progressionHint(logging, plan)}</p>
+                    <p className="text-[0.7rem] text-[#0071e3]">{progressionHint(logging, plan)}</p>
                   ) : null}
                   {known?.regressionId || known?.progressionId ? (
-                    <p className="mt-1 flex flex-wrap gap-x-3 text-xs">
+                    <p className="flex flex-wrap gap-x-3 text-[0.7rem]">
                       {known?.regressionId ? (
                         <Link href={`/practice/${known.regressionId}`} className="text-[#0071e3]">
                           Easier · {byId.get(known.regressionId)?.name ?? "easier"}
@@ -879,7 +980,7 @@ export function LiveWorkout({
               </div>
               <ExerciseNote key={item.practiceId} practiceId={item.practiceId} />
               <div
-                className="mt-3 grid items-center gap-1.5 px-1 text-[0.65rem] uppercase tracking-[0.12em] text-ink/40"
+                className="mt-1.5 grid items-center gap-1 px-0.5 text-[0.6rem] uppercase tracking-[0.08em] text-ink/40"
                 style={{ gridTemplateColumns: planGrid(columns.length) }}
               >
                 <span>Set</span>
@@ -889,18 +990,37 @@ export function LiveWorkout({
                 ))}
                 <span className="text-right">Done</span>
               </div>
-              <ol className="mt-1 space-y-1.5">
+              <ol className="mt-0.5 space-y-0.5">
                 {plan.map((row, setIndex) => {
                   const done = Boolean(row.completedAt);
+                  const holding = hold?.exerciseIndex === exerciseIndex && hold.setIndex === setIndex;
                   const sideCount = plan.slice(0, setIndex + 1).filter((entry) => entry.side === row.side).length - 1;
                   const previous = row.side ? earlier.filter((set) => set.side === row.side)[sideCount] : earlier[setIndex];
                   return (
                     <li
                       key={`${exerciseIndex}-${setIndex}`}
-                      className={`grid items-center gap-1.5 rounded-xl px-1 py-1.5 ${done ? "bg-[#e5f6ea]" : ""}`}
+                      className={`grid items-center gap-1 rounded-lg px-0.5 py-0.5 ${holding ? "bg-[#f3efe4]" : done ? "bg-[#e5f6ea]" : ""}`}
                       style={{ gridTemplateColumns: planGrid(columns.length) }}
                     >
-                      <span className="text-sm text-ink/50">{setLabel(row, plan, setIndex)}</span>
+                      <span className="flex flex-col items-start leading-none">
+                        <span className="text-xs text-ink/50">{setLabel(row, plan, setIndex)}</span>
+                        <PainField
+                          value={row.pain}
+                          editing={draft?.key === `${exerciseIndex}-${setIndex}-pain`}
+                          draft={draft?.value ?? ""}
+                          onStart={() =>
+                            setDraft({
+                              key: `${exerciseIndex}-${setIndex}-pain`,
+                              value: row.pain == null ? "" : String(row.pain),
+                            })
+                          }
+                          onDraft={(value) => setDraft({ key: `${exerciseIndex}-${setIndex}-pain`, value })}
+                          onCommit={(value) => {
+                            changePlan(exerciseIndex, setIndex, { pain: painOrUndefined(value) });
+                            setDraft(null);
+                          }}
+                        />
+                      </span>
                       <span className="truncate text-xs text-ink/45">{previousLabel(previous, columns)}</span>
                       {columns.map((column) => (
                         <PlanField
@@ -924,31 +1044,41 @@ export function LiveWorkout({
                       ))}
                       <button
                         type="button"
-                        aria-label={done ? "Uncheck set" : "Log set"}
-                        aria-pressed={done}
-                        onClick={() => toggleLogged(exerciseIndex, setIndex, logging?.restSec ?? 30)}
-                        className={`flex h-9 w-9 items-center justify-center rounded-full text-base ${done ? "bg-[#34c759] text-white" : "bg-white ring-1 ring-ink/15"}`}
-                      >
-                        ✓
-                      </button>
-                      <div className="flex justify-end" style={{ gridColumn: "1 / -1" }}>
-                        <PainField
-                          value={row.pain}
-                          editing={draft?.key === `${exerciseIndex}-${setIndex}-pain`}
-                          draft={draft?.value ?? ""}
-                          onStart={() =>
-                            setDraft({
-                              key: `${exerciseIndex}-${setIndex}-pain`,
-                              value: row.pain == null ? "" : String(row.pain),
-                            })
+                        aria-label={holding ? `Cancel hold, ${holdLeft} seconds left` : done ? "Uncheck set" : isTimedHold(logging) ? "Start hold" : "Log set"}
+                        aria-pressed={done || holding}
+                        onClick={() => {
+                          const sameHold = hold?.exerciseIndex === exerciseIndex && hold.setIndex === setIndex;
+                          if (sameHold) {
+                            cancelHold();
+                            return;
                           }
-                          onDraft={(value) => setDraft({ key: `${exerciseIndex}-${setIndex}-pain`, value })}
-                          onCommit={(value) => {
-                            changePlan(exerciseIndex, setIndex, { pain: painOrUndefined(value) });
+                          if (hold) {
+                            cancelHold();
+                          }
+                          const secondsKey = `${exerciseIndex}-${setIndex}-seconds`;
+                          const typedSeconds = draft?.key === secondsKey ? numberOrUndefined(draft.value) : row.seconds;
+                          if (draft?.key === secondsKey) {
+                            changePlan(exerciseIndex, setIndex, { seconds: typedSeconds });
                             setDraft(null);
-                          }}
-                        />
-                      </div>
+                          }
+                          if (!done && isTimedHold(logging) && typedSeconds != null && typedSeconds > 0) {
+                            startHold(exerciseIndex, setIndex, typedSeconds, logging?.restSec ?? 30);
+                            return;
+                          }
+                          toggleLogged(exerciseIndex, setIndex, logging?.restSec ?? 30);
+                        }}
+                        className={`flex h-8 w-8 items-center justify-center rounded-full text-sm tabular-nums ${done ? "bg-[#34c759] text-white" : holding ? "bg-ink text-white" : "bg-white ring-1 ring-ink/15"}`}
+                      >
+                        {holding ? holdLeft : "✓"}
+                      </button>
+                      {holding ? (
+                        <div className="h-0.5 overflow-hidden rounded-full bg-ink/10" style={{ gridColumn: "1 / -1" }}>
+                          <div
+                            className="h-full bg-[#7f9f8e]"
+                            style={{ width: `${Math.min(100, (holdLeft / Math.max(hold?.total ?? 1, 1)) * 100)}%` }}
+                          />
+                        </div>
+                      ) : null}
                     </li>
                   );
                 })}
@@ -972,7 +1102,7 @@ export function LiveWorkout({
                   };
                   writePlans([{ index: exerciseIndex, plan: [...plan, added] }]);
                 }}
-                className="mt-2 min-h-11 w-full rounded-xl text-sm text-[#0071e3]"
+                className="mt-1 h-8 w-full rounded-lg text-xs text-[#0071e3]"
               >
                 + Add set
               </button>
@@ -982,17 +1112,24 @@ export function LiveWorkout({
       </ol>
 
       <div
-        className="fixed inset-x-0 z-30 border-t border-ink/10 bg-white/95 px-4 py-3 backdrop-blur"
+        className="fixed inset-x-0 z-30 border-t border-ink/10 bg-white/95 px-3 py-1.5 backdrop-blur"
         style={{ bottom: "calc(3rem + env(safe-area-inset-bottom))" }}
       >
-        {session.restEndsAt && restLeft > 0 ? (
-          <p className="text-center text-sm text-ink/70">Rest {formatClock(restLeft)}</p>
-        ) : null}
-        <p className="text-center text-[0.65rem] uppercase tracking-[0.14em] text-ink/45">Time on Live</p>
-        <p className="text-center font-display text-5xl tabular-nums leading-none tracking-tight">{spentLabel}</p>
-        <p className="mt-1 text-center text-xs text-ink/45">stops at {capLabel}</p>
-        <div className="mt-2 flex justify-center">
-          <button type="button" onClick={stopTimer} className="min-h-10 rounded-full px-5 text-sm ring-1 ring-ink/10">
+        <div className="relative flex h-9 items-center justify-center">
+          <div className="text-center">
+            {hold ? (
+              <p className="font-display text-xl tabular-nums leading-none">Hold {formatClock(holdLeft)}</p>
+            ) : (
+              <p className="font-display text-xl tabular-nums leading-none">{spentLabel}</p>
+            )}
+            <p className="text-[0.65rem] text-ink/45">
+              {hold ? spentLabel : null}
+              {hold ? " · " : null}
+              {session.restEndsAt && restLeft > 0 ? `Rest ${formatClock(restLeft)} · ` : null}
+              stops {capLabel}
+            </p>
+          </div>
+          <button type="button" onClick={stopTimer} className="absolute right-0 h-8 rounded-full px-3 text-xs ring-1 ring-ink/10">
             {session.timerHold != null ? "Resume" : "Stop"}
           </button>
         </div>
@@ -1010,16 +1147,29 @@ function painOrUndefined(value: string): number | undefined {
 }
 
 function ExerciseNote({ practiceId }: { practiceId: string }) {
-  const [value, setValue] = useState(() => exerciseNote(practiceId));
+  const saved = exerciseNote(practiceId);
+  const [open, setOpen] = useState(saved.length > 0);
+  const [value, setValue] = useState(saved);
+  if (!open) {
+    return (
+      <button type="button" onClick={() => setOpen(true)} className="text-[0.7rem] text-[#0071e3]">
+        Note
+      </button>
+    );
+  }
   return (
-    <textarea
+    <input
       value={value}
-      rows={2}
       placeholder="Note for next time"
       aria-label="Exercise note"
       onChange={(event) => setValue(event.target.value)}
-      onBlur={() => saveExerciseNote(practiceId, value)}
-      className="mt-2 w-full resize-none rounded-xl bg-white px-3 py-2 text-sm ring-1 ring-ink/10"
+      onBlur={() => {
+        saveExerciseNote(practiceId, value);
+        if (!value.trim()) {
+          setOpen(false);
+        }
+      }}
+      className="mt-1 w-full rounded-lg bg-white px-2 py-1 text-xs ring-1 ring-ink/10"
     />
   );
 }
@@ -1053,12 +1203,12 @@ function PainField({
             onCommit(draft);
           }
         }}
-        className="h-7 w-16 rounded-lg bg-white px-2 text-center text-xs ring-1 ring-[#0071e3]"
+        className="h-5 w-10 rounded bg-white px-0.5 text-center text-[0.65rem] ring-1 ring-[#0071e3]"
       />
     );
   }
   return (
-    <button type="button" onClick={onStart} className="h-7 px-1 text-[0.65rem] uppercase tracking-[0.12em] text-ink/40">
+    <button type="button" onClick={onStart} className="h-3.5 text-[0.55rem] uppercase tracking-[0.08em] text-ink/40">
       {value == null ? "Pain" : `Pain ${value}`}
     </button>
   );
@@ -1100,11 +1250,13 @@ function columnsFor(logging: Logging | undefined): PlanColumn[] {
         { key: "weight", label: "Wt" },
         { key: "reps", label: "Reps" },
       ];
-    case "bodyweight":
-      return [
-        { key: "reps", label: "Reps" },
-        { key: "load", label: "±" },
-      ];
+    case "bodyweight": {
+      const columns: PlanColumn[] = [{ key: "reps", label: "Reps" }];
+      if (logging.optional?.added || logging.optional?.assist) {
+        columns.push({ key: "load", label: "±" });
+      }
+      return columns;
+    }
     case "band":
       return [
         { key: "band", label: "Band" },
@@ -1147,8 +1299,12 @@ function columnsFor(logging: Logging | undefined): PlanColumn[] {
   }
 }
 
+function isTimedHold(logging: Logging | undefined): boolean {
+  return logging?.profile === "hold" || logging?.profile === "hold_each_side" || logging?.profile === "pnf_stretch";
+}
+
 function planGrid(count: number): string {
-  return `1.7rem minmax(0,1.15fr) repeat(${count}, minmax(0,1fr)) 2.2rem`;
+  return `2rem minmax(0,0.9fr) repeat(${count}, minmax(0,1fr)) 2rem`;
 }
 
 function columnHeader(column: PlanColumn, unit: WeightUnit): string {
@@ -1287,7 +1443,13 @@ function rowForLog(row: SetPlan, logging: Logging | undefined): SetPlan {
   return next;
 }
 
-function alignPlan(plan: SetPlan[] | undefined, logged: SetLog[], logging: Logging | undefined, unit: WeightUnit): SetPlan[] {
+function alignPlan(
+  plan: SetPlan[] | undefined,
+  logged: SetLog[],
+  logging: Logging | undefined,
+  unit: WeightUnit,
+  stripCopiedLoad: boolean,
+): SetPlan[] {
   const base = plan && plan.length > 0 ? plan.map((row) => ({ ...row })) : planFromLogs(logged, logging, unit);
   if (!logging) {
     return base;
@@ -1318,8 +1480,13 @@ function alignPlan(plan: SetPlan[] | undefined, logged: SetLog[], logging: Loggi
     if (!row.completedAt && next.boxHeightCm == null && fallback?.boxHeightCm != null) {
       next.boxHeightCm = fallback.boxHeightCm;
     }
-    if (shown.has("load") && next.addedWeight == null && next.assistWeight == null && next.weight != null) {
-      next.addedWeight = next.weight;
+    const copiedLoad =
+      stripCopiedLoad &&
+      logging.profile === "bodyweight" &&
+      logged.every((set) => set.addedWeight == null && set.assistWeight == null);
+    if (copiedLoad || !shown.has("load")) {
+      delete next.addedWeight;
+      delete next.assistWeight;
     }
     if (!shown.has("reps")) {
       delete next.reps;
@@ -1425,12 +1592,12 @@ function PlanField({
             onCommit(draft);
           }
         }}
-        className="h-9 w-full rounded-lg bg-white px-1 text-center text-sm tabular-nums ring-1 ring-[#0071e3]"
+        className="h-8 w-full rounded-lg bg-white px-1 text-center text-sm tabular-nums ring-1 ring-[#0071e3]"
       />
     );
   }
   return (
-    <button type="button" onClick={onStart} className="h-9 w-full rounded-lg text-center text-sm tabular-nums">
+    <button type="button" onClick={onStart} className="h-8 w-full rounded-lg text-center text-sm tabular-nums">
       {shown || "—"}
     </button>
   );
