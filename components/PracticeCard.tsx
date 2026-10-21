@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { loggingSummary } from "@/lib/logging";
-import type { Practice } from "@/lib/types";
+import type { Practice, ResolvedPracticeMedia } from "@/lib/types";
+import { DRAWING_CHOICE } from "@/lib/types";
 import { SPORT_LABEL } from "@/lib/labels";
 import { resolveChosenImage } from "@/lib/media";
+import { ExerciseVisual } from "./ExerciseVisual";
 import { WayMarks } from "./WayMarks";
 import { useLibrary } from "./LibraryProvider";
 
@@ -55,18 +57,28 @@ export function PracticeCard({
   }
   const sports = (practice.sports ?? []).filter((sport) => sport !== "general");
   const picture = resolveChosenImage(practice, state.photoChoice);
+  const choice = state.photoChoice[practice.id];
+  const drawing = !choice || choice === DRAWING_CHOICE;
+  const media: ResolvedPracticeMedia =
+    drawing && practice.visual
+      ? practice.visual
+      : {
+          type: "still",
+          src: picture,
+          fallback: practice.visual?.fallback || "/practices/custom.svg",
+        };
   const fade = dumped ? "opacity-40" : "";
 
   if (layout === "list") {
     return (
       <article className={`relative flex gap-3 rounded-2xl bg-card p-2 pr-2 shadow-sm ring-1 ring-ink/8 ${fade}`}>
         <Link href={`/practice/${practice.id}`} className="flex min-w-0 flex-1 gap-3">
-          <div className="relative h-[4.5rem] w-[4.5rem] shrink-0 overflow-hidden rounded-xl bg-wash">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={picture}
+          <div className="relative h-[4.5rem] w-32 shrink-0 overflow-hidden rounded-xl bg-wash">
+            <ExerciseVisual
+              media={media}
               alt={practice.imageAlt}
-              className="h-full w-full object-cover"
+              loading="lazy"
+              className="h-full w-full object-contain"
             />
           </div>
           <div className="flex min-w-0 flex-col justify-center py-1">
@@ -101,12 +113,12 @@ export function PracticeCard({
   return (
     <article className={`group relative overflow-hidden rounded-2xl bg-card shadow-sm ring-1 ring-ink/5 ${fade}`}>
       <Link href={`/practice/${practice.id}`} className="block">
-        <div className="relative aspect-square overflow-hidden bg-wash">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={picture}
+        <div className="relative aspect-video overflow-hidden bg-wash">
+          <ExerciseVisual
+            media={media}
             alt={practice.imageAlt}
-            className="h-full w-full object-cover"
+            loading="lazy"
+            className="h-full w-full object-contain"
           />
         </div>
         <div className="space-y-0.5 px-1.5 pb-2 pt-1.5">

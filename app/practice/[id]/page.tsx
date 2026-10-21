@@ -23,7 +23,8 @@ import {
   MOVEMENT_LABEL,
   SPORT_LABEL,
 } from "@/lib/labels";
-import { resolvePracticeImage } from "@/lib/resolve-image";
+import { attachPracticeMedia } from "@/lib/resolve-image";
+import { ExerciseVisual } from "@/components/ExerciseVisual";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -51,11 +52,8 @@ export default async function PracticePage({ params }: Props) {
     }
     notFound();
   }
-  const image = resolvePracticeImage(practice.id, practice.image);
-  const related = getRelatedPractices(practice).map((item) => ({
-    ...item,
-    image: resolvePracticeImage(item.id, item.image),
-  }));
+  const shown = attachPracticeMedia(practice);
+  const related = getRelatedPractices(practice).map(attachPracticeMedia);
   const sports = (practice.sports ?? []).filter((sport) => sport !== "general");
 
   return (
@@ -69,7 +67,7 @@ export default async function PracticePage({ params }: Props) {
           way: item.way,
         }))}
       />
-      <PracticeMedia practice={{ ...practice, image }} />
+      <PracticeMedia practice={shown} />
       <div className="px-3 pb-6 pt-3">
         <div>
           <WayMarks practice={practice} />
@@ -202,9 +200,19 @@ export default async function PracticePage({ params }: Props) {
                     href={`/practice/${item.id}`}
                     className="flex gap-3 rounded-2xl bg-card p-2 ring-1 ring-ink/8"
                   >
-                    <div className="h-16 w-14 overflow-hidden rounded-xl bg-wash">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={item.image} alt="" className="h-full w-full object-cover" />
+                    <div className="relative aspect-video h-16 overflow-hidden rounded-xl bg-wash">
+                      <ExerciseVisual
+                        media={
+                          item.visual ?? {
+                            type: "still",
+                            src: item.image,
+                            fallback: "/practices/custom.svg",
+                          }
+                        }
+                        alt=""
+                        loading="lazy"
+                        className="h-full w-full object-contain"
+                      />
                     </div>
                     <div className="flex flex-col justify-center">
                       <WayMarks practice={item} size="sm" />

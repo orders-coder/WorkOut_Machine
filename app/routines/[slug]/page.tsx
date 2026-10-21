@@ -6,7 +6,7 @@ import { PracticeCard } from "@/components/PracticeCard";
 import { Disclaimer } from "@/components/Disclaimer";
 import { RoutineActions } from "@/components/RoutineActions";
 import { exercisesInRoutine, getRoutine, isRoutineSlug, suggestedRoutines } from "@/data/routines";
-import { resolvePracticeImage } from "@/lib/resolve-image";
+import { attachPracticeMedia } from "@/lib/resolve-image";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -29,10 +29,7 @@ export default async function RoutinePage({ params }: Props) {
   if (!routine) {
     notFound();
   }
-  const exercises = exercisesInRoutine(routine).map((practice) => ({
-    ...practice,
-    image: resolvePracticeImage(practice.id, practice.image),
-  }));
+  const exercises = exercisesInRoutine(routine).map(attachPracticeMedia);
 
   return (
     <DumpsterFade kind="routine" id={routine.slug}>

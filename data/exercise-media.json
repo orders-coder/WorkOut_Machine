@@ -1,0 +1,821 @@
+{
+  "version": 3,
+  "exercises": {
+    "cat-cow": {
+      "type": "animated",
+      "src": "/exercises/cat-cow/demo.gif",
+      "annotated": "/exercises/cat-cow/demo-annotated.gif",
+      "poster": "/exercises/cat-cow/poster.png",
+      "character": "woman",
+      "source": "woman_cat_cow"
+    },
+    "wall-angels": {
+      "type": "animated",
+      "src": "/exercises/wall-angels/demo.gif",
+      "annotated": "/exercises/wall-angels/demo-annotated.gif",
+      "poster": "/exercises/wall-angels/poster.png",
+      "character": "woman",
+      "source": "woman_wall_angels"
+    },
+    "pull-up-or-negative": {
+      "type": "animated",
+      "src": "/exercises/pull-up-or-negative/demo.gif",
+      "annotated": "/exercises/pull-up-or-negative/demo-annotated.gif",
+      "poster": "/exercises/pull-up-or-negative/poster.png",
+      "character": "man",
+      "source": "man_pull_up"
+    },
+    "inverted-row": {
+      "type": "animated",
+      "src": "/exercises/inverted-row/demo.gif",
+      "annotated": "/exercises/inverted-row/demo-annotated.gif",
+      "poster": "/exercises/inverted-row/poster.png",
+      "character": "man",
+      "source": "man_inverted_row"
+    },
+    "push-up": {
+      "type": "animated",
+      "src": "/exercises/push-up/demo.gif",
+      "annotated": "/exercises/push-up/demo-annotated.gif",
+      "poster": "/exercises/push-up/poster.png",
+      "character": "man",
+      "source": "man_pushup"
+    },
+    "glute-bridge": {
+      "type": "animated",
+      "src": "/exercises/glute-bridge/demo.gif",
+      "annotated": "/exercises/glute-bridge/demo-annotated.gif",
+      "poster": "/exercises/glute-bridge/poster.png",
+      "character": "man",
+      "source": "man_glute_bridge"
+    },
+    "goblet-squat": {
+      "type": "animated",
+      "src": "/exercises/goblet-squat/demo.gif",
+      "annotated": "/exercises/goblet-squat/demo-annotated.gif",
+      "poster": "/exercises/goblet-squat/poster.png",
+      "character": "man",
+      "source": "man_goblet_squat"
+    },
+    "bird-dog": {
+      "type": "animated",
+      "src": "/exercises/bird-dog/demo.gif",
+      "annotated": "/exercises/bird-dog/demo-annotated.gif",
+      "poster": "/exercises/bird-dog/poster.png",
+      "character": "woman",
+      "source": "woman_bird_dog"
+    },
+    "band-pull-apart": {
+      "type": "animated",
+      "src": "/exercises/band-pull-apart/demo.gif",
+      "annotated": "/exercises/band-pull-apart/demo-annotated.gif",
+      "poster": "/exercises/band-pull-apart/poster.png",
+      "character": "man",
+      "source": "man_band_pull_apart"
+    },
+    "split-squat": {
+      "type": "animated",
+      "src": "/exercises/split-squat/demo.gif",
+      "annotated": "/exercises/split-squat/demo-annotated.gif",
+      "poster": "/exercises/split-squat/poster.png",
+      "character": "man",
+      "source": "man_split_squat"
+    },
+    "bulgarian-split-squat": {
+      "type": "animated",
+      "src": "/exercises/bulgarian-split-squat/demo.gif",
+      "annotated": "/exercises/bulgarian-split-squat/demo-annotated.gif",
+      "poster": "/exercises/bulgarian-split-squat/poster.png",
+      "character": "man",
+      "source": "man_bulgarian_split_squat"
+    },
+    "reverse-lunge": {
+      "type": "animated",
+      "src": "/exercises/reverse-lunge/demo.gif",
+      "annotated": "/exercises/reverse-lunge/demo-annotated.gif",
+      "poster": "/exercises/reverse-lunge/poster.png",
+      "character": "man",
+      "source": "man_reverse_lunge"
+    },
+    "step-up": {
+      "type": "animated",
+      "src": "/exercises/step-up/demo.gif",
+      "annotated": "/exercises/step-up/demo-annotated.gif",
+      "poster": "/exercises/step-up/poster.png",
+      "character": "man",
+      "source": "man_step_up"
+    },
+    "hip-thrust": {
+      "type": "animated",
+      "src": "/exercises/hip-thrust/demo.gif",
+      "annotated": "/exercises/hip-thrust/demo-annotated.gif",
+      "poster": "/exercises/hip-thrust/poster.png",
+      "character": "man",
+      "source": "man_hip_thrust"
+    },
+    "overhead-press": {
+      "type": "animated",
+      "src": "/exercises/overhead-press/demo.gif",
+      "annotated": "/exercises/overhead-press/demo-annotated.gif",
+      "poster": "/exercises/overhead-press/poster.png",
+      "character": "man",
+      "source": "man_overhead_press"
+    },
+    "dip": {
+      "type": "animated",
+      "src": "/exercises/dip/demo.gif",
+      "annotated": "/exercises/dip/demo-annotated.gif",
+      "poster": "/exercises/dip/poster.png",
+      "character": "man",
+      "source": "man_dip"
+    },
+    "dumbbell-row": {
+      "type": "animated",
+      "src": "/exercises/dumbbell-row/demo.gif",
+      "annotated": "/exercises/dumbbell-row/demo-annotated.gif",
+      "poster": "/exercises/dumbbell-row/poster.png",
+      "character": "man",
+      "source": "man_dumbbell_row"
+    },
+    "chin-up": {
+      "type": "animated",
+      "src": "/exercises/chin-up/demo.gif",
+      "annotated": "/exercises/chin-up/demo-annotated.gif",
+      "poster": "/exercises/chin-up/poster.png",
+      "character": "man",
+      "source": "man_chin_up"
+    },
+    "pallof-press": {
+      "type": "animated",
+      "src": "/exercises/pallof-press/demo.gif",
+      "annotated": "/exercises/pallof-press/demo-annotated.gif",
+      "poster": "/exercises/pallof-press/poster.png",
+      "character": "man",
+      "source": "man_pallof_press"
+    },
+    "hanging-knee-raise": {
+      "type": "animated",
+      "src": "/exercises/hanging-knee-raise/demo.gif",
+      "annotated": "/exercises/hanging-knee-raise/demo-annotated.gif",
+      "poster": "/exercises/hanging-knee-raise/poster.png",
+      "character": "man",
+      "source": "man_hanging_knee_raise"
+    },
+    "turkish-get-up": {
+      "type": "still",
+      "src": "/exercises/turkish-get-up/still.png",
+      "annotated": "/exercises/turkish-get-up/still-annotated.png",
+      "poster": "/exercises/turkish-get-up/still.png",
+      "character": "man",
+      "source": "man_turkish_get_up"
+    },
+    "box-jump": {
+      "type": "still",
+      "src": "/exercises/box-jump/still.png",
+      "annotated": "/exercises/box-jump/still-annotated.png",
+      "poster": "/exercises/box-jump/still.png",
+      "character": "man",
+      "source": "man_box_jump"
+    },
+    "jump-squat": {
+      "type": "still",
+      "src": "/exercises/jump-squat/still.png",
+      "annotated": "/exercises/jump-squat/still-annotated.png",
+      "poster": "/exercises/jump-squat/still.png",
+      "character": "man",
+      "source": "man_jump_squat"
+    },
+    "biceps-curl": {
+      "type": "animated",
+      "src": "/exercises/biceps-curl/demo.gif",
+      "annotated": "/exercises/biceps-curl/demo-annotated.gif",
+      "poster": "/exercises/biceps-curl/poster.png",
+      "character": "man",
+      "source": "man_biceps_curl"
+    },
+    "overhead-tricep-extension": {
+      "type": "animated",
+      "src": "/exercises/overhead-tricep-extension/demo.gif",
+      "annotated": "/exercises/overhead-tricep-extension/demo-annotated.gif",
+      "poster": "/exercises/overhead-tricep-extension/poster.png",
+      "character": "man",
+      "source": "man_overhead_tricep_extension"
+    },
+    "lateral-raise": {
+      "type": "animated",
+      "src": "/exercises/lateral-raise/demo.gif",
+      "annotated": "/exercises/lateral-raise/demo-annotated.gif",
+      "poster": "/exercises/lateral-raise/poster.png",
+      "character": "man",
+      "source": "man_lateral_raise"
+    },
+    "calf-raise": {
+      "type": "animated",
+      "src": "/exercises/calf-raise/demo.gif",
+      "annotated": "/exercises/calf-raise/demo-annotated.gif",
+      "poster": "/exercises/calf-raise/poster.png",
+      "character": "man",
+      "source": "man_calf_raise"
+    },
+    "nordic-hamstring": {
+      "type": "animated",
+      "src": "/exercises/nordic-hamstring/demo.gif",
+      "annotated": "/exercises/nordic-hamstring/demo-annotated.gif",
+      "poster": "/exercises/nordic-hamstring/poster.png",
+      "character": "man",
+      "source": "man_nordic_hamstring"
+    },
+    "chin-tuck": {
+      "type": "animated",
+      "src": "/exercises/chin-tuck/demo.gif",
+      "annotated": "/exercises/chin-tuck/demo-annotated.gif",
+      "poster": "/exercises/chin-tuck/poster.png",
+      "character": "woman",
+      "source": "woman_chin_tuck"
+    },
+    "neck-side-stretch": {
+      "type": "still",
+      "src": "/exercises/neck-side-stretch/still.png",
+      "annotated": "/exercises/neck-side-stretch/still-annotated.png",
+      "poster": "/exercises/neck-side-stretch/still.png",
+      "character": "woman",
+      "source": "woman_neck_side_stretch"
+    },
+    "doorway-pec-stretch": {
+      "type": "still",
+      "src": "/exercises/doorway-pec-stretch/still.png",
+      "annotated": "/exercises/doorway-pec-stretch/still-annotated.png",
+      "poster": "/exercises/doorway-pec-stretch/still.png",
+      "character": "woman",
+      "source": "woman_doorway_pec_stretch"
+    },
+    "childs-pose": {
+      "type": "animated",
+      "src": "/exercises/childs-pose/demo.gif",
+      "annotated": "/exercises/childs-pose/demo-annotated.gif",
+      "poster": "/exercises/childs-pose/poster.png",
+      "character": "woman",
+      "source": "woman_childs_pose"
+    },
+    "downward-dog": {
+      "type": "animated",
+      "src": "/exercises/downward-dog/demo.gif",
+      "annotated": "/exercises/downward-dog/demo-annotated.gif",
+      "poster": "/exercises/downward-dog/poster.png",
+      "character": "woman",
+      "source": "woman_downward_dog"
+    },
+    "standing-forward-fold": {
+      "type": "animated",
+      "src": "/exercises/standing-forward-fold/demo.gif",
+      "annotated": "/exercises/standing-forward-fold/demo-annotated.gif",
+      "poster": "/exercises/standing-forward-fold/poster.png",
+      "character": "woman",
+      "source": "woman_standing_forward_fold"
+    },
+    "kneeling-hip-flexor": {
+      "type": "animated",
+      "src": "/exercises/kneeling-hip-flexor/demo.gif",
+      "annotated": "/exercises/kneeling-hip-flexor/demo-annotated.gif",
+      "poster": "/exercises/kneeling-hip-flexor/poster.png",
+      "character": "woman",
+      "source": "woman_hip_flexor"
+    },
+    "figure-four": {
+      "type": "animated",
+      "src": "/exercises/figure-four/demo.gif",
+      "annotated": "/exercises/figure-four/demo-annotated.gif",
+      "poster": "/exercises/figure-four/poster.png",
+      "character": "woman",
+      "source": "woman_figure_four"
+    },
+    "seated-spinal-twist": {
+      "type": "still",
+      "src": "/exercises/seated-spinal-twist/still.png",
+      "annotated": "/exercises/seated-spinal-twist/still-annotated.png",
+      "poster": "/exercises/seated-spinal-twist/still.png",
+      "character": "woman",
+      "source": "woman_seated_spinal_twist"
+    },
+    "worlds-greatest-stretch": {
+      "type": "animated",
+      "src": "/exercises/worlds-greatest-stretch/demo.gif",
+      "annotated": "/exercises/worlds-greatest-stretch/demo-annotated.gif",
+      "poster": "/exercises/worlds-greatest-stretch/poster.png",
+      "character": "woman",
+      "source": "woman_worlds_greatest_stretch"
+    },
+    "thoracic-extension-roller": {
+      "type": "animated",
+      "src": "/exercises/thoracic-extension-roller/demo.gif",
+      "annotated": "/exercises/thoracic-extension-roller/demo-annotated.gif",
+      "poster": "/exercises/thoracic-extension-roller/poster.png",
+      "character": "woman",
+      "source": "woman_thoracic_extension_roller"
+    },
+    "couch-stretch": {
+      "type": "still",
+      "src": "/exercises/couch-stretch/still.png",
+      "annotated": "/exercises/couch-stretch/still-annotated.png",
+      "poster": "/exercises/couch-stretch/still.png",
+      "character": "woman",
+      "source": "woman_couch_stretch"
+    },
+    "calf-stretch": {
+      "type": "still",
+      "src": "/exercises/calf-stretch/still.png",
+      "annotated": "/exercises/calf-stretch/still-annotated.png",
+      "poster": "/exercises/calf-stretch/still.png",
+      "character": "woman",
+      "source": "woman_calf_stretch"
+    },
+    "wrist-stretch": {
+      "type": "animated",
+      "src": "/exercises/wrist-stretch/demo.gif",
+      "annotated": "/exercises/wrist-stretch/demo-annotated.gif",
+      "poster": "/exercises/wrist-stretch/poster.png",
+      "character": "woman",
+      "source": "woman_wrist_stretch"
+    },
+    "scapular-retraction": {
+      "type": "animated",
+      "src": "/exercises/scapular-retraction/demo.gif",
+      "annotated": "/exercises/scapular-retraction/demo-annotated.gif",
+      "poster": "/exercises/scapular-retraction/poster.png",
+      "character": "woman",
+      "source": "woman_scapular_retraction"
+    },
+    "dead-hang": {
+      "type": "still",
+      "src": "/exercises/dead-hang/still.png",
+      "annotated": "/exercises/dead-hang/still-annotated.png",
+      "poster": "/exercises/dead-hang/still.png",
+      "character": "man",
+      "source": "man_dead_hang"
+    },
+    "db-rdl": {
+      "type": "animated",
+      "src": "/exercises/db-rdl/demo.gif",
+      "annotated": "/exercises/db-rdl/demo-annotated.gif",
+      "poster": "/exercises/db-rdl/poster.png",
+      "character": "man",
+      "source": "man_rdl_v4"
+    },
+    "farmer-carry": {
+      "type": "still",
+      "src": "/exercises/farmer-carry/still.png",
+      "annotated": "/exercises/farmer-carry/still-annotated.png",
+      "poster": "/exercises/farmer-carry/still.png",
+      "character": "man",
+      "source": "man_farmer_carry"
+    },
+    "plank": {
+      "type": "still",
+      "src": "/exercises/plank/still.png",
+      "annotated": "/exercises/plank/still-annotated.png",
+      "poster": "/exercises/plank/still.png",
+      "character": "man",
+      "source": "man_plank"
+    },
+    "side-plank": {
+      "type": "still",
+      "src": "/exercises/side-plank/still.png",
+      "annotated": "/exercises/side-plank/still-annotated.png",
+      "poster": "/exercises/side-plank/still.png",
+      "character": "man",
+      "source": "man_side_plank"
+    },
+    "suitcase-carry": {
+      "type": "still",
+      "src": "/exercises/suitcase-carry/still.png",
+      "annotated": "/exercises/suitcase-carry/still-annotated.png",
+      "poster": "/exercises/suitcase-carry/still.png",
+      "character": "man",
+      "source": "man_suitcase_carry"
+    },
+    "y-t-w-raise": {
+      "type": "animated",
+      "src": "/exercises/y-t-w-raise/demo.gif",
+      "annotated": "/exercises/y-t-w-raise/demo-annotated.gif",
+      "poster": "/exercises/y-t-w-raise/poster.png",
+      "character": "man",
+      "source": "man_y_t_w_raise"
+    },
+    "walking-lunge": {
+      "type": "animated",
+      "src": "/exercises/walking-lunge/demo.gif",
+      "annotated": "/exercises/walking-lunge/demo-annotated.gif",
+      "poster": "/exercises/walking-lunge/poster.png",
+      "character": "man",
+      "source": "man_walking_lunge"
+    },
+    "march-in-place": {
+      "type": "animated",
+      "src": "/exercises/march-in-place/demo.gif",
+      "annotated": "/exercises/march-in-place/demo-annotated.gif",
+      "poster": "/exercises/march-in-place/poster.png",
+      "character": "woman",
+      "source": "woman_march_in_place"
+    },
+    "jumping-jacks": {
+      "type": "animated",
+      "src": "/exercises/jumping-jacks/demo.gif",
+      "annotated": "/exercises/jumping-jacks/demo-annotated.gif",
+      "poster": "/exercises/jumping-jacks/poster.png",
+      "character": "man",
+      "source": "man_jumping_jacks"
+    },
+    "leg-swings": {
+      "type": "animated",
+      "src": "/exercises/leg-swings/demo.gif",
+      "annotated": "/exercises/leg-swings/demo-annotated.gif",
+      "poster": "/exercises/leg-swings/poster.png",
+      "character": "woman",
+      "source": "woman_leg_swings"
+    },
+    "bodyweight-good-morning": {
+      "type": "animated",
+      "src": "/exercises/bodyweight-good-morning/demo.gif",
+      "annotated": "/exercises/bodyweight-good-morning/demo-annotated.gif",
+      "poster": "/exercises/bodyweight-good-morning/poster.png",
+      "character": "man",
+      "source": "man_bodyweight_good_morning"
+    },
+    "lunge-90-hip-flexor": {
+      "type": "animated",
+      "src": "/exercises/lunge-90-hip-flexor/demo.gif",
+      "annotated": "/exercises/lunge-90-hip-flexor/demo-annotated.gif",
+      "poster": "/exercises/lunge-90-hip-flexor/poster.png",
+      "character": "woman",
+      "source": "woman_lunge_90_hip_flexor"
+    },
+    "lunge-90-ankle-grab": {
+      "type": "animated",
+      "src": "/exercises/lunge-90-ankle-grab/demo.gif",
+      "annotated": "/exercises/lunge-90-ankle-grab/demo-annotated.gif",
+      "poster": "/exercises/lunge-90-ankle-grab/poster.png",
+      "character": "woman",
+      "source": "woman_lunge_90_ankle_grab"
+    },
+    "half-split-hip-flexor": {
+      "type": "animated",
+      "src": "/exercises/half-split-hip-flexor/demo.gif",
+      "annotated": "/exercises/half-split-hip-flexor/demo-annotated.gif",
+      "poster": "/exercises/half-split-hip-flexor/poster.png",
+      "character": "woman",
+      "source": "woman_half_split"
+    },
+    "half-split-pnf": {
+      "type": "animated",
+      "src": "/exercises/half-split-pnf/demo.gif",
+      "annotated": "/exercises/half-split-pnf/demo-annotated.gif",
+      "poster": "/exercises/half-split-pnf/poster.png",
+      "character": "woman",
+      "source": "woman_half_split_pnf"
+    },
+    "half-split-ankle-grab": {
+      "type": "animated",
+      "src": "/exercises/half-split-ankle-grab/demo.gif",
+      "annotated": "/exercises/half-split-ankle-grab/demo-annotated.gif",
+      "poster": "/exercises/half-split-ankle-grab/poster.png",
+      "character": "woman",
+      "source": "woman_half_split_ankle_grab"
+    },
+    "half-split-knee-taps": {
+      "type": "animated",
+      "src": "/exercises/half-split-knee-taps/demo.gif",
+      "annotated": "/exercises/half-split-knee-taps/demo-annotated.gif",
+      "poster": "/exercises/half-split-knee-taps/poster.png",
+      "character": "woman",
+      "source": "woman_half_split_knee_taps"
+    },
+    "hamstring-stretch-flexed": {
+      "type": "animated",
+      "src": "/exercises/hamstring-stretch-flexed/demo.gif",
+      "annotated": "/exercises/hamstring-stretch-flexed/demo-annotated.gif",
+      "poster": "/exercises/hamstring-stretch-flexed/poster.png",
+      "character": "woman",
+      "source": "woman_hamstring_stretch_flexed"
+    },
+    "hamstring-stretch-pointed": {
+      "type": "animated",
+      "src": "/exercises/hamstring-stretch-pointed/demo.gif",
+      "annotated": "/exercises/hamstring-stretch-pointed/demo-annotated.gif",
+      "poster": "/exercises/hamstring-stretch-pointed/poster.png",
+      "character": "woman",
+      "source": "woman_hamstring_stretch_pointed"
+    },
+    "pyramid-pose": {
+      "type": "still",
+      "src": "/exercises/pyramid-pose/still.png",
+      "annotated": "/exercises/pyramid-pose/still-annotated.png",
+      "poster": "/exercises/pyramid-pose/still.png",
+      "character": "woman",
+      "source": "woman_pyramid_pose"
+    },
+    "pyramid-good-morning": {
+      "type": "animated",
+      "src": "/exercises/pyramid-good-morning/demo.gif",
+      "annotated": "/exercises/pyramid-good-morning/demo-annotated.gif",
+      "poster": "/exercises/pyramid-good-morning/poster.png",
+      "character": "woman",
+      "source": "woman_pyramid_good_morning"
+    },
+    "front-split-hold": {
+      "type": "still",
+      "src": "/exercises/front-split-hold/still.png",
+      "annotated": "/exercises/front-split-hold/still-annotated.png",
+      "poster": "/exercises/front-split-hold/still.png",
+      "character": "woman",
+      "source": "woman_front_split_hold"
+    },
+    "warm-up-general": {
+      "type": "animated",
+      "src": "/exercises/warm-up-general/demo.gif",
+      "annotated": "/exercises/warm-up-general/demo-annotated.gif",
+      "poster": "/exercises/warm-up-general/poster.png",
+      "character": "woman",
+      "source": "woman_warm_up_general"
+    },
+    "dumbbell-swing": {
+      "type": "animated",
+      "src": "/exercises/dumbbell-swing/demo.gif",
+      "annotated": "/exercises/dumbbell-swing/demo-annotated.gif",
+      "poster": "/exercises/dumbbell-swing/poster.png",
+      "character": "man",
+      "source": "man_dumbbell_swing"
+    },
+    "dumbbell-woodchop": {
+      "type": "animated",
+      "src": "/exercises/dumbbell-woodchop/demo.gif",
+      "annotated": "/exercises/dumbbell-woodchop/demo-annotated.gif",
+      "poster": "/exercises/dumbbell-woodchop/poster.png",
+      "character": "man",
+      "source": "man_dumbbell_woodchop"
+    },
+    "prone-cobra": {
+      "type": "still",
+      "src": "/exercises/prone-cobra/still.png",
+      "annotated": "/exercises/prone-cobra/still-annotated.png",
+      "poster": "/exercises/prone-cobra/still.png",
+      "character": "woman",
+      "source": "woman_prone_cobra"
+    },
+    "serratus-wall-slide-roller": {
+      "type": "animated",
+      "src": "/exercises/serratus-wall-slide-roller/demo.gif",
+      "annotated": "/exercises/serratus-wall-slide-roller/demo-annotated.gif",
+      "poster": "/exercises/serratus-wall-slide-roller/poster.png",
+      "character": "woman",
+      "source": "woman_serratus_wall_slide_roller"
+    },
+    "side-lying-hip-abduction": {
+      "type": "animated",
+      "src": "/exercises/side-lying-hip-abduction/demo.gif",
+      "annotated": "/exercises/side-lying-hip-abduction/demo-annotated.gif",
+      "poster": "/exercises/side-lying-hip-abduction/poster.png",
+      "character": "woman",
+      "source": "woman_side_lying_hip_abduction"
+    },
+    "lateral-step-down": {
+      "type": "animated",
+      "src": "/exercises/lateral-step-down/demo.gif",
+      "annotated": "/exercises/lateral-step-down/demo-annotated.gif",
+      "poster": "/exercises/lateral-step-down/poster.png",
+      "character": "woman",
+      "source": "woman_lateral_step_down"
+    },
+    "ninety-ninety-hip-lift": {
+      "type": "still",
+      "src": "/exercises/ninety-ninety-hip-lift/still.png",
+      "annotated": "/exercises/ninety-ninety-hip-lift/still-annotated.png",
+      "poster": "/exercises/ninety-ninety-hip-lift/still.png",
+      "character": "woman",
+      "source": "woman_ninety_ninety_hip_lift"
+    },
+    "crocodile-breathing": {
+      "type": "still",
+      "src": "/exercises/crocodile-breathing/still.png",
+      "annotated": "/exercises/crocodile-breathing/still-annotated.png",
+      "poster": "/exercises/crocodile-breathing/still.png",
+      "character": "woman",
+      "source": "woman_crocodile_breathing"
+    },
+    "posterior-pelvic-tilt": {
+      "type": "still",
+      "src": "/exercises/posterior-pelvic-tilt/still.png",
+      "annotated": "/exercises/posterior-pelvic-tilt/still-annotated.png",
+      "poster": "/exercises/posterior-pelvic-tilt/still.png",
+      "character": "woman",
+      "source": "woman_posterior_pelvic_tilt"
+    },
+    "heel-slide-tva": {
+      "type": "animated",
+      "src": "/exercises/heel-slide-tva/demo.gif",
+      "annotated": "/exercises/heel-slide-tva/demo-annotated.gif",
+      "poster": "/exercises/heel-slide-tva/poster.png",
+      "character": "woman",
+      "source": "woman_heel_slide_tva"
+    },
+    "band-pass-through": {
+      "type": "animated",
+      "src": "/exercises/band-pass-through/demo.gif",
+      "annotated": "/exercises/band-pass-through/demo-annotated.gif",
+      "poster": "/exercises/band-pass-through/poster.png",
+      "character": "woman",
+      "source": "woman_band_pass_through"
+    },
+    "prone-press-up": {
+      "type": "animated",
+      "src": "/exercises/prone-press-up/demo.gif",
+      "annotated": "/exercises/prone-press-up/demo-annotated.gif",
+      "poster": "/exercises/prone-press-up/poster.png",
+      "character": "woman",
+      "source": "woman_prone_press_up"
+    },
+    "hip-airplane": {
+      "type": "still",
+      "src": "/exercises/hip-airplane/still.png",
+      "annotated": "/exercises/hip-airplane/still-annotated.png",
+      "poster": "/exercises/hip-airplane/still.png",
+      "character": "woman",
+      "source": "woman_hip_airplane"
+    },
+    "bench-lat-stretch": {
+      "type": "still",
+      "src": "/exercises/bench-lat-stretch/still.png",
+      "annotated": "/exercises/bench-lat-stretch/still-annotated.png",
+      "poster": "/exercises/bench-lat-stretch/still.png",
+      "character": "woman",
+      "source": "woman_bench_lat_stretch"
+    },
+    "reverse-hyperextension": {
+      "type": "animated",
+      "src": "/exercises/reverse-hyperextension/demo.gif",
+      "annotated": "/exercises/reverse-hyperextension/demo-annotated.gif",
+      "poster": "/exercises/reverse-hyperextension/poster.png",
+      "character": "man",
+      "source": "man_reverse_hyperextension"
+    },
+    "levator-scapulae-stretch": {
+      "type": "still",
+      "src": "/exercises/levator-scapulae-stretch/still.png",
+      "annotated": "/exercises/levator-scapulae-stretch/still-annotated.png",
+      "poster": "/exercises/levator-scapulae-stretch/still.png",
+      "character": "woman",
+      "source": "woman_levator_scapulae_stretch"
+    },
+    "supine-pullover-breathing": {
+      "type": "animated",
+      "src": "/exercises/supine-pullover-breathing/demo.gif",
+      "annotated": "/exercises/supine-pullover-breathing/demo-annotated.gif",
+      "poster": "/exercises/supine-pullover-breathing/poster.png",
+      "character": "woman",
+      "source": "woman_supine_pullover_breathing"
+    },
+    "prone-lower-trap-lift-off": {
+      "type": "animated",
+      "src": "/exercises/prone-lower-trap-lift-off/demo.gif",
+      "annotated": "/exercises/prone-lower-trap-lift-off/demo-annotated.gif",
+      "poster": "/exercises/prone-lower-trap-lift-off/poster.png",
+      "character": "woman",
+      "source": "woman_prone_lower_trap_lift_off"
+    },
+    "seated-leg-curl": {
+      "type": "animated",
+      "src": "/exercises/seated-leg-curl/demo.gif",
+      "annotated": "/exercises/seated-leg-curl/demo-annotated.gif",
+      "poster": "/exercises/seated-leg-curl/poster.png",
+      "character": "man",
+      "source": "man_seated_leg_curl"
+    },
+    "overhead-cable-extension": {
+      "type": "animated",
+      "src": "/exercises/overhead-cable-extension/demo.gif",
+      "annotated": "/exercises/overhead-cable-extension/demo-annotated.gif",
+      "poster": "/exercises/overhead-cable-extension/poster.png",
+      "character": "man",
+      "source": "man_overhead_triceps_extension"
+    },
+    "incline-db-curl": {
+      "type": "animated",
+      "src": "/exercises/incline-db-curl/demo.gif",
+      "annotated": "/exercises/incline-db-curl/demo-annotated.gif",
+      "poster": "/exercises/incline-db-curl/poster.png",
+      "character": "man",
+      "source": "man_incline_db_curl"
+    },
+    "back-squat": {
+      "type": "animated",
+      "src": "/exercises/back-squat/demo.gif",
+      "annotated": "/exercises/back-squat/demo-annotated.gif",
+      "poster": "/exercises/back-squat/poster.png",
+      "character": "man",
+      "source": "man_barbell_back_squat"
+    },
+    "leg-press": {
+      "type": "animated",
+      "src": "/exercises/leg-press/demo.gif",
+      "annotated": "/exercises/leg-press/demo-annotated.gif",
+      "poster": "/exercises/leg-press/poster.png",
+      "character": "man",
+      "source": "man_leg_press"
+    },
+    "leg-extension": {
+      "type": "animated",
+      "src": "/exercises/leg-extension/demo.gif",
+      "annotated": "/exercises/leg-extension/demo-annotated.gif",
+      "poster": "/exercises/leg-extension/poster.png",
+      "character": "man",
+      "source": "man_leg_extension"
+    },
+    "incline-db-press": {
+      "type": "animated",
+      "src": "/exercises/incline-db-press/demo.gif",
+      "annotated": "/exercises/incline-db-press/demo-annotated.gif",
+      "poster": "/exercises/incline-db-press/poster.png",
+      "character": "man",
+      "source": "man_incline_db_press"
+    },
+    "barbell-bench-press": {
+      "type": "animated",
+      "src": "/exercises/barbell-bench-press/demo.gif",
+      "annotated": "/exercises/barbell-bench-press/demo-annotated.gif",
+      "poster": "/exercises/barbell-bench-press/poster.png",
+      "character": "man",
+      "source": "man_barbell_bench_press"
+    },
+    "lat-pulldown": {
+      "type": "animated",
+      "src": "/exercises/lat-pulldown/demo.gif",
+      "annotated": "/exercises/lat-pulldown/demo-annotated.gif",
+      "poster": "/exercises/lat-pulldown/poster.png",
+      "character": "man",
+      "source": "man_lat_pulldown"
+    },
+    "chest-supported-row": {
+      "type": "animated",
+      "src": "/exercises/chest-supported-row/demo.gif",
+      "annotated": "/exercises/chest-supported-row/demo-annotated.gif",
+      "poster": "/exercises/chest-supported-row/poster.png",
+      "character": "man",
+      "source": "man_chest_supported_row"
+    },
+    "seated-cable-row": {
+      "type": "animated",
+      "src": "/exercises/seated-cable-row/demo.gif",
+      "annotated": "/exercises/seated-cable-row/demo-annotated.gif",
+      "poster": "/exercises/seated-cable-row/poster.png",
+      "character": "man",
+      "source": "man_seated_cable_row"
+    },
+    "dumbbell-fly": {
+      "type": "animated",
+      "src": "/exercises/dumbbell-fly/demo.gif",
+      "annotated": "/exercises/dumbbell-fly/demo-annotated.gif",
+      "poster": "/exercises/dumbbell-fly/poster.png",
+      "character": "man",
+      "source": "man_dumbbell_fly"
+    },
+    "reverse-pec-deck": {
+      "type": "animated",
+      "src": "/exercises/reverse-pec-deck/demo.gif",
+      "annotated": "/exercises/reverse-pec-deck/demo-annotated.gif",
+      "poster": "/exercises/reverse-pec-deck/poster.png",
+      "character": "man",
+      "source": "man_reverse_pec_deck"
+    },
+    "hammer-curl": {
+      "type": "animated",
+      "src": "/exercises/hammer-curl/demo.gif",
+      "annotated": "/exercises/hammer-curl/demo-annotated.gif",
+      "poster": "/exercises/hammer-curl/poster.png",
+      "character": "man",
+      "source": "man_hammer_curl"
+    },
+    "dumbbell-pullover": {
+      "type": "animated",
+      "src": "/exercises/dumbbell-pullover/demo.gif",
+      "annotated": "/exercises/dumbbell-pullover/demo-annotated.gif",
+      "poster": "/exercises/dumbbell-pullover/poster.png",
+      "character": "man",
+      "source": "man_dumbbell_pullover"
+    },
+    "cable-crunch": {
+      "type": "animated",
+      "src": "/exercises/cable-crunch/demo.gif",
+      "annotated": "/exercises/cable-crunch/demo-annotated.gif",
+      "poster": "/exercises/cable-crunch/poster.png",
+      "character": "man",
+      "source": "man_cable_crunch"
+    },
+    "ab-wheel-rollout": {
+      "type": "still",
+      "src": "/exercises/ab-wheel-rollout/still.png",
+      "annotated": "/exercises/ab-wheel-rollout/still-annotated.png",
+      "poster": "/exercises/ab-wheel-rollout/still.png",
+      "character": "man",
+      "source": "man_ab_wheel_rollout"
+    }
+  }
+}

@@ -118,6 +118,32 @@ export interface ExerciseProfile {
 
 export type Level = "beginner" | "intermediate" | "advanced";
 
+export type ExerciseMediaType = "animated" | "still";
+
+/** One row of data/exercise-media.json. */
+export interface ExerciseMediaEntry {
+  type: ExerciseMediaType;
+  src: string;
+  annotated: string;
+  poster: string;
+  character: string;
+  source: string;
+}
+
+export interface ExerciseMediaManifest {
+  version: number;
+  exercises: Record<string, ExerciseMediaEntry>;
+}
+
+/** Image the card and detail page should paint. `fallback` is the pre-manifest file. */
+export interface ResolvedPracticeMedia {
+  type: ExerciseMediaType;
+  src: string;
+  poster?: string;
+  annotated?: string;
+  fallback: string;
+}
+
 export interface Practice {
   id: string;
   name: string;
@@ -134,6 +160,8 @@ export interface Practice {
   cues: string[];
   mistakes: string[];
   image: string;
+  /** Manifest media when a page has resolved it. Cards fall back to `image`. */
+  visual?: ResolvedPracticeMedia;
   imageAlt: string;
   tags: string[];
   durationHint?: string;
