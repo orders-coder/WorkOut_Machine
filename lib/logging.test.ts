@@ -24,8 +24,8 @@ test("every catalog exercise has one logging block", () => {
     .split("\n")
     .slice(1)
     .map((line) => line.split(",")[0]);
-  assert.equal(csv.length, 77);
-  assert.equal(Object.keys(LOGGING).length, 77);
+  assert.equal(csv.length, 117);
+  assert.equal(Object.keys(LOGGING).length, 117);
   for (const id of csv) {
     const logging = LOGGING[id];
     assert.ok(logging, id);

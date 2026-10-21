@@ -52,8 +52,8 @@ export const practices: Practice[] = [
   }),
 ].map(finish);
 
-if (practices.length !== 77) {
-  throw new Error(`Expected 77 practices, found ${practices.length}`);
+if (practices.length !== 117) {
+  throw new Error(`Expected 117 practices, found ${practices.length}`);
 }
 
 export function getPracticeById(id: string): Practice | undefined {

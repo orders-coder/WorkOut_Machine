@@ -1523,5 +1523,1571 @@
     "why": "A warm muscle stretches further and more safely.",
     "guide": "hold",
     "duration_seconds": 300
+  },
+  {
+    "id": "back-extension-45",
+    "name": "45-Degree Back Extension",
+    "primary_muscles": [
+      "erector spinae"
+    ],
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "movement_pattern": "hinge",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "bench"
+    ],
+    "difficulty": "beginner",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "10-15",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [
+      "spinal alignment",
+      "thoracic extension"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2 up, 2s hold, 2 down",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: thoracic kyphosis",
+      "evidence: RCTs: back-extensor strengthening reduces kyphosis angle (Bansal 2014 review; Sinaki long-term). Strongest kyphosis evidence.",
+      "character: woman",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/23850611/",
+      "source: https://pubmed.ncbi.nlm.nih.gov/12052450/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "prone-cobra",
+    "name": "Prone Cobra (Brügger)",
+    "primary_muscles": [
+      "lower trapezius",
+      "erector spinae"
+    ],
+    "secondary_muscles": [
+      "rhomboids"
+    ],
+    "movement_pattern": "pull",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "static",
+    "laterality": "bilateral",
+    "default_rep_range": "20-30s",
+    "default_rest_seconds": 45,
+    "posture_alignment_tags": [
+      "scapular control",
+      "thoracic extension"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "isometric",
+    "tempo_suggestion": "hold, thumbs out",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: rounded shoulders / kyphosis",
+      "evidence: Common in meta-analysed UCS programs (Sepehri 2024 MA).",
+      "character: woman",
+      "gif: still",
+      "source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10832142/",
+      "source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10454745/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "serratus-wall-slide-roller",
+    "name": "Serratus Wall Slide (Foam Roller)",
+    "primary_muscles": [
+      "serratus anterior"
+    ],
+    "secondary_muscles": [
+      "lower trapezius"
+    ],
+    "movement_pattern": "push",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "wall"
+    ],
+    "difficulty": "beginner",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "10-12",
+    "default_rest_seconds": 45,
+    "posture_alignment_tags": [
+      "scapular control"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "3s up, 3s down",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: rounded shoulders / scapular winging",
+      "evidence: SA + lower-trap activation core of UCS protocols; differs from wall angel (forearms on roller, protraction focus).",
+      "character: woman",
+      "gif: animated",
+      "source: https://pmc.ncbi.nlm.nih.gov/articles/PMC4000422/",
+      "source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10454745/",
+      "overlap flag: partial overlap: wall-angels"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "side-lying-hip-abduction",
+    "name": "Side-Lying Hip Abduction",
+    "primary_muscles": [
+      "gluteus medius"
+    ],
+    "secondary_muscles": [
+      "gluteus minimus",
+      "TFL"
+    ],
+    "movement_pattern": "push",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "push",
+    "laterality": "unilateral",
+    "default_rep_range": "12-20",
+    "default_rest_seconds": 45,
+    "posture_alignment_tags": [
+      "hip mobility",
+      "core stability"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2 up, 2s hold, 3 down",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: weak glutes / knee valgus",
+      "evidence: Highest glute-med EMG of rehab exercises (Distefano 2009).",
+      "character: woman",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/19574661/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "lateral-step-down",
+    "name": "Lateral Step-Down",
+    "primary_muscles": [
+      "quadriceps",
+      "gluteus medius"
+    ],
+    "secondary_muscles": [
+      "gluteus maximus"
+    ],
+    "movement_pattern": "squat",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "box/step"
+    ],
+    "difficulty": "intermediate",
+    "force_type": "push",
+    "laterality": "unilateral",
+    "default_rep_range": "8-12",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [
+      "hip mobility",
+      "core stability"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "eccentric",
+    "tempo_suggestion": "3s down",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: knee valgus",
+      "evidence: High glute-med EMG (Distefano 2009); used in valgus programs.",
+      "character: woman",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/19574661/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "clamshell",
+    "name": "Banded Clamshell",
+    "primary_muscles": [
+      "gluteus medius"
+    ],
+    "secondary_muscles": [
+      "deep hip external rotators"
+    ],
+    "movement_pattern": "rotation",
+    "equipment": [
+      "band"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "push",
+    "laterality": "unilateral",
+    "default_rep_range": "15-20",
+    "default_rest_seconds": 30,
+    "posture_alignment_tags": [
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2s hold top",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: weak glutes / knee valgus",
+      "evidence: Moderate-high glute-med EMG, valgus programs.",
+      "character: woman",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/19574661/",
+      "overlap flag: related: lateral-band-walk (prior list)"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "ninety-ninety-hip-lift",
+    "name": "90/90 Hip Lift with Balloon Breathing",
+    "primary_muscles": [
+      "diaphragm",
+      "hamstrings",
+      "internal obliques"
+    ],
+    "secondary_muscles": [
+      "transversus abdominis"
+    ],
+    "movement_pattern": "hinge",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "wall",
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "static",
+    "laterality": "bilateral",
+    "default_rep_range": "5",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [
+      "core stability",
+      "spinal alignment"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "isometric",
+    "tempo_suggestion": "4 breaths per rep, full exhale",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: rib flare / anterior pelvic tilt",
+      "evidence: PRI technique (Boyle 2010 clinical commentary); repositions ribs/pelvis.",
+      "character: woman",
+      "gif: still",
+      "source: https://pubmed.ncbi.nlm.nih.gov/21589673/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "crocodile-breathing",
+    "name": "Crocodile Breathing",
+    "primary_muscles": [
+      "diaphragm"
+    ],
+    "secondary_muscles": [
+      "transversus abdominis"
+    ],
+    "movement_pattern": "rotation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "static",
+    "laterality": "bilateral",
+    "default_rep_range": "60s",
+    "default_rest_seconds": 30,
+    "posture_alignment_tags": [
+      "core stability"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "isometric",
+    "tempo_suggestion": "4s in nose, 6s out",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: rib flare / breathing",
+      "evidence: Breathing/rib-position drill; Bowman alignment emphasis (no direct trial cited).",
+      "character: woman",
+      "gif: still",
+      "source: /workspace/workout-app/references/move-your-dna.md",
+      "overlap flag: partial overlap: diaphragm target"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "posterior-pelvic-tilt",
+    "name": "Supine Posterior Pelvic Tilt",
+    "primary_muscles": [
+      "rectus abdominis",
+      "gluteus maximus"
+    ],
+    "secondary_muscles": [
+      "external obliques"
+    ],
+    "movement_pattern": "hinge",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "static",
+    "laterality": "bilateral",
+    "default_rep_range": "10",
+    "default_rest_seconds": 30,
+    "posture_alignment_tags": [
+      "spinal alignment",
+      "core stability"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "isometric",
+    "tempo_suggestion": "5s hold",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: anterior pelvic tilt",
+      "evidence: APT/lower-crossed corrective programs (NASM CES).",
+      "character: woman",
+      "gif: animated",
+      "source: https://www.nasm.org/products/CES"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "heel-slide-tva",
+    "name": "Heel Slide with TVA Brace",
+    "primary_muscles": [
+      "transversus abdominis"
+    ],
+    "secondary_muscles": [
+      "internal obliques"
+    ],
+    "movement_pattern": "push",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "8-10",
+    "default_rest_seconds": 30,
+    "posture_alignment_tags": [
+      "core stability"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "isometric",
+    "tempo_suggestion": "slow 3s out/in",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: deep core / lumbar control",
+      "evidence: Motor-control core training evidence (Saragiotto 2016 Cochrane review).",
+      "character: woman",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/26742533/",
+      "overlap flag: related: dead-bug (prior list)"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "open-book",
+    "name": "Side-Lying Open Book",
+    "primary_muscles": [
+      "thoracic rotators"
+    ],
+    "secondary_muscles": [
+      "pecs (stretch)"
+    ],
+    "movement_pattern": "rotation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "8",
+    "default_rest_seconds": 30,
+    "posture_alignment_tags": [
+      "thoracic extension",
+      "spinal alignment"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "exhale into rotation",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: thoracic stiffness / rounded shoulders",
+      "evidence: Thoracic mobility component of UCS programs.",
+      "character: woman",
+      "gif: animated",
+      "source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10454745/",
+      "source: https://www.nasm.org/products/CES",
+      "overlap flag: related: thread-the-needle"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "band-pass-through",
+    "name": "Band Shoulder Pass-Through",
+    "primary_muscles": [
+      "pecs (stretch)",
+      "front delts"
+    ],
+    "secondary_muscles": [
+      "lower trapezius"
+    ],
+    "movement_pattern": "pull",
+    "equipment": [
+      "band"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "10",
+    "default_rest_seconds": 30,
+    "posture_alignment_tags": [
+      "scapular control",
+      "thoracic extension"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "slow, ribs down",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: rounded shoulders",
+      "evidence: Pec/anterior shoulder flexibility; stretching + strength best for UCS (2020 SR).",
+      "character: woman",
+      "gif: animated",
+      "source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10832142/",
+      "source: https://www.nasm.org/products/CES"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "prone-press-up",
+    "name": "Prone Press-Up (McKenzie)",
+    "primary_muscles": [
+      "spinal extensors"
+    ],
+    "secondary_muscles": [],
+    "movement_pattern": "push",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "10",
+    "default_rest_seconds": 30,
+    "posture_alignment_tags": [
+      "spinal alignment",
+      "thoracic extension"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "exhale at top, hips down",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: flexed/kyphotic posture",
+      "evidence: McKenzie extension evidence for back pain (Lam 2018 MA).",
+      "character: woman",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/29602304/",
+      "overlap flag: related: downward-dog/cobra"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "hip-airplane",
+    "name": "Hip Airplane",
+    "primary_muscles": [
+      "gluteus maximus",
+      "gluteus medius"
+    ],
+    "secondary_muscles": [
+      "hip rotators"
+    ],
+    "movement_pattern": "rotation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "wall"
+    ],
+    "difficulty": "intermediate",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "5",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [
+      "hip mobility",
+      "core stability"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "slow 3s each way",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: weak glutes / knee valgus",
+      "evidence: Single-leg hip control used in valgus/glute programs (expert PT consensus; no direct trial cited).",
+      "character: woman",
+      "gif: animated",
+      "source: https://www.nasm.org/products/CES"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "toe-yoga",
+    "name": "Toe Yoga",
+    "primary_muscles": [
+      "intrinsic foot muscles"
+    ],
+    "secondary_muscles": [
+      "extensor hallucis"
+    ],
+    "movement_pattern": "push",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "10",
+    "default_rest_seconds": 30,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "isometric",
+    "tempo_suggestion": "2s holds",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: flat feet",
+      "evidence: Intrinsic foot training improves arch (Mulligan 2013 trial); Bowman foot work.",
+      "character: woman",
+      "gif: still",
+      "source: https://pubmed.ncbi.nlm.nih.gov/23632367/",
+      "source: /workspace/workout-app/references/move-your-dna.md",
+      "overlap flag: near-dup risk: short-foot (prior list)"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "bench-lat-stretch",
+    "name": "Kneeling Bench Lat & T-Spine Stretch",
+    "primary_muscles": [
+      "lats (stretch)",
+      "thoracic extensors"
+    ],
+    "secondary_muscles": [],
+    "movement_pattern": "hinge",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "bench"
+    ],
+    "difficulty": "beginner",
+    "force_type": "static",
+    "laterality": "bilateral",
+    "default_rep_range": "30-45s",
+    "default_rest_seconds": 30,
+    "posture_alignment_tags": [
+      "thoracic extension",
+      "scapular control"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "isometric",
+    "tempo_suggestion": "breathe into upper back",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: rounded shoulders / kyphosis",
+      "evidence: Lat tightness limits overhead/thoracic extension; NASM CES inhibit-lengthen.",
+      "character: woman",
+      "gif: still",
+      "source: https://www.nasm.org/products/CES",
+      "overlap flag: related: childs-pose"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "reverse-hyperextension",
+    "name": "Reverse Hyperextension",
+    "primary_muscles": [
+      "gluteus maximus"
+    ],
+    "secondary_muscles": [
+      "hamstrings",
+      "erector spinae"
+    ],
+    "movement_pattern": "hinge",
+    "equipment": [
+      "machine"
+    ],
+    "environment": [
+      "bench"
+    ],
+    "difficulty": "intermediate",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "12-15",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [
+      "spinal alignment",
+      "hip mobility"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2 up, 1s squeeze",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: weak glutes / anterior pelvic tilt",
+      "evidence: High glute activity without spinal load; NASM activation.",
+      "character: man",
+      "gif: animated",
+      "source: https://www.nasm.org/products/CES",
+      "source: https://pubmed.ncbi.nlm.nih.gov/19574661/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "levator-scapulae-stretch",
+    "name": "Levator Scapulae Stretch",
+    "primary_muscles": [
+      "levator scapulae (stretch)"
+    ],
+    "secondary_muscles": [
+      "upper trapezius"
+    ],
+    "movement_pattern": "rotation",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "static",
+    "laterality": "unilateral",
+    "default_rep_range": "30s",
+    "default_rest_seconds": 15,
+    "posture_alignment_tags": [
+      "scapular control"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "isometric",
+    "tempo_suggestion": "gentle, hand on head",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: forward head",
+      "evidence: Stretching + strengthening reduces FHP (Sepehri 2024 MA).",
+      "character: woman",
+      "gif: still",
+      "source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10832142/",
+      "overlap flag: partial overlap: neck-side-stretch"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "supine-pullover-breathing",
+    "name": "Dumbbell Pullover Breathing (Rib Down)",
+    "primary_muscles": [
+      "lats",
+      "serratus anterior"
+    ],
+    "secondary_muscles": [
+      "abdominals"
+    ],
+    "movement_pattern": "pull",
+    "equipment": [
+      "dumbbell"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "6-8",
+    "default_rest_seconds": 45,
+    "posture_alignment_tags": [
+      "core stability",
+      "thoracic extension"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "eccentric",
+    "tempo_suggestion": "exhale fully at overhead",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: rib flare",
+      "evidence: PRI rib-position concept; lower evidence.",
+      "character: woman",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/21589673/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "prone-lower-trap-lift-off",
+    "name": "Prone Lower-Trap Lift-Off (I-raise)",
+    "primary_muscles": [
+      "lower trapezius"
+    ],
+    "secondary_muscles": [
+      "rhomboids"
+    ],
+    "movement_pattern": "pull",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "beginner",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "10-12",
+    "default_rest_seconds": 45,
+    "posture_alignment_tags": [
+      "scapular control"
+    ],
+    "corrective_or_performance": "corrective",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2s hold top",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "posture issue: rounded shoulders",
+      "evidence: Lower-trap EMG leader; in SA/LT protocols.",
+      "character: woman",
+      "gif: animated",
+      "source: https://pmc.ncbi.nlm.nih.gov/articles/PMC4000422/",
+      "source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10454745/",
+      "overlap flag: overlap: y-t-w-raise (use as regression)"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "seated-leg-curl",
+    "name": "Seated Leg Curl",
+    "primary_muscles": [
+      "hamstrings"
+    ],
+    "secondary_muscles": [],
+    "movement_pattern": "pull",
+    "equipment": [
+      "machine"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "8-12",
+    "default_rest_seconds": 90,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Maeo 2021: seated > lying leg curl for hamstring growth (lengthened).",
+      "character: man",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/33009197/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "overhead-cable-extension",
+    "name": "Overhead Cable Triceps Extension",
+    "primary_muscles": [
+      "triceps (long head)"
+    ],
+    "secondary_muscles": [],
+    "movement_pattern": "push",
+    "equipment": [
+      "cable"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "8-12",
+    "default_rest_seconds": 90,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Maeo 2023: overhead ~1.4-1.5x triceps growth vs pushdown.",
+      "character: man",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/35819335/",
+      "overlap flag: overlap: overhead-tricep-extension (cable variant)"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "incline-db-curl",
+    "name": "Incline Dumbbell Curl",
+    "primary_muscles": [
+      "biceps"
+    ],
+    "secondary_muscles": [
+      "brachialis"
+    ],
+    "movement_pattern": "pull",
+    "equipment": [
+      "dumbbell"
+    ],
+    "environment": [
+      "bench"
+    ],
+    "difficulty": "beginner",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "8-12",
+    "default_rest_seconds": 90,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Lengthened-position biceps training favored (Pedrosa 2022, 2023).",
+      "character: man",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/33977835/",
+      "source: https://pubmed.ncbi.nlm.nih.gov/36828324/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "preacher-curl",
+    "name": "Preacher Curl",
+    "primary_muscles": [
+      "biceps (short head)",
+      "brachialis"
+    ],
+    "secondary_muscles": [],
+    "movement_pattern": "pull",
+    "equipment": [
+      "dumbbell"
+    ],
+    "environment": [
+      "bench"
+    ],
+    "difficulty": "beginner",
+    "force_type": "pull",
+    "laterality": "unilateral",
+    "default_rep_range": "8-12",
+    "default_rest_seconds": 90,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Pedrosa 2022: lengthened preacher partials grow distal biceps.",
+      "character: man",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/33977835/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "back-squat",
+    "name": "Barbell Back Squat",
+    "primary_muscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondary_muscles": [
+      "adductors"
+    ],
+    "movement_pattern": "squat",
+    "equipment": [
+      "barbell"
+    ],
+    "environment": [],
+    "difficulty": "intermediate",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "6-10",
+    "default_rest_seconds": 150,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Deep squats > partial for glutes/adductors (Kubo 2019).",
+      "character: man",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/32030125/",
+      "source: https://pubmed.ncbi.nlm.nih.gov/31230110/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "leg-press",
+    "name": "Leg Press (Deep)",
+    "primary_muscles": [
+      "quadriceps",
+      "gluteus maximus"
+    ],
+    "secondary_muscles": [
+      "adductors"
+    ],
+    "movement_pattern": "squat",
+    "equipment": [
+      "machine"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "8-15",
+    "default_rest_seconds": 120,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Full ROM growth; low fatigue (Schoenfeld 2020 ROM review).",
+      "character: man",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/32030125/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "leg-extension",
+    "name": "Leg Extension",
+    "primary_muscles": [
+      "quadriceps (rectus femoris)"
+    ],
+    "secondary_muscles": [],
+    "movement_pattern": "push",
+    "equipment": [
+      "machine"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "10-15",
+    "default_rest_seconds": 90,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Only machine that isolates the quads incl. rectus femoris; reclined seat likely biases RF (mechanistic).",
+      "character: man",
+      "gif: animated"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "incline-db-press",
+    "name": "Incline Dumbbell Press",
+    "primary_muscles": [
+      "upper chest (clavicular pec)"
+    ],
+    "secondary_muscles": [
+      "front delts",
+      "triceps"
+    ],
+    "movement_pattern": "push",
+    "equipment": [
+      "dumbbell"
+    ],
+    "environment": [
+      "bench"
+    ],
+    "difficulty": "beginner",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "8-12",
+    "default_rest_seconds": 120,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Clavicular pec emphasis (Chaves 2020 EMG; Nippard).",
+      "character: man",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/32922646/",
+      "source: https://jeffnippard.com/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "barbell-bench-press",
+    "name": "Barbell Bench Press",
+    "primary_muscles": [
+      "chest (pectoralis major)"
+    ],
+    "secondary_muscles": [
+      "triceps",
+      "front delts"
+    ],
+    "movement_pattern": "push",
+    "equipment": [
+      "barbell"
+    ],
+    "environment": [
+      "bench"
+    ],
+    "difficulty": "intermediate",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "6-10",
+    "default_rest_seconds": 150,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Gold-standard loaded press for chest/triceps.",
+      "character: man",
+      "gif: animated",
+      "source: https://www.strongerbyscience.com/hypertrophy-range-fact-fiction/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "lat-pulldown",
+    "name": "Lat Pulldown",
+    "primary_muscles": [
+      "lats"
+    ],
+    "secondary_muscles": [
+      "biceps",
+      "rear delts"
+    ],
+    "movement_pattern": "pull",
+    "equipment": [
+      "cable"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "8-12",
+    "default_rest_seconds": 90,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: High lat EMG across grips, scalable load (Lusk 2010).",
+      "character: man",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/20543740/",
+      "overlap flag: related: pull-up"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "chest-supported-row",
+    "name": "Chest-Supported Dumbbell Row",
+    "primary_muscles": [
+      "mid-back (rhomboids, mid traps)",
+      "lats"
+    ],
+    "secondary_muscles": [
+      "rear delts",
+      "biceps"
+    ],
+    "movement_pattern": "pull",
+    "equipment": [
+      "dumbbell"
+    ],
+    "environment": [
+      "bench"
+    ],
+    "difficulty": "beginner",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "8-12",
+    "default_rest_seconds": 90,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Removes lower-back limiter -> more upper-back stimulus (SBS/Nippard).",
+      "character: man",
+      "gif: animated",
+      "source: https://www.strongerbyscience.com/hypertrophy-range-fact-fiction/",
+      "source: https://jeffnippard.com/",
+      "overlap flag: related: dumbbell-row"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "seated-cable-row",
+    "name": "Seated Cable Row (Full Stretch)",
+    "primary_muscles": [
+      "lats",
+      "mid-back"
+    ],
+    "secondary_muscles": [
+      "biceps"
+    ],
+    "movement_pattern": "pull",
+    "equipment": [
+      "cable"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "8-12",
+    "default_rest_seconds": 90,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Constant tension, lengthened stretch.",
+      "character: man",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/32030125/",
+      "source: https://www.strongerbyscience.com/hypertrophy-range-fact-fiction/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "dumbbell-fly",
+    "name": "Dumbbell Fly (Deep Stretch)",
+    "primary_muscles": [
+      "chest (pectoralis major)"
+    ],
+    "secondary_muscles": [
+      "front delts"
+    ],
+    "movement_pattern": "push",
+    "equipment": [
+      "dumbbell"
+    ],
+    "environment": [
+      "bench"
+    ],
+    "difficulty": "beginner",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "10-15",
+    "default_rest_seconds": 90,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Stretch-loaded pec isolation; stretch-mediated hypertrophy.",
+      "character: man",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/32030125/",
+      "source: https://jeffnippard.com/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "sissy-squat",
+    "name": "Sissy Squat (Calisthenics)",
+    "primary_muscles": [
+      "quadriceps (rectus femoris)"
+    ],
+    "secondary_muscles": [],
+    "movement_pattern": "squat",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "wall"
+    ],
+    "difficulty": "intermediate",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "8-15",
+    "default_rest_seconds": 90,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Bodyweight lengthened RF loading (calisthenics alt to leg extension); mechanistic.",
+      "character: man",
+      "gif: animated"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "reverse-pec-deck",
+    "name": "Reverse Pec Deck / Rear Delt Fly",
+    "primary_muscles": [
+      "rear delts"
+    ],
+    "secondary_muscles": [
+      "mid traps",
+      "rhomboids"
+    ],
+    "movement_pattern": "pull",
+    "equipment": [
+      "machine"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "12-20",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Rear-delt gap; high EMG isolation.",
+      "character: man",
+      "gif: animated",
+      "source: https://jeffnippard.com/",
+      "overlap flag: related: face-pull"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "hammer-curl",
+    "name": "Hammer Curl",
+    "primary_muscles": [
+      "brachialis",
+      "brachioradialis"
+    ],
+    "secondary_muscles": [
+      "biceps"
+    ],
+    "movement_pattern": "pull",
+    "equipment": [
+      "dumbbell"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "8-12",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Neutral grip shifts load to brachialis/brachioradialis.",
+      "character: man",
+      "gif: animated",
+      "source: https://jeffnippard.com/",
+      "overlap flag: related: biceps-curl"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "seated-calf-raise",
+    "name": "Seated Calf Raise",
+    "primary_muscles": [
+      "soleus"
+    ],
+    "secondary_muscles": [],
+    "movement_pattern": "push",
+    "equipment": [
+      "machine"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "push",
+    "laterality": "bilateral",
+    "default_rep_range": "10-20",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Soleus focus; stretch pauses (Kassiano 2023: long-length calf training).",
+      "character: man",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/37015016/",
+      "overlap flag: related: calf-raise"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "dumbbell-pullover",
+    "name": "Dumbbell Pullover",
+    "primary_muscles": [
+      "lats",
+      "chest"
+    ],
+    "secondary_muscles": [
+      "triceps (long head)"
+    ],
+    "movement_pattern": "pull",
+    "equipment": [
+      "dumbbell"
+    ],
+    "environment": [
+      "bench"
+    ],
+    "difficulty": "intermediate",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "10-15",
+    "default_rest_seconds": 90,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Lengthened lat/pec loading; EMG mixed.",
+      "character: man",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/32030125/",
+      "source: https://jeffnippard.com/",
+      "overlap flag: related: supine-pullover-breathing (posture list)"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "cable-crunch",
+    "name": "Cable Crunch",
+    "primary_muscles": [
+      "rectus abdominis"
+    ],
+    "secondary_muscles": [
+      "obliques"
+    ],
+    "movement_pattern": "rotation",
+    "equipment": [
+      "cable"
+    ],
+    "environment": [],
+    "difficulty": "beginner",
+    "force_type": "pull",
+    "laterality": "bilateral",
+    "default_rep_range": "10-15",
+    "default_rest_seconds": 60,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Loadable spinal flexion for abs hypertrophy.",
+      "character: man",
+      "gif: animated",
+      "source: https://www.strongerbyscience.com/hypertrophy-range-fact-fiction/"
+    ],
+    "media": "TBD"
+  },
+  {
+    "id": "ab-wheel-rollout",
+    "name": "Ab Wheel Rollout (Calisthenics)",
+    "primary_muscles": [
+      "rectus abdominis"
+    ],
+    "secondary_muscles": [
+      "lats",
+      "obliques"
+    ],
+    "movement_pattern": "push",
+    "equipment": [
+      "bodyweight"
+    ],
+    "environment": [
+      "floor"
+    ],
+    "difficulty": "intermediate",
+    "force_type": "static",
+    "laterality": "bilateral",
+    "default_rep_range": "6-12",
+    "default_rest_seconds": 90,
+    "posture_alignment_tags": [],
+    "corrective_or_performance": "performance",
+    "progression_path": [],
+    "dominant_contraction": "concentric",
+    "tempo_suggestion": "2-3s eccentric, stretch pause",
+    "contraindications": [
+      "acute pain"
+    ],
+    "notes": [
+      "evidence: Very high rectus/oblique EMG (Escamilla 2010).",
+      "character: man",
+      "gif: animated",
+      "source: https://pubmed.ncbi.nlm.nih.gov/20436242/",
+      "overlap flag: related: hollow-body-hold"
+    ],
+    "media": "TBD"
   }
 ]

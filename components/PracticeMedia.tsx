@@ -1,8 +1,10 @@
 "use client";
 
-import type { Practice } from "@/lib/types";
+import { useState } from "react";
+import type { Practice, ResolvedPracticeMedia } from "@/lib/types";
 import { DRAWING_CHOICE } from "@/lib/types";
 import { getPracticeMedia, resolveChosenImage } from "@/lib/media";
+import { ExerciseVisual } from "./ExerciseVisual";
 import { useLibrary } from "./LibraryProvider";
 
 const WAY_WASH = {
@@ -17,12 +19,43 @@ export function PracticeMedia({ practice }: { practice: Practice }) {
   const choice = state.photoChoice[practice.id] ?? DRAWING_CHOICE;
   const hero = resolveChosenImage(practice, state.photoChoice);
   const photos = media.photos;
+  const drawing = choice === DRAWING_CHOICE;
+  const [annotated, setAnnotated] = useState(false);
+  const visual: ResolvedPracticeMedia =
+    drawing && practice.visual
+      ? practice.visual
+      : {
+          type: "still",
+          src: hero,
+          fallback: practice.visual?.fallback || "/practices/custom.svg",
+        };
+  const showAnnotated = drawing && Boolean(practice.visual?.annotated);
 
   return (
     <div>
-      <div className={`flex justify-center px-3 py-3 ${WAY_WASH[practice.way]}`}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={hero} alt={practice.imageAlt} className="h-36 w-auto max-w-full object-contain" />
+      <div className={`px-3 py-3 ${WAY_WASH[practice.way]}`}>
+        <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-paper/50">
+          <ExerciseVisual
+            media={visual}
+            alt={practice.imageAlt}
+            annotated={showAnnotated && annotated}
+            className="h-full w-full object-contain"
+          />
+        </div>
+        {showAnnotated ? (
+          <div className="mt-2 flex justify-end">
+            <button
+              type="button"
+              aria-pressed={annotated}
+              onClick={() => setAnnotated((on) => !on)}
+              className={`min-h-8 rounded-full px-3 text-[0.7rem] tracking-wide ${
+                annotated ? "bg-ink text-paper" : "bg-card text-ink ring-1 ring-ink/10"
+              }`}
+            >
+              Annotated
+            </button>
+          </div>
+        ) : null}
       </div>
 
       {photos.length > 0 ? (
