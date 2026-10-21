@@ -816,6 +816,54 @@
       "poster": "/exercises/ab-wheel-rollout/still.png",
       "character": "man",
       "source": "man_ab_wheel_rollout"
+    },
+    "face-pull": {
+      "type": "animated",
+      "src": "/exercises/face-pull/demo.gif",
+      "annotated": "/exercises/face-pull/demo-annotated.gif",
+      "poster": "/exercises/face-pull/poster.png",
+      "character": "man",
+      "source": "v3"
+    },
+    "half-kneeling-single-arm-dumbbell-press": {
+      "type": "animated",
+      "src": "/exercises/half-kneeling-single-arm-dumbbell-press/demo.gif",
+      "annotated": "/exercises/half-kneeling-single-arm-dumbbell-press/demo-annotated.gif",
+      "poster": "/exercises/half-kneeling-single-arm-dumbbell-press/poster.png",
+      "character": "man",
+      "source": "v3"
+    },
+    "scapular-push-up": {
+      "type": "still",
+      "src": "/exercises/scapular-push-up/still.png",
+      "annotated": "/exercises/scapular-push-up/still-annotated.png",
+      "poster": "/exercises/scapular-push-up/still.png",
+      "character": "man",
+      "source": "v3"
+    },
+    "single-leg-romanian-deadlift": {
+      "type": "animated",
+      "src": "/exercises/single-leg-romanian-deadlift/demo.gif",
+      "annotated": "/exercises/single-leg-romanian-deadlift/demo-annotated.gif",
+      "poster": "/exercises/single-leg-romanian-deadlift/poster.png",
+      "character": "man",
+      "source": "v3"
+    },
+    "spanish-squat": {
+      "type": "animated",
+      "src": "/exercises/spanish-squat/demo.gif",
+      "annotated": "/exercises/spanish-squat/demo-annotated.gif",
+      "poster": "/exercises/spanish-squat/poster.png",
+      "character": "man",
+      "source": "v3"
+    },
+    "waiters-carry": {
+      "type": "still",
+      "src": "/exercises/waiters-carry/still.png",
+      "annotated": "/exercises/waiters-carry/still-annotated.png",
+      "poster": "/exercises/waiters-carry/still.png",
+      "character": "man",
+      "source": "v3"
     }
   }
 }
